@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10251d">
+  <meta name="description" content="Centro local de estudos para o concurso da DPE/RN.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <title>Centro de Estudos DPE/RN</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="topin">
+      <div class="brand" aria-label="Centro de Estudos DPE/RN">
+        <span class="brand-mark" aria-hidden="true">DP</span>
+        <span><b>Centro de Estudos</b><small>DPE / Rio Grande do Norte</small></span>
+      </div>
+      <span class="chip" id="chipProva"></span>
+      <span class="chip" id="chipBanca"></span>
+      <span class="chip content-chip" id="chipConteudo" title="Versão do conteúdo"></span>
+      <span class="spacer"></span>
+      <button class="btn gho sm" id="btnTheme" title="Alternar tema" aria-label="Alternar tema">Tema</button>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="Áreas do centro de estudos"></nav>
+  </header>
+  <main id="main" tabindex="-1">
+    <section class="boot" aria-live="polite">
+      <div class="boot-seal">DP</div>
+      <p>Preparando sua mesa de estudos…</p>
+    </section>
+  </main>
+  <noscript>Ative o JavaScript para utilizar o Centro de Estudos.</noscript>
+  <script src="./app.js" defer></script>
+</body>
+</html>

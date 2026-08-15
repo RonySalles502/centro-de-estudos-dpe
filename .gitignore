@@ -1,0 +1,13 @@
+runtime/
+backups/*.zip
+backups/*.sqlite3
+__pycache__/
+server/__pycache__/
+tests/__pycache__/
+*.pyc
+.DS_Store
+build/
+dist/
+*.spec.bak
+node_modules/
+pwa/content/*.tmp

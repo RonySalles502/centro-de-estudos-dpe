@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Centro de Estudos DPE/RN">
+  <rect width="512" height="512" rx="116" fill="#0b2d45"/>
+  <path d="M112 130h132c76 0 126 47 126 126s-50 126-126 126H112V130Zm80 65v122h45c33 0 53-22 53-61s-20-61-53-61h-45Z" fill="#84d9c8"/>
+  <path d="M370 130h30v252h-30z" fill="#fff" opacity=".92"/>
+</svg>

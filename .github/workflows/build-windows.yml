@@ -1,0 +1,38 @@
+name: Gerar aplicativo Windows
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar empacotador
+        run: python -m pip install --upgrade pyinstaller
+
+      - name: Executar testes
+        run: python -m unittest discover -v
+
+      - name: Gerar executável
+        run: python -m PyInstaller --noconfirm --clean CentroEstudosDPERN.spec
+
+      - name: Publicar artefato portátil
+        uses: actions/upload-artifact@v4
+        with:
+          name: CentroEstudosDPERN-Windows
+          path: dist/CentroEstudosDPERN.exe
+          if-no-files-found: error

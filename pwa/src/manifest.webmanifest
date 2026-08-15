@@ -1,0 +1,12 @@
+{
+  "name": "Centro de Estudos DPE/RN",
+  "short_name": "Estudos DPE",
+  "description": "Centro local de estudos para o concurso da DPE/RN.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0d1915",
+  "theme_color": "#10251d",
+  "icons": [{"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}

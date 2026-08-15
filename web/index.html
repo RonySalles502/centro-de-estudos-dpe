@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b2d45" />
+    <meta
+      name="description"
+      content="Centro local de estudos para o concurso de Defensor Público da DPE/RN."
+    />
+    <title>Centro de Estudos DPE/RN</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navegação principal">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">DP</div>
+          <div>
+            <strong>Centro de Estudos</strong>
+            <span>DPE/RN · Defensor</span>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <button class="nav-item is-active" data-view="dashboard">
+            <span class="nav-kicker">01</span><span>Visão geral</span>
+          </button>
+          <button class="nav-item" data-view="programa">
+            <span class="nav-kicker">02</span><span>Programa</span>
+          </button>
+          <button class="nav-item" data-view="questoes">
+            <span class="nav-kicker">03</span><span>Questões</span>
+          </button>
+          <button class="nav-item" data-view="simulados">
+            <span class="nav-kicker">04</span><span>Simulados</span>
+          </button>
+          <button class="nav-item" data-view="jurisprudencia">
+            <span class="nav-kicker">05</span><span>Jurisprudência</span>
+          </button>
+          <button class="nav-item" data-view="diagnostico">
+            <span class="nav-kicker">06</span><span>Diagnóstico</span>
+          </button>
+          <button class="nav-item" data-view="planejamento">
+            <span class="nav-kicker">07</span><span>Planejamento</span>
+          </button>
+          <button class="nav-item" data-view="revisoes">
+            <span class="nav-kicker">08</span><span>Revisões</span>
+          </button>
+          <button class="nav-item" data-view="discursivas">
+            <span class="nav-kicker">09</span><span>Discursivas</span>
+          </button>
+          <button class="nav-item" data-view="backup">
+            <span class="nav-kicker">10</span><span>Dados e backup</span>
+          </button>
+        </nav>
+
+        <div class="local-status">
+          <span class="status-dot" id="local-status-dot"></span>
+          <div>
+            <strong id="local-status-title">Serviço local</strong>
+            <small id="local-status-detail">verificando conexão</small>
+          </div>
+        </div>
+      </aside>
+
+      <div class="workspace">
+        <header class="topbar">
+          <button class="mobile-menu" id="mobile-menu" aria-label="Abrir menu">Menu</button>
+          <div>
+            <span class="eyebrow" id="page-eyebrow">Painel local</span>
+            <h1 id="page-title">Visão geral</h1>
+          </div>
+          <div class="topbar-actions">
+            <span class="private-chip">Dados nesta máquina</span>
+            <button class="button button-secondary" id="quick-backup">Criar backup</button>
+          </div>
+        </header>
+
+        <main id="conteudo" tabindex="-1">
+          <section class="view is-active" id="view-dashboard" data-section="dashboard">
+            <div class="hero-grid">
+              <article class="hero-card">
+                <div>
+                  <span class="eyebrow eyebrow-light">III Concurso · pré-edital</span>
+                  <h2>Uma preparação guiada pelo programa oficial.</h2>
+                  <p>
+                    O núcleo contém 296 tópicos versionados. O cronograma usa uma data estimada e será
+                    recalculado quando o edital for publicado.
+                  </p>
+                </div>
+                <div class="countdown" aria-label="Contagem para a data estimada">
+                  <strong id="days-to-exam">—</strong>
+                  <span>dias até a data estimada</span>
+                  <small id="target-date-label">Defina a data em Dados e backup</small>
+                </div>
+              </article>
+
+              <article class="rule-card" id="dashboard-focus">
+                <span class="eyebrow">Rota de estudo</span>
+                <strong>Comece pelo bloco do dia</strong>
+                <p>O centro seleciona apenas atividades disponíveis e deixa a curadoria fora da sua rotina.</p>
+                <button class="button button-secondary" data-go="diagnostico">Configurar cronograma</button>
+              </article>
+            </div>
+
+            <div class="metric-grid" aria-label="Indicadores de estudo">
+              <article class="metric-card">
+                <span>Cobertura iniciada</span>
+                <strong id="metric-started">—</strong>
+                <small id="metric-started-note">dos 296 tópicos</small>
+              </article>
+              <article class="metric-card">
+                <span>Consolidados</span>
+                <strong id="metric-consolidated">—</strong>
+                <small>tópicos dominados</small>
+              </article>
+              <article class="metric-card">
+                <span>Questões registradas</span>
+                <strong id="metric-questions">—</strong>
+                <small id="metric-accuracy">sem desempenho registrado</small>
+              </article>
+              <article class="metric-card metric-attention">
+                <span>Jurisprudência pendente</span>
+                <strong id="metric-juris">—</strong>
+                <small>aguardando leitura ou revisão</small>
+              </article>
+            </div>
+
+            <article class="panel today-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="eyebrow">Estudo primeiro</span>
+                  <h2 id="today-agenda-title">Agenda do dia</h2>
+                </div>
+                <button class="text-button" data-go="planejamento">Abrir calendário</button>
+              </div>
+              <div id="today-agenda" class="today-agenda" aria-live="polite"></div>
+            </article>
+
+            <div class="content-grid">
+              <article class="panel">
+                <div class="panel-heading">
+                  <div>
+                    <span class="eyebrow">Cobertura programática</span>
+                    <h2>Progresso por grupo objetivo</h2>
+                  </div>
+                  <button class="text-button" data-go="programa">Abrir programa</button>
+                </div>
+                <div id="group-progress" class="group-progress"></div>
+              </article>
+
+              <article class="panel">
+                <div class="panel-heading">
+                  <div>
+                    <span class="eyebrow">Fontes oficiais</span>
+                    <h2>Atualização jurídica</h2>
+                  </div>
+                  <button class="text-button" data-go="jurisprudencia">Ver caixa de entrada</button>
+                </div>
+                <div id="source-summary" class="source-summary"></div>
+              </article>
+            </div>
+          </section>
+
+          <section class="view" id="view-programa" data-section="programa">
+            <div class="section-intro">
+              <div>
+                <span class="eyebrow">Anexo I · Resolução nº 344/2025</span>
+                <h2>Programa verticalizado</h2>
+                <p>O texto oficial permanece imutável; somente os campos pessoais de estudo são editáveis.</p>
+              </div>
+              <span class="result-count" id="program-count">296 tópicos</span>
+            </div>
+
+            <div class="filter-bar" aria-label="Filtros do programa">
+              <label>
+                <span>Buscar</span>
+                <input id="program-search" type="search" placeholder="Tema, norma ou Tópico_ID" />
+              </label>
+              <label>
+                <span>Disciplina</span>
+                <select id="program-discipline"><option value="">Todas as disciplinas</option></select>
+              </label>
+              <label>
+                <span>Status</span>
+                <select id="program-status">
+                  <option value="">Todos os status</option>
+                  <option value="NAO_INICIADO">Não iniciado</option>
+                  <option value="EM_ESTUDO">Em estudo</option>
+                  <option value="REVISAO">Revisão</option>
+                  <option value="CONSOLIDADO">Consolidado</option>
+                </select>
+              </label>
+            </div>
+            <div id="program-list" class="topic-list" aria-live="polite"></div>
+          </section>
+
+          <section class="view" id="view-questoes" data-section="questoes">
+            <div class="section-intro">
+              <div>
+                <span class="eyebrow">CEBRASPE · conteúdo liberado</span>
+                <h2>Banco de questões</h2>
+                <p>A rotina mostra somente itens prontos para estudo. A seleção prioriza inéditas e reduz repetição.</p>
+              </div>
+              <button class="button button-primary" id="questions-go-simulator" data-go="simulados">Abrir simulador</button>
+            </div>
+
+            <div class="metric-grid question-metrics" aria-label="Indicadores do banco de questões">
+              <article class="metric-card">
+                <span>Disponíveis</span>
+                <strong id="question-stat-eligible">—</strong>
+                <small>prontas para estudo</small>
+              </article>
+              <article class="metric-card">
+                <span>Inéditas</span>
+                <strong id="question-stat-unseen">—</strong>
+                <small>ainda não vistas</small>
+              </article>
+              <article class="metric-card">
+                <span>Resoluções</span>
+                <strong id="question-stat-answered">—</strong>
+                <small>tentativas registradas</small>
+              </article>
+              <article class="metric-card">
+                <span>Acurácia</span>
+                <strong id="question-stat-accuracy">—</strong>
+                <small>nas sessões locais</small>
+              </article>
+            </div>
+
+            <div class="filter-bar question-filter" aria-label="Filtros do banco de questões">
+              <label>
+                <span>Buscar</span>
+                <input id="question-search" type="search" placeholder="Enunciado, referência ou Questão_ID" />
+              </label>
+              <label>
+                <span>Disciplina</span>
+                <select id="question-discipline"><option value="">Todas as disciplinas</option></select>
+              </label>
+            </div>
+            <div class="section-list-heading">
+              <h2>Questões disponíveis</h2>
+              <span id="question-result-count">—</span>
+            </div>
+            <div id="question-list" class="question-list" aria-live="polite"></div>
+          </section>
+
+          <section class="view" id="view-simulados" data-section="simulados">
+            <div class="section-intro">
+              <div>
+                <span class="eyebrow">Sessões persistentes</span>
+                <h2>Prática e simulados</h2>
+                <p>As respostas ficam nesta instalação e alimentam o desempenho dos tópicos vinculados.</p>
+              </div>
+            </div>
+
+            <div id="simulator-readiness" class="notice notice-warning">
+              Verificando a disponibilidade de questões liberadas…
+            </div>
+            <div id="quiz-availability" class="availability-grid"></div>
+
+            <div class="simulator-grid">
+              <article class="panel">
+                <div class="panel-heading">
+                  <div>
+                    <span class="eyebrow">Nova sessão</span>
+                    <h2>Configurar resolução</h2>
+                  </div>
+                </div>
+                <form id="quiz-form" class="form-grid quiz-form">
+                  <label class="full-field">
+                    <span>Modalidade</span>
+                    <select id="quiz-kind">
+                      <option value="PRATICA">Prática dirigida</option>
+                      <option value="SIMULADO_GRUPO">Simulado preparatório por grupo — 25 itens</option>
+                      <option value="SIMULADO_COMPLETO">Simulado preparatório completo — 100 itens</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Grupo objetivo</span>
+                    <select id="quiz-group">
+                      <option value="">Todos os grupos</option>
+                      <option value="I">Grupo I</option>
+                      <option value="II">Grupo II</option>
+                      <option value="III">Grupo III</option>
+                      <option value="IV">Grupo IV</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Disciplina</span>
+                    <select id="quiz-discipline"><option value="">Todas as disciplinas</option></select>
+                  </label>
+                  <label>
+                    <span>Quantidade na prática</span>
+                    <select id="quiz-count">
+                      <option value="1">1 questão</option>
+                      <option value="4">4 questões</option>
+                      <option value="5">5 questões</option>
+                      <option value="10" selected>10 questões</option>
+                      <option value="20">20 questões</option>
+                    </select>
+                  </label>
+                  <button class="button button-primary form-action" id="start-quiz" type="submit">Iniciar sessão</button>
+                </form>
+              </article>
+
+              <article class="panel">
+                <div class="panel-heading">
+                  <div>
+                    <span class="eyebrow">Histórico local</span>
+                    <h2>Sessões anteriores</h2>
+                  </div>
+                </div>
+                <div id="quiz-session-list" class="quiz-session-list"></div>
+              </article>
+            </div>
+
+            <section id="active-quiz" class="active-quiz" aria-live="polite"></section>
+          </section>
+
+          <section class="view" id="view-jurisprudencia" data-section="jurisprudencia">
+            <div class="section-intro">
+              <div>
+                <span class="eyebrow">Conhecimento jurídico dinâmico</span>
+                <h2>Radar de jurisprudência</h2>
+                <p>A coleta e a síntese vêm das publicações institucionais. Aqui você controla apenas sua leitura.</p>
+              </div>
+              <button class="button button-primary" id="update-jurisprudence">Buscar atualizações</button>
+            </div>
+
+            <div class="notice notice-info">
+              Use a síntese para revisão e abra a publicação oficial quando precisar do contexto integral do julgado.
+            </div>
+
+            <div class="filter-bar compact" aria-label="Filtros de jurisprudência">
+              <label>
+                <span>Buscar</span>
+                <input id="juris-search" type="search" placeholder="Tema, número ou conteúdo" />
+              </label>
+              <label>
+                <span>Tribunal</span>
+                <select id="juris-court">
+                  <option value="">Todos</option>
+                  <option value="STF">STF</option>
+                  <option value="STJ">STJ</option>
+                </select>
+              </label>
+              <label>
+                <span>Leitura</span>
+                <select id="juris-status">
+                  <option value="">Todas</option>
+                  <option value="NAO_LIDO">Não lidos</option>
+                  <option value="REVISAO">Revisar depois</option>
+                  <option value="LIDO">Lidos</option>
+                </select>
+              </label>
+            </div>
+
+            <div id="juris-source-health" class="source-health"></div>
+            <div id="juris-list" class="juris-list" aria-live="polite"></div>
+          </section>
+
+          <section class="view" id="view-diagnostico" data-section="diagnostico">
+            <div class="section-intro">
+              <div>
+                <span class="eyebrow">Base do cronograma adaptativo</span>
+                <h2>Diagnóstico de disponibilidade e foco</h2>
+                <p>Informe sua disponibilidade e preferências. Se um tipo de atividade ainda não tiver conteúdo suficiente, o tempo será redistribuído automaticamente.</p>
+              </div>
+              <button class="button button-primary" id="save-and-generate-plan">Salvar e gerar cronograma</button>
+            </div>
+
+            <form id="diagnostic-form" class="diagnostic-layout">
+              <article class="panel">
+                <div class="panel-heading">
+                  <div><span class="eyebrow">Disponibilidade</span><h2>Minutos por dia</h2></div>
+                  <span class="result-count" id="diagnostic-weekly-total">— por semana</span>
+                </div>
+                <div class="weekday-grid">
+                  <label><span>Segunda</span><input id="diag-SEG" type="number" min="0" max="720" step="10" /></label>
+                  <label><span>Terça</span><input id="diag-TER" type="number" min="0" max="720" step="10" /></label>
+                  <label><span>Quarta</span><input id="diag-QUA" type="number" min="0" max="720" step="10" /></label>
+                  <label><span>Quinta</span><input id="diag-QUI" type="number" min="0" max="720" step="10" /></label>
+                  <label><span>Sexta</span><input id="diag-SEX" type="number" min="0" max="720" step="10" /></label>
+                  <label><span>Sábado</span><input id="diag-SAB" type="number" min="0" max="720" step="10" /></label>
+                  <label><span>Domingo</span><input id="diag-DOM" type="number" min="0" max="720" step="10" /></label>
+                </div>
+                <div class="form-grid diagnostic-basics">
+                  <label><span>Nível atual</span><select id="diag-level"><option value="INICIANTE">Iniciante</option><option value="INTERMEDIARIO">Intermediário</option><option value="AVANCADO">Avançado</option></select></label>
+                  <label><span>Turno preferencial</span><select id="diag-shift"><option value="FLEXIVEL">Flexível</option><option value="MANHA">Manhã</option><option value="TARDE">Tarde</option><option value="NOITE">Noite</option></select></label>
+                  <label><span>Duração do bloco</span><select id="diag-session"><option value="25">25 minutos</option><option value="40">40 minutos</option><option value="50">50 minutos</option><option value="60">60 minutos</option><option value="90">90 minutos</option></select></label>
+                  <label><span>Horizonte do ciclo</span><select id="diag-horizon"><option value="14">14 dias</option><option value="28">28 dias</option><option value="42">42 dias</option><option value="56">56 dias</option><option value="84">84 dias</option></select></label>
+                </div>
+              </article>
+
+              <article class="panel">
+                <div class="panel-heading">
+                  <div><span class="eyebrow">Grupos objetivos</span><h2>Divisão do foco</h2></div>
+                  <span class="weight-total" id="group-weight-total">100%</span>
+                </div>
+                <div class="weight-grid">
+                  <label><span>Grupo I (%)</span><input id="group-weight-I" type="number" min="0" max="100" /></label>
+                  <label><span>Grupo II (%)</span><input id="group-weight-II" type="number" min="0" max="100" /></label>
+                  <label><span>Grupo III (%)</span><input id="group-weight-III" type="number" min="0" max="100" /></label>
+                  <label><span>Grupo IV (%)</span><input id="group-weight-IV" type="number" min="0" max="100" /></label>
+                </div>
+                <div class="panel-heading preference-heading">
+                  <div><span class="eyebrow">Método de estudo</span><h2>Preferência de conteúdo</h2></div>
+                  <span class="weight-total" id="content-weight-total">100%</span>
+                </div>
+                <div class="weight-grid content-weight-grid">
+                  <label><span>Leitura (%)</span><input id="content-weight-LEITURA" type="number" min="0" max="100" /></label>
+                  <label><span>Questões (%)</span><input id="content-weight-QUESTOES" type="number" min="0" max="100" /></label>
+                  <label><span>Jurisprudência (%)</span><input id="content-weight-JURISPRUDENCIA" type="number" min="0" max="100" /></label>
+                  <label><span>Revisão (%)</span><input id="content-weight-REVISAO" type="number" min="0" max="100" /></label>
+                  <label><span>Discursiva (%)</span><input id="content-weight-DISCURSIVA" type="number" min="0" max="100" /></label>
+                  <label><span>Simulado (%)</span><input id="content-weight-SIMULADO" type="number" min="0" max="100" /></label>
+                </div>
+                <button class="button button-secondary" id="save-diagnostic" type="submit">Salvar diagnóstico</button>
+              </article>
+            </form>
+          </section>
+
+          <section class="view" id="view-planejamento" data-section="planejamento">
+            <div class="section-intro">
+              <div>
+                <span class="eyebrow">Ciclo recalculável</span>
+                <h2>Cronograma adaptado</h2>
+                <p>Os blocos respeitam a disponibilidade e os pesos do diagnóstico. Cada tópico traz a legislação e os artigos para leitura no próprio card do dia.</p>
+              </div>
+              <div class="section-actions">
+                <button class="button button-secondary" data-go="diagnostico">Editar diagnóstico</button>
+                <button class="button button-primary" id="generate-plan">Gerar novo ciclo</button>
+              </div>
+            </div>
+            <div id="plan-empty" class="notice notice-warning">Nenhum cronograma ativo. Conclua o diagnóstico e gere o primeiro ciclo.</div>
+            <div id="plan-adjustments" class="notice notice-info" hidden></div>
+            <div id="plan-metrics" class="metric-grid plan-metrics"></div>
+            <div class="planning-summary-grid">
+              <article class="panel"><div class="panel-heading"><div><span class="eyebrow">Alocação real</span><h2>Por grupo</h2></div></div><div id="plan-group-summary" class="group-progress"></div></article>
+              <article class="panel"><div class="panel-heading"><div><span class="eyebrow">Método</span><h2>Por conteúdo</h2></div></div><div id="plan-content-summary" class="allocation-list"></div></article>
+            </div>
+            <div id="plan-week-navigation"></div>
+            <div id="plan-days" class="plan-days" aria-live="polite"></div>
+          </section>
+
+          <section class="view" id="view-revisoes" data-section="revisoes">
+            <div class="section-intro">
+              <div>
+                <span class="eyebrow">Memória de longo prazo</span>
+                <h2>Revisão espaçada</h2>
+                <p>A próxima data depende da dificuldade informada após cada revisão. Tópicos iniciados entram automaticamente na fila.</p>
+              </div>
+              <label class="inline-filter"><span>Exibir</span><select id="review-scope"><option value="due">Vencidas e de hoje</option><option value="all">Toda a fila</option></select></label>
+            </div>
+            <div class="review-hero">
+              <article class="metric-card metric-attention"><span>Revisões devidas</span><strong id="review-due-count">—</strong><small>prioridade do dia</small></article>
+              <div class="notice notice-warning"><strong>A avaliação não mede conhecimento jurídico.</strong> Ela apenas define quando o tópico reaparecerá: repetir, difícil, bom ou fácil.</div>
+            </div>
+            <div id="review-list" class="review-list" aria-live="polite"></div>
+          </section>
+
+          <section class="view" id="view-discursivas" data-section="discursivas">
+            <div class="section-intro">
+              <div>
+                <span class="eyebrow">Treino escrito</span>
+                <h2>Discursivas</h2>
+                <p>Temas autorais assistidos por IA permanecem identificados, mas a tarefa do candidato é redigir. Rascunhos e autoavaliações ficam somente nesta instalação.</p>
+              </div>
+              <button class="button button-secondary" id="toggle-new-prompt">Cadastrar tema próprio</button>
+            </div>
+            <form id="new-prompt-form" class="panel form-grid hidden" hidden>
+              <label><span>Título</span><input id="new-prompt-title" maxlength="240" required /></label>
+              <label><span>Grupo</span><select id="new-prompt-group"><option value="">Sem grupo</option><option value="I">Grupo I</option><option value="II">Grupo II</option><option value="III">Grupo III</option><option value="IV">Grupo IV</option></select></label>
+              <label><span>Disciplina</span><select id="new-prompt-discipline"><option value="">Sem disciplina</option></select></label>
+              <label><span>Referência oficial</span><input id="new-prompt-reference" maxlength="500" /></label>
+              <label class="full-field"><span>Enunciado</span><textarea id="new-prompt-text" rows="4" minlength="20" required></textarea></label>
+              <label class="full-field"><span>Link da fonte</span><input id="new-prompt-source" type="url" /></label>
+              <button class="button button-primary form-action" type="submit">Cadastrar tema</button>
+            </form>
+            <div class="discursive-layout">
+              <article class="panel"><div class="panel-heading"><div><span class="eyebrow">Banco de temas</span><h2>Escolha um tema</h2></div></div><div id="discursive-prompt-list" class="discursive-prompt-list"></div></article>
+              <article class="panel discursive-editor-panel">
+                <div id="discursive-editor-empty" class="empty-state"><strong>Nenhum tema selecionado</strong>Escolha um tema para iniciar ou continuar uma resposta.</div>
+                <form id="discursive-attempt-form" class="discursive-editor hidden" hidden>
+                  <input id="attempt-id" type="hidden" /><input id="attempt-prompt-id" type="hidden" />
+                  <span class="eyebrow" id="attempt-meta">—</span><h2 id="attempt-title">—</h2><p id="attempt-prompt-text"></p>
+                  <div id="attempt-source"></div>
+                  <label><span>Resposta</span><textarea id="attempt-answer" rows="18" placeholder="Redija sua resposta..."></textarea><small id="attempt-word-count">0 palavras</small></label>
+                  <div class="form-grid">
+                    <label><span>Tempo utilizado (min)</span><input id="attempt-time" type="number" min="0" max="1440" value="0" /></label>
+                    <label><span>Autoavaliação (0–10)</span><input id="attempt-score" type="number" min="0" max="10" step="0.1" /></label>
+                    <label><span>Pontos fortes</span><textarea id="attempt-strengths" rows="3"></textarea></label>
+                    <label><span>A melhorar</span><textarea id="attempt-improvements" rows="3"></textarea></label>
+                  </div>
+                  <div class="dialog-actions"><button class="button button-secondary" data-attempt-status="RASCUNHO" type="submit">Salvar rascunho</button><button class="button button-primary" data-attempt-status="CONCLUIDA" type="submit">Concluir resposta</button></div>
+                </form>
+              </article>
+            </div>
+            <article class="panel discursive-history-panel"><div class="panel-heading"><div><span class="eyebrow">Histórico</span><h2>Respostas salvas</h2></div></div><div id="discursive-history" class="discursive-history"></div></article>
+          </section>
+
+          <section class="view" id="view-backup" data-section="backup">
+            <div class="section-intro">
+              <div>
+                <span class="eyebrow">Instância individual</span>
+                <h2>Dados, atualização e backup</h2>
+                <p>Uma instalação, um workspace e nenhum dado pessoal enviado ao catálogo de conteúdo.</p>
+              </div>
+              <button class="button button-primary" id="create-backup">Criar backup agora</button>
+            </div>
+
+            <div class="settings-grid">
+              <article class="panel">
+                <div class="panel-heading">
+                  <div>
+                    <span class="eyebrow">Preferências locais</span>
+                    <h2>Configuração do estudo</h2>
+                  </div>
+                </div>
+                <form id="settings-form" class="form-grid">
+                  <label>
+                    <span>Nome do candidato (opcional)</span>
+                    <input id="candidate-name" maxlength="120" autocomplete="name" />
+                  </label>
+                  <label>
+                    <span>Data provável da prova</span>
+                    <input id="target-exam-date" type="date" />
+                    <small>Estimativa editável; não equivale a cronograma oficial.</small>
+                  </label>
+                  <label class="full-field">
+                    <span>Pasta dos backups</span>
+                    <input id="backup-dir" spellcheck="false" />
+                    <small>Pode ser uma pasta local sincronizada pelo OneDrive, Google Drive ou equivalente.</small>
+                  </label>
+                  <label class="toggle-field">
+                    <input id="auto-backup" type="checkbox" />
+                    <span>Manter backup automático habilitado</span>
+                  </label>
+                  <label class="toggle-field">
+                    <input id="auto-juris" type="checkbox" />
+                    <span>Buscar jurisprudência automaticamente</span>
+                  </label>
+                  <button class="button button-primary form-action" type="submit">Salvar configurações</button>
+                </form>
+              </article>
+
+              <article class="panel backup-explainer">
+                <span class="eyebrow">Política de proteção</span>
+                <h2>O que o pacote preserva</h2>
+                <ul>
+                  <li>progresso dos 296 tópicos;</li>
+                  <li>questões e acertos registrados;</li>
+                  <li>diagnóstico, cronogramas e histórico de execução;</li>
+                  <li>fila, avaliações e datas de revisão;</li>
+                  <li>temas, rascunhos e respostas discursivas;</li>
+                  <li>jurisprudência já importada;</li>
+                  <li>configuração desta instalação.</li>
+                </ul>
+                <p>Cada pacote recebe manifesto, versão do banco e verificação SHA-256.</p>
+              </article>
+            </div>
+
+            <article class="panel backup-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="eyebrow">Pacotes disponíveis</span>
+                  <h2>Histórico de backups</h2>
+                </div>
+                <button class="text-button" id="refresh-backups">Atualizar lista</button>
+              </div>
+              <div id="backup-list" class="backup-list"></div>
+            </article>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <dialog id="question-report-dialog" class="report-dialog" aria-labelledby="report-dialog-title">
+      <form id="question-report-form" class="report-form">
+        <div class="dialog-heading">
+          <div>
+            <span class="eyebrow">Controle de qualidade</span>
+            <h2 id="report-dialog-title">Sinalizar possível erro</h2>
+          </div>
+          <button class="dialog-close" id="close-report-dialog" type="button" aria-label="Fechar">×</button>
+        </div>
+        <p>
+          A questão será bloqueada localmente para novas sessões enquanto a sinalização estiver aberta.
+          O registro integra os backups desta instalação.
+        </p>
+        <input id="report-question-id" type="hidden" />
+        <input id="report-session-id" type="hidden" />
+        <label>
+          <span>Tipo de problema</span>
+          <select id="report-category" required>
+            <option value="GABARITO">Gabarito</option>
+            <option value="ENUNCIADO">Enunciado</option>
+            <option value="ALTERNATIVA">Alternativa</option>
+            <option value="FONTE">Fonte ou referência</option>
+            <option value="DESATUALIZACAO">Possível desatualização</option>
+            <option value="OUTRO">Outro</option>
+          </select>
+        </label>
+        <label>
+          <span>Descrição</span>
+          <textarea id="report-description" rows="5" minlength="10" maxlength="2000" required placeholder="Explique objetivamente a inconsistência identificada."></textarea>
+        </label>
+        <label>
+          <span>Link de evidência (opcional)</span>
+          <input id="report-evidence-url" type="url" placeholder="https://fonte-oficial..." />
+        </label>
+        <div class="dialog-actions">
+          <button class="button button-secondary" id="cancel-report-dialog" type="button">Cancelar</button>
+          <button class="button button-danger" id="submit-question-report" type="submit">Registrar sinalização</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast-region" id="toast-region" aria-live="polite"></div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
