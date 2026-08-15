@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "version": "2026.08.15-866bccbe5a38",
-  "generated_at": "2026-08-15T21:54:55+00:00",
-  "last_success_at": "2026-08-15T21:54:55+00:00",
-  "status": "ATUALIZADO_PARCIAL",
+  "version": "2026.08.15-9c25cef4a954",
+  "generated_at": "2026-08-15T22:05:01+00:00",
+  "last_success_at": "2026-08-15T22:05:01+00:00",
+  "status": "ATUALIZADO",
   "sources": [
     {
       "id": "stj-informativo",
@@ -12,16 +12,16 @@
       "url": "https://processo.stj.jus.br/jurisprudencia/externo/InformativoFeed",
       "status": "SUCESSO",
       "detected": 80,
-      "checked_at": "2026-08-15T21:54:55+00:00"
+      "checked_at": "2026-08-15T22:05:01+00:00"
     },
     {
       "id": "stf-informativo",
       "name": "Informativo STF",
       "court": "STF",
       "url": "https://portal.stf.jus.br/textos/verTexto.asp?p=&servico=informativoSTF",
-      "status": "ERRO",
-      "message": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)>",
-      "checked_at": "2026-08-15T21:54:55+00:00"
+      "status": "SUCESSO",
+      "detected": 1,
+      "checked_at": "2026-08-15T22:05:01+00:00"
     },
     {
       "id": "stj-teses",
@@ -30,7 +30,7 @@
       "url": "https://scon.stj.jus.br/SCON/JurisprudenciaEmTesesFeed",
       "status": "SUCESSO",
       "detected": 80,
-      "checked_at": "2026-08-15T21:54:55+00:00"
+      "checked_at": "2026-08-15T22:05:01+00:00"
     }
   ],
   "items": [
@@ -80,6 +80,22 @@
       "published_at": "2026-08-04T03:00:00+00:00",
       "issue_number": "895",
       "content_hash": "9de49a8ada49d7018a1e95e258725381b0607b4aa580fd2c6818ac9cedacc255",
+      "editorial_status": "IMPORTADO_DE_FONTE_OFICIAL"
+    },
+    {
+      "id": "oficial-fbdc7cab34e7eb029b1a8718",
+      "external_id": "stf-informativo-1223",
+      "source_id": "stf-informativo",
+      "kind": "PUBLICACAO_OFICIAL",
+      "trib": "STF",
+      "ref": "Informativo STF nº 1223",
+      "tema": "Informativo STF",
+      "tese": "O Informativo STF , periódico semanal do Supremo Tribunal Federal, apresenta, de forma objetiva e concisa, resumos das teses e conclusões dos principais julgamentos realizados pelos órgãos colegiados – Plenário e Turmas –, em ambiente presencial e virtual. A seleção dos processos noticiados leva em consideração critérios de relevância, novidade e contemporaneidade da temática objeto de julgamento. A publicação disponibiliza, ainda, o serviço denominado \"Plenário Virtual em Evidência\", que apresenta resumos dos principais processos de competência do Plenário agendados para julgamento no ambiente da sessão virtual, com destaque para as ações de controle de constitucionalidade e processos submetidos à sistemática da repercussão geral",
+      "url": "https://portal.stf.jus.br/textos/verTexto.asp?p=&servico=informativoSTF",
+      "g": "I",
+      "published_at": "2026-08-03T00:00:00+00:00",
+      "issue_number": "1223",
+      "content_hash": "55f42519db22a4bd14d4c955d9d4b7263c99f2d24bee985ec6aafd7750f7e8c6",
       "editorial_status": "IMPORTADO_DE_FONTE_OFICIAL"
     },
     {
