@@ -179,6 +179,7 @@ def _normalise_date(value: str) -> str | None:
 def extract_issue_number(text: str) -> str | None:
     patterns = [
         r"Informativo(?:\s+de\s+Jurisprudência)?\s*(?:n[º°.]?\s*)?(\d{3,4})",
+        r"Última\s+edição\s*:\s*(\d{3,4})(?:/\d{4})?",
         r"(?:N[º°.]?|número)\s*(\d{3,4})",
     ]
     for pattern in patterns:
@@ -264,13 +265,23 @@ def parse_stf_latest(payload: bytes, source_url: str) -> list[dict[str, Any]]:
         f"informativo{number}.htm"
     )
     title = f"Informativo STF nº {number}"
-    excerpt = parse_official_detail(payload, "STF")
+    presentation = re.search(
+        r"\bApresentação\s+(.*?)(?=\s+Responsável:|\s+Expediente\b|$)",
+        text,
+        flags=re.I | re.S,
+    )
+    excerpt = _clean_summary(presentation.group(1)) if presentation else title
+    updated = re.search(r"Última\s+atualização\s*:\s*(\d{4}-\d{2}-\d{2})", text, flags=re.I)
     return [
         {
             "external_id": f"stf-informativo-{number}",
             "issue_number": number,
             "title": title,
-            "published_at": extract_portuguese_date(text[:5000]),
+            "published_at": (
+                _normalise_date(updated.group(1))
+                if updated
+                else extract_portuguese_date(text[:5000])
+            ),
             "source_url": historical_url or source_url,
             "summary": excerpt,
             "content_hash": content_hash(excerpt),

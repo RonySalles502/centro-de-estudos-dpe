@@ -97,13 +97,34 @@ def fetch(url: str, timeout: int) -> bytes:
         with urllib.request.urlopen(request, timeout=timeout, context=SSL_CONTEXT) as response:
             return response.read(MAX_RESPONSE_BYTES)
     except urllib.error.URLError as error:
-        # Fallback estrito para runtimes Python portáteis no Windows. O curl do
-        # sistema usa o repositório TLS nativo; nunca é chamado com --insecure.
-        curl = shutil.which("curl.exe") if sys.platform == "win32" else None
+        # Fallback estrito para runtimes Python cujo repositório de CAs esteja
+        # incompleto. O curl valida o TLS; nunca é chamado com --insecure.
+        curl = shutil.which("curl.exe") or shutil.which("curl")
         if not curl or not isinstance(error.reason, ssl.SSLCertVerificationError):
             raise
         completed = subprocess.run(
-            [curl, "--fail", "--silent", "--show-error", "--location", "--proto", "=https", "--max-time", str(timeout), url],
+            [
+                curl,
+                "--fail",
+                "--silent",
+                "--show-error",
+                "--location",
+                "--proto",
+                "=https",
+                "--max-time",
+                str(timeout),
+                "--max-filesize",
+                str(MAX_RESPONSE_BYTES),
+                "--user-agent",
+                USER_AGENT,
+                "--header",
+                "Accept: application/atom+xml, application/xml, text/html;q=0.9, */*;q=0.5",
+                "--header",
+                "Accept-Language: pt-BR,pt;q=0.9",
+                "--referer",
+                "https://www.stf.jus.br/",
+                url,
+            ],
             capture_output=True,
             check=False,
             timeout=timeout + 5,

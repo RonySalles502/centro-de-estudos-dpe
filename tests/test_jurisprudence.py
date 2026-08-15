@@ -58,6 +58,20 @@ class JurisprudenceParserTestCase(unittest.TestCase):
         self.assertEqual(items[0]["published_at"], "2026-08-12T00:00:00+00:00")
         self.assertIn("informativo1195.htm", items[0]["source_url"])
 
+    def test_parse_stf_latest_from_current_portal_heading(self) -> None:
+        payload = """
+        <html><head><title>Informativo STF</title></head>
+        <body><span>Última atualização: 2026-08-03</span>
+        <a href="Informativo_stf_1223.pdf">Última edição: 1223/2026 (pdf)</a>
+        <h2>Apresentação</h2><p>O Informativo STF apresenta resumos dos principais julgamentos.</p>
+        <p>Responsável: Coordenadoria de Difusão da Informação.</p></body></html>
+        """.encode("utf-8")
+        items = parse_stf_latest(payload, "https://portal.stf.jus.br/informativo")
+        self.assertEqual(items[0]["external_id"], "stf-informativo-1223")
+        self.assertEqual(items[0]["issue_number"], "1223")
+        self.assertEqual(items[0]["published_at"], "2026-08-03T00:00:00+00:00")
+        self.assertEqual(items[0]["summary"], "O Informativo STF apresenta resumos dos principais julgamentos")
+
     def test_stf_page_without_issue_number_fails_closed(self) -> None:
         with self.assertRaisesRegex(ValueError, "número"):
             parse_stf_latest(b"<html><body>Pagina temporariamente indisponivel</body></html>", "x")
