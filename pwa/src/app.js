@@ -43,6 +43,27 @@ async function fetchVerified(asset,baseUrl){
   if(actual!==asset.sha256) throw new Error(`O conteúdo ${url.pathname} falhou na verificação de integridade.`);
   return JSON.parse(text);
 }
+function expandJurisprudence(juris){
+  const records=(juris.items||[]).map(item=>({...item}));
+  Object.values(juris.datasets||{}).forEach(dataset=>{
+    const columns=Array.isArray(dataset.columns)?dataset.columns:[];
+    (dataset.rows||[]).forEach(row=>{
+      if(!Array.isArray(row)||row.length!==columns.length)return;
+      const item={trib:dataset.court||'',source_id:dataset.source_id||'',kind:dataset.record_kind||''};
+      columns.forEach((column,index)=>{if(row[index]!==''&&row[index]!=null)item[column]=row[index];});
+      records.push(item);
+    });
+  });
+  records.forEach(item=>{
+    if(!item.record_type){
+      if(item.source_id==='stj-informativo')item.record_type='Informativo STJ';
+      else if(item.source_id==='stj-teses')item.record_type='Jurisprudência em Teses';
+      else if(item.kind==='REFERENCIA_EDITORIAL')item.record_type='Referência editorial';
+      else item.record_type=item.tema||'Publicação oficial';
+    }
+  });
+  return records.sort((a,b)=>String(b.published_at||'').localeCompare(String(a.published_at||''))||String(a.ref||'').localeCompare(String(b.ref||'')));
+}
 async function carregarConteudo(){
   const manifestUrl=new URL('./content/manifest.json',location.href);
   const response=await fetch(manifestUrl,{cache:'no-store'});
@@ -54,7 +75,7 @@ async function carregarConteudo(){
     fetchVerified(manifest.assets.jurisprudence,manifestUrl)
   ]);
   DADOS=core;
-  DADOS.precedentes=juris.items||[];
+  DADOS.precedentes=expandJurisprudence(juris);
   DADOS.jurisprudence_meta=juris;
   CONTENT_MANIFEST=manifest;
   JURIS_META=juris;
@@ -979,10 +1000,44 @@ function revCard(x){
 
 /* ---------------------------------------------------------------- view: jurisprudência */
 function jurisKey(p){ return p.id||`legacy|${p.trib||''}|${p.ref||''}`; }
+function jurisSearchText(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');}
+function jurisDate(value){return value?fmtBR(String(value).slice(0,10)):'—';}
+function openJurisDetail(p,onProgress){
+  const key=jurisKey(p),registro=S.juris.find(j=>j.id===key||(!j.id&&j.ref===p.ref));
+  const modal=el('div',{class:'modal',role:'dialog','aria-modal':'true'});
+  const box=el('div',{class:'in juris-detail'});
+  const top=el('div',{class:'row'}); top.style.justifyContent='space-between';
+  const title=el('div'); title.appendChild(el('span',{class:'tag'},esc(p.record_type||p.trib||'Jurisprudência'))); title.appendChild(el('h2',null,esc(p.ref||p.tema||'Registro'))); top.appendChild(title);
+  top.appendChild(el('button',{class:'btn gho sm',onclick:()=>modal.remove(),'aria-label':'Fechar detalhes'},'Fechar'));
+  box.appendChild(top);
+  if(p.tema&&p.tema!==p.ref)box.appendChild(el('h3',null,esc(p.tema)));
+  const meta=[
+    ['Tribunal',p.trib],['Processo',p.processo],['Informativo',p.informativo],['Julgamento',jurisDate(p.published_at)],
+    ['Publicação',jurisDate(p.data_publicacao)],['Ramo',p.ramo],['Matéria',p.materia],['Relator(a)',p.relator],
+    ['Redator(a)',p.redator],['Órgão julgador',p.orgao],['Repercussão geral',p.repercussao],['Tema RG',p.tema_rg],['UF',p.uf]
+  ].filter(([,value])=>value&&value!=='—');
+  if(meta.length){const grid=el('div',{class:'grid g3 juris-meta'});meta.forEach(([label,value])=>grid.appendChild(el('div',null,`<small>${esc(label)}</small><br><b>${esc(value)}</b>`)));box.appendChild(grid);}
+  box.appendChild(el('div',{class:'hr'}));
+  box.appendChild(el('h3',null,'Tese, resumo ou ementa'));
+  box.appendChild(el('p',{class:'juris-full'},esc(p.tese||'Síntese não disponível.')));
+  if(p.decisao){box.appendChild(el('h3',null,'Decisão'));box.appendChild(el('p',{class:'juris-full'},esc(p.decisao)));}
+  if(p.legislacao){box.appendChild(el('h3',null,'Legislação citada'));box.appendChild(el('p',{class:'juris-full'},esc(p.legislacao)));}
+  if(p.ods){box.appendChild(el('p',{class:'note'},`<b>ODS ONU 2030:</b> ${esc(p.ods)}`));}
+  if(p.observacao){box.appendChild(el('p',{class:'note'},`<b>Observação:</b> ${esc(p.observacao)}`));}
+  const actions=el('div',{class:'row'});
+  const progress=el('button',{class:'btn '+((registro||{}).lido?'':'gho')+' sm',onclick:()=>{
+    let item=S.juris.find(entry=>entry.id===key||(!entry.id&&entry.ref===p.ref));
+    if(!item){item={id:key,ref:p.ref,lido:false};S.juris.push(item);}
+    item.id=key;item.lido=!item.lido;salvar();modal.remove();if(onProgress)onProgress();
+  }},(registro||{}).lido?'Lido':'Marcar lido');
+  actions.appendChild(progress);
+  const source=safeUrl(p.url);if(source)actions.appendChild(el('a',{class:'btn sec sm',href:source,target:'_blank',rel:'noopener'},'Abrir fonte oficial'));
+  box.appendChild(actions);modal.appendChild(box);modal.addEventListener('click',event=>{if(event.target===modal)modal.remove();});document.body.appendChild(modal);
+}
 function vJuris(m){
   const c=el('div',{class:'card'});
   c.appendChild(el('h2',null,'Jurisprudência atualizada'));
-  c.appendChild(el('p',null,'<small>Publicações recentes coletadas de fontes oficiais, preservadas como um pacote versionado e verificável. A síntese auxilia a triagem; a fonte oficial continua sendo a referência jurídica.</small>'));
+  c.appendChild(el('p',null,'<small>Acervo histórico e publicações recentes coletados de fontes oficiais, preservados como um pacote versionado e verificável. A síntese auxilia a triagem; a fonte oficial continua sendo a referência jurídica.</small>'));
   const atualizacao=JURIS_META.last_success_at||JURIS_META.generated_at;
   const statusAtualizado=String(JURIS_META.status||'').startsWith('ATUALIZADO');
   const statusBom=JURIS_META.status==='ATUALIZADO';
@@ -994,7 +1049,8 @@ function vJuris(m){
   banner.appendChild(status); c.appendChild(banner);
   if(Array.isArray(JURIS_META.sources)&&JURIS_META.sources.length){
     const fontes=el('div',{class:'row'});
-    JURIS_META.sources.forEach(source=>fontes.appendChild(el('span',{class:'tag '+(source.status==='SUCESSO'?'ok':'warn'),title:source.message||''},`${esc(source.court||'')} · ${source.status==='SUCESSO'?'coleta válida':'indisponível'}`)));
+    JURIS_META.sources.forEach(source=>fontes.appendChild(el('span',{class:'tag '+(source.status==='SUCESSO'?'ok':'warn'),title:source.message||''},`${esc(source.name||source.court||'Fonte')} · ${source.status==='SUCESSO'?'coleta válida':'indisponível'}${source.detected!=null?' · '+nf(source.detected):''}`)));
+    Object.values(JURIS_META.datasets||{}).filter(dataset=>dataset.automatic===false).forEach(dataset=>fontes.appendChild(el('span',{class:'tag',title:'Exportação incorporada ao pacote; atualize-a com uma nova exportação oficial quando necessário.'},`${esc(dataset.label||dataset.name||'Base importada')} · snapshot${dataset.snapshot_date?' de '+esc(new Date(dataset.snapshot_date+'T12:00:00').toLocaleDateString('pt-BR')):''} · ${nf((dataset.stats||{}).records||0)}`)));
     c.appendChild(fontes);
   }
   const r=el('div',{class:'row'});
@@ -1003,31 +1059,41 @@ function vJuris(m){
   m.appendChild(c);
 
   const c1=el('div',{class:'card pad0'});
-  const hd=el('div'); hd.style.padding='14px 16px';
-  hd.appendChild(el('h3',null,`Publicações e precedentes (${DADOS.precedentes.length})`));
-  c1.appendChild(hd);
-  const wrap=el('div'); wrap.style.maxHeight='58vh'; wrap.style.overflow='auto';
-  const tb=el('table'); tb.innerHTML='<thead><tr><th>Tribunal</th><th>Precedente</th><th>Tese</th><th>Grupo</th><th></th></tr></thead>';
-  const tbody=el('tbody');
-  DADOS.precedentes.forEach(p=>{
-    const key=jurisKey(p), registro=S.juris.find(j=>j.id===key||(!j.id&&j.ref===p.ref));
-    const lido=(registro||{}).lido;
-    const tr=el('tr');
-    const grupo=['I','II','III','IV'].includes(p.g)?p.g:'';
-    tr.innerHTML=`<td><span class="tag">${esc(p.trib)}</span></td><td><b>${esc(p.ref)}</b><br><small>${esc(p.tema||'')}</small></td><td><small>${esc(p.tese)}</small></td><td>${grupo?`<span class="tag g-${grupo}">${grupo}</span>`:'—'}</td>`;
-    const td=el('td');
-    const b=el('button',{class:'btn '+(lido?'':'gho')+' sm',onclick:()=>{
-      let j=S.juris.find(x=>x.id===key||(!x.id&&x.ref===p.ref)); if(!j){ j={id:key,ref:p.ref,lido:false}; S.juris.push(j); }
-      j.id=key;
-      j.lido=!j.lido; salvar(); render();
-    }},lido?'Lido':'Marcar lido');
-    td.appendChild(b);
-    const fonte=safeUrl(p.url);
-    if(fonte) td.appendChild(el('a',{class:'btn gho sm',href:fonte,target:'_blank',rel:'noopener'},'Fonte'));
-    tr.appendChild(td); tbody.appendChild(tr);
-  });
-  tb.appendChild(tbody); wrap.appendChild(tb); c1.appendChild(wrap);
-  m.appendChild(c1);
+  const hd=el('div',{class:'juris-head'});
+  hd.appendChild(el('h3',null,`Base pesquisável (${nf(DADOS.precedentes.length)} registros)`));
+  const filters=el('div',{class:'grid g3 juris-filters'});
+  const queryBox=el('div');queryBox.appendChild(el('label',{class:'f'},'Busca livre'));const query=el('input',{type:'search',placeholder:'processo, assunto, tese, legislação…'});queryBox.appendChild(query);filters.appendChild(queryBox);
+  function filterSelect(label,values){const box=el('div');box.appendChild(el('label',{class:'f'},label));const select=el('select');select.appendChild(el('option',{value:''},'Todos'));values.forEach(value=>select.appendChild(el('option',{value},esc(value))));box.appendChild(select);filters.appendChild(box);return select;}
+  const types=[...new Set(DADOS.precedentes.map(item=>item.record_type).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const courts=[...new Set(DADOS.precedentes.map(item=>item.trib).filter(Boolean))].sort();
+  const branches=[...new Set(DADOS.precedentes.flatMap(item=>String(item.ramo||'').split(';').map(value=>value.trim()).filter(Boolean)))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const years=[...new Set(DADOS.precedentes.map(item=>String(item.published_at||'').slice(0,4)).filter(value=>/^\d{4}$/.test(value)))].sort().reverse();
+  const type=filterSelect('Tipo de registro',types),court=filterSelect('Tribunal',courts),branch=filterSelect('Ramo do Direito',branches),year=filterSelect('Ano do julgamento',years),group=filterSelect('Grupo DPE/RN',['I','II','III','IV']);
+  hd.appendChild(filters);
+  const summary=el('div',{class:'row juris-results'});const resultText=el('small');summary.appendChild(resultText);summary.appendChild(el('button',{class:'btn gho sm',onclick:()=>{query.value='';[type,court,branch,year,group].forEach(select=>select.value='');page=1;apply();}},'Limpar filtros'));hd.appendChild(summary);c1.appendChild(hd);
+  const wrap=el('div',{class:'juris-table-wrap'});
+  const tb=el('table');tb.innerHTML='<thead><tr><th>Origem</th><th>Referência</th><th>Síntese</th><th>Grupo</th><th></th></tr></thead>';const tbody=el('tbody');tb.appendChild(tbody);wrap.appendChild(tb);c1.appendChild(wrap);
+  const pager=el('div',{class:'row juris-pager'});const previous=el('button',{class:'btn gho sm'},'Anterior'),pageText=el('small'),next=el('button',{class:'btn gho sm'},'Próxima');pager.appendChild(previous);pager.appendChild(pageText);pager.appendChild(next);c1.appendChild(pager);
+  const pageSize=30;let page=1,matches=[];
+  function renderRows(){
+    const pages=Math.max(1,Math.ceil(matches.length/pageSize));page=clamp(page,1,pages);tbody.innerHTML='';
+    matches.slice((page-1)*pageSize,page*pageSize).forEach(p=>{
+      const key=jurisKey(p),registro=S.juris.find(item=>item.id===key||(!item.id&&item.ref===p.ref)),lido=(registro||{}).lido,grupo=['I','II','III','IV'].includes(p.g)?p.g:'';
+      const tr=el('tr');
+      tr.innerHTML=`<td><span class="tag">${esc(p.trib)}</span><br><small>${esc(p.record_type||'')}</small></td><td><b>${esc(p.ref)}</b><br><small>${esc([p.ramo,p.materia,jurisDate(p.published_at)].filter(Boolean).join(' · '))}</small></td><td><small>${esc(String(p.tese||'').slice(0,520))}${String(p.tese||'').length>520?'…':''}</small></td><td>${grupo?`<span class="tag g-${grupo}">${grupo}</span>`:'—'}</td>`;
+      const actions=el('td');actions.appendChild(el('button',{class:'btn sec sm',onclick:()=>openJurisDetail(p,renderRows)},'Detalhes'));actions.appendChild(el('button',{class:'btn '+(lido?'':'gho')+' sm',onclick:()=>{let item=S.juris.find(entry=>entry.id===key||(!entry.id&&entry.ref===p.ref));if(!item){item={id:key,ref:p.ref,lido:false};S.juris.push(item);}item.id=key;item.lido=!item.lido;salvar();renderRows();}},lido?'Lido':'Marcar lido'));tr.appendChild(actions);tbody.appendChild(tr);
+    });
+    if(!matches.length)tbody.appendChild(el('tr',null,'<td colspan="5"><div class="empty"><b>Nenhum registro encontrado</b>Revise os filtros ou tente outros termos.</div></td>'));
+    resultText.textContent=`${nf(matches.length)} resultado(s) · página ${page} de ${pages}`;pageText.textContent=`Página ${page} de ${pages}`;previous.disabled=page<=1;next.disabled=page>=pages;
+  }
+  function apply(){
+    const terms=jurisSearchText(query.value).split(/\s+/).filter(Boolean);
+    matches=DADOS.precedentes.filter(p=>{
+      if(type.value&&p.record_type!==type.value)return false;if(court.value&&p.trib!==court.value)return false;if(branch.value&&!String(p.ramo||'').split(';').map(value=>value.trim()).includes(branch.value))return false;if(year.value&&!String(p.published_at||'').startsWith(year.value))return false;if(group.value&&p.g!==group.value)return false;
+      if(!terms.length)return true;const hay=jurisSearchText([p.ref,p.tema,p.tese,p.processo,p.ramo,p.materia,p.relator,p.legislacao,p.ods].filter(Boolean).join(' '));return terms.every(term=>hay.includes(term));
+    });renderRows();
+  }
+  let queryTimer=null;query.addEventListener('input',()=>{clearTimeout(queryTimer);queryTimer=setTimeout(()=>{page=1;apply();},120);});[type,court,branch,year,group].forEach(select=>select.addEventListener('change',()=>{page=1;apply();}));previous.onclick=()=>{page--;renderRows();};next.onclick=()=>{page++;renderRows();};apply();m.appendChild(c1);
 
   const c2=el('div',{class:'card'});
   c2.appendChild(el('h2',null,'Registrar informativo'));
