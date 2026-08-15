@@ -13,7 +13,7 @@ A pasta `pwa/` contém:
 - práticas, simulados de grupo e simulado completo;
 - diagnóstico e cronograma adaptativo, com redistribuição de pesos quando um tipo de conteúdo não está disponível;
 - revisão espaçada, discursivas e mapa de leitura legislativa;
-- jurisprudência versionada, alimentada automaticamente por páginas e feeds oficiais do STF e do STJ;
+- jurisprudência versionada, com base histórica estruturada do STF e atualização automática por fontes oficiais do STF e do STJ;
 - dados pessoais apenas em IndexedDB;
 - backups JSON versionados, com SHA-256 e cópia preventiva antes de restaurações ou reinicialização;
 - cache offline por service worker e nenhum CDN ou serviço externo em tempo de estudo.
@@ -57,10 +57,24 @@ python pwa/build.py
 Fontes configuradas:
 
 - Informativo de Jurisprudência do STJ;
-- Informativo STF no portal oficial;
+- planilha oficial de dados estruturados do Informativo STF, com acervo desde a edição nº 1;
 - Jurisprudência em Teses do STJ.
 
 O coletor não inventa teses com IA. Ele usa título, síntese e metadados presentes nas fontes institucionais, registra a saúde de cada origem e conserva a última versão válida em `pwa/content/jurisprudence.json`.
+
+### Importar exportações da Pesquisa de Jurisprudência do STF
+
+A base embutida também aceita as exportações CSV da página de pesquisa do STF. A planilha histórica é a fonte canônica; o CSV de informativos enriquece os registros com links diretos, e o CSV de acórdãos é mantido como coleção separada para não confundir acórdão com notícia de informativo.
+
+```bash
+python pwa/import_stf_exports.py \
+  --xlsx Dados_InformativosSTF.xlsx \
+  --informativos-csv export_informativos.csv \
+  --acordaos-csv export_acordaos.csv
+python pwa/build.py
+```
+
+O acervo estruturado de informativos é renovado automaticamente pelo workflow. A coleção de acórdãos representa a data indicada na exportação e pode ser substituída por uma nova exportação usando o mesmo comando. A tela de jurisprudência pesquisa e pagina os registros localmente, inclusive quando o app está offline.
 
 ## Banco de questões
 

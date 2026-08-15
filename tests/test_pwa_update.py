@@ -44,6 +44,8 @@ class StaticJurisprudenceUpdaterTestCase(unittest.TestCase):
             target.write_text(original, encoding="utf-8")
             with mock.patch.object(updater, "CONTENT_PATH", target), mock.patch.object(
                 updater, "collect", side_effect=OSError("fonte indisponível")
+            ), mock.patch.object(
+                updater, "collect_stf_dataset", side_effect=OSError("fonte indisponível")
             ):
                 with self.assertRaises(RuntimeError):
                     updater.update(timeout=5, enrich_limit=0)
@@ -74,6 +76,8 @@ class StaticJurisprudenceUpdaterTestCase(unittest.TestCase):
 
             with mock.patch.object(updater, "CONTENT_PATH", target), mock.patch.object(
                 updater, "collect", side_effect=collect
+            ), mock.patch.object(
+                updater, "collect_stf_dataset", side_effect=OSError("fonte indisponível")
             ):
                 result = updater.update(timeout=5, enrich_limit=0)
 

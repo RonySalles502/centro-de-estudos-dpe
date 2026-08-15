@@ -31,15 +31,22 @@ sys.path.insert(0, str(REPO_ROOT))
 from server.jurisprudence import (  # noqa: E402
     USER_AGENT,
     parse_official_detail,
-    parse_stf_latest,
     parse_stj_feed,
+)
+from server.stf_exports import (  # noqa: E402
+    STF_DATA_URL,
+    canonical_dataset_hash,
+    classify_dpe_group,
+    dataset_record_count,
+    dataset_url_map,
+    parse_stf_informativos_xlsx,
 )
 from pwa.build import load_json, seed_jurisprudence  # noqa: E402
 
 
 CONTENT_PATH = PWA_ROOT / "content" / "jurisprudence.json"
 EXTRAS_PATH = PWA_ROOT / "src" / "extras.json"
-MAX_RESPONSE_BYTES = 5_000_000
+MAX_RESPONSE_BYTES = 20_000_000
 
 SOURCES = (
     {
@@ -50,11 +57,11 @@ SOURCES = (
         "url": "https://processo.stj.jus.br/jurisprudencia/externo/InformativoFeed",
     },
     {
-        "id": "stf-informativo",
+        "id": "stf-dados-informativos",
         "court": "STF",
-        "name": "Informativo STF",
-        "kind": "HTML_LATEST",
-        "url": "https://portal.stf.jus.br/textos/verTexto.asp?p=&servico=informativoSTF",
+        "name": "Dados estruturados do Informativo STF",
+        "kind": "XLSX",
+        "url": STF_DATA_URL,
     },
     {
         "id": "stj-teses",
@@ -84,13 +91,15 @@ SSL_CONTEXT = trusted_ssl_context()
 
 
 def fetch(url: str, timeout: int) -> bytes:
+    hostname = (urllib.parse.urlparse(url).hostname or "").lower()
+    referer = "https://portal.stf.jus.br/" if hostname.endswith("stf.jus.br") else "https://www.stj.jus.br/"
     request = urllib.request.Request(
         url,
         headers={
             "User-Agent": USER_AGENT,
-            "Accept": "application/atom+xml, application/xml, text/html;q=0.9, */*;q=0.5",
+            "Accept": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/atom+xml, application/xml, text/html;q=0.9, */*;q=0.5",
             "Accept-Language": "pt-BR,pt;q=0.9",
-            "Referer": "https://www.stj.jus.br/",
+            "Referer": referer,
         },
     )
     try:
@@ -118,11 +127,11 @@ def fetch(url: str, timeout: int) -> bytes:
                 "--user-agent",
                 USER_AGENT,
                 "--header",
-                "Accept: application/atom+xml, application/xml, text/html;q=0.9, */*;q=0.5",
+                "Accept: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/atom+xml, application/xml, text/html;q=0.9, */*;q=0.5",
                 "--header",
                 "Accept-Language: pt-BR,pt;q=0.9",
                 "--referer",
-                "https://www.stf.jus.br/",
+                referer,
                 url,
             ],
             capture_output=True,
@@ -149,16 +158,7 @@ def fetch_detail(url: str, court: str, timeout: int) -> str:
 
 
 def classify_group(text: str) -> str | None:
-    normalized = text.casefold()
-    dictionaries = {
-        "I": ("constitucional", "administrativ", "defensoria pública", "concurso público", "servidor público"),
-        "II": ("penal", "crime", "prisão", "processo penal", "execução penal", "habeas corpus", "tráfico"),
-        "III": ("civil", "processo civil", "consumidor", "família", "sucess", "contrato", "responsabilidade civil"),
-        "IV": ("direitos humanos", "criança", "adolescente", "ambiental", "coletiv", "indígen", "ação civil pública"),
-    }
-    scores = {group: sum(term in normalized for term in terms) for group, terms in dictionaries.items()}
-    best = max(scores, key=scores.get)
-    return best if scores[best] else None
+    return classify_dpe_group(text)
 
 
 def normalise_published(value: Any) -> str | None:
@@ -176,10 +176,6 @@ def normalise(source: dict[str, str], item: dict[str, Any], timeout: int, enrich
     title = str(item.get("title") or source["name"]).strip()
     summary = str(item.get("summary") or "").strip()
     source_url = str(item.get("source_url") or source["url"]).strip()
-    if source["id"] == "stf-informativo":
-        # O portal moderno é a página canônica; o parser legado também devolve
-        # um endereço histórico cujo certificado não é confiável em todo runtime.
-        source_url = source["url"]
     if enrich and len(summary) < 80 and source_url:
         summary = fetch_detail(source_url, source["court"], timeout) or summary
     if not summary:
@@ -218,7 +214,7 @@ def collect(source: dict[str, str], timeout: int, enrich_limit: int) -> list[dic
             repaired = re.sub(r"&(?!amp;|lt;|gt;|quot;|apos;|#\d+;|#x[0-9a-fA-F]+;)", "&amp;", decoded)
             parsed = parse_stj_feed(repaired.encode("utf-8"), source["url"])
     else:
-        parsed = parse_stf_latest(payload, source["url"])
+        raise ValueError(f"tipo de fonte não suportado como lista: {source['kind']}")
     if not parsed:
         raise ValueError("nenhuma publicação foi identificada")
     return [
@@ -227,9 +223,27 @@ def collect(source: dict[str, str], timeout: int, enrich_limit: int) -> list[dic
     ]
 
 
-def canonical_hash(items: list[dict[str, Any]]) -> str:
-    payload = json.dumps(items, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
-    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+def collect_stf_dataset(
+    source: dict[str, str],
+    timeout: int,
+    previous_dataset: dict[str, Any] | None,
+) -> dict[str, Any]:
+    return parse_stf_informativos_xlsx(
+        fetch(source["url"], timeout),
+        existing_urls=dataset_url_map(previous_dataset),
+    )
+
+
+def _source_signature(sources: list[dict[str, Any]]) -> list[tuple[Any, ...]]:
+    return [
+        (
+            source.get("id"),
+            source.get("status"),
+            source.get("detected"),
+            source.get("message"),
+        )
+        for source in sources
+    ]
 
 
 def update(timeout: int, enrich_limit: int) -> dict[str, Any]:
@@ -239,18 +253,25 @@ def update(timeout: int, enrich_limit: int) -> dict[str, Any]:
         else seed_jurisprudence(load_json(EXTRAS_PATH))
     )
     by_id = {item["id"]: item for item in previous.get("items", []) if item.get("id")}
+    datasets = dict(previous.get("datasets", {}))
     results: list[dict[str, Any]] = []
     succeeded = 0
     now = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
     for source in SOURCES:
         try:
-            items = collect(source, timeout, enrich_limit)
-            for item in items:
-                by_id[item["id"]] = item
+            if source["kind"] == "XLSX":
+                dataset = collect_stf_dataset(source, timeout, datasets.get(source["id"]))
+                datasets[source["id"]] = dataset
+                detected = len(dataset["rows"])
+            else:
+                items = collect(source, timeout, enrich_limit)
+                for item in items:
+                    by_id[item["id"]] = item
+                detected = len(items)
             succeeded += 1
             results.append(
-                {"id": source["id"], "name": source["name"], "court": source["court"], "url": source["url"], "status": "SUCESSO", "detected": len(items), "checked_at": now}
+                {"id": source["id"], "name": source["name"], "court": source["court"], "url": source["url"], "status": "SUCESSO", "detected": detected, "checked_at": now}
             )
         except Exception as error:
             results.append(
@@ -261,23 +282,41 @@ def update(timeout: int, enrich_limit: int) -> dict[str, Any]:
         details = "; ".join(f"{item['id']}: {item.get('message')}" for item in results)
         raise RuntimeError(f"todas as fontes oficiais falharam; a base anterior foi preservada. {details}")
 
+    if "stf-dados-informativos" in datasets:
+        by_id = {
+            identifier: item
+            for identifier, item in by_id.items()
+            if item.get("source_id") != "stf-informativo"
+        }
     references = [item for item in by_id.values() if item.get("kind") == "REFERENCIA_EDITORIAL"]
     automatic = [item for item in by_id.values() if item.get("kind") == "PUBLICACAO_OFICIAL"]
     automatic.sort(key=lambda item: str(item.get("published_at") or ""), reverse=True)
     items = automatic + references
-    digest = canonical_hash(items)
+    digest = canonical_dataset_hash(items, datasets)
+    status = "ATUALIZADO" if succeeded == len(SOURCES) else "ATUALIZADO_PARCIAL"
+    previous_digest = canonical_dataset_hash(previous.get("items", []), previous.get("datasets", {}))
+    if (
+        digest == previous_digest
+        and status == previous.get("status")
+        and _source_signature(results) == _source_signature(previous.get("sources", []))
+    ):
+        return previous
     document = {
-        "schema_version": 1,
+        "schema_version": 2,
         "version": f"{now[:10].replace('-', '.')}-{digest[:12]}",
         "generated_at": now,
         "last_success_at": now,
-        "status": "ATUALIZADO" if succeeded == len(SOURCES) else "ATUALIZADO_PARCIAL",
+        "status": status,
         "sources": results,
         "items": items,
+        "datasets": datasets,
     }
     CONTENT_PATH.parent.mkdir(parents=True, exist_ok=True)
     temporary = CONTENT_PATH.with_suffix(".json.tmp")
-    temporary.write_text(json.dumps(document, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    temporary.write_text(
+        json.dumps(document, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n",
+        encoding="utf-8",
+    )
     temporary.replace(CONTENT_PATH)
     return document
 
@@ -289,7 +328,8 @@ def main() -> None:
     args = parser.parse_args()
     document = update(max(5, args.timeout), max(0, args.enrich_limit))
     successes = sum(source["status"] == "SUCESSO" for source in document["sources"])
-    print(f"Jurisprudência {document['version']}: {len(document['items'])} itens; {successes}/{len(SOURCES)} fontes válidas.")
+    total = len(document["items"]) + dataset_record_count(document.get("datasets"))
+    print(f"Jurisprudência {document['version']}: {total} itens; {successes}/{len(SOURCES)} fontes válidas.")
 
 
 if __name__ == "__main__":

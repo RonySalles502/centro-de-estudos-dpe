@@ -18,7 +18,7 @@ SRC = ROOT / "src"
 CONTENT = ROOT / "content"
 DIST = ROOT / "dist"
 
-APP_VERSION = "0.8.0"
+APP_VERSION = "0.9.0"
 STATE_SCHEMA_VERSION = 8
 CONTENT_SCHEMA_VERSION = 2
 QUESTION_BANK_VERSION = "2026.08-inicial-2"
@@ -186,9 +186,33 @@ def build() -> dict[str, Any]:
             errors.append(f"mapa legislativo aponta tópico inexistente: {topic_id}")
     if not jurisprudence.get("items"):
         errors.append("pacote de jurisprudência vazio")
+    jurisprudence_ids: set[str] = set()
     for item in jurisprudence.get("items", []):
+        identifier = str(item.get("id") or "")
+        if not identifier or identifier in jurisprudence_ids:
+            errors.append(f"jurisprudência com ID ausente ou duplicado: {identifier}")
+        jurisprudence_ids.add(identifier)
         if item.get("url") and not is_http_url(item["url"]):
             errors.append(f"jurisprudência {item.get('id')}: URL inválida")
+    dataset_count = 0
+    for dataset_id, dataset in jurisprudence.get("datasets", {}).items():
+        columns = dataset.get("columns", [])
+        rows = dataset.get("rows", [])
+        if not columns or "id" not in columns or "url" not in columns:
+            errors.append(f"base {dataset_id}: colunas id/url ausentes")
+            continue
+        id_index, url_index = columns.index("id"), columns.index("url")
+        for position, row in enumerate(rows):
+            if len(row) != len(columns):
+                errors.append(f"base {dataset_id}: linha {position + 1} incompatível com o esquema")
+                continue
+            identifier = str(row[id_index] or "")
+            if not identifier or identifier in jurisprudence_ids:
+                errors.append(f"base {dataset_id}: ID ausente ou duplicado {identifier}")
+            jurisprudence_ids.add(identifier)
+            if row[url_index] and not is_http_url(str(row[url_index])):
+                errors.append(f"base {dataset_id}: URL inválida em {identifier}")
+        dataset_count += len(rows)
 
     if errors:
         print("FALHAS DE INTEGRIDADE:", file=sys.stderr)
@@ -235,7 +259,7 @@ def build() -> dict[str, Any]:
             "topics": len(program),
             "questions": len(questions),
             "questionTopicsCovered": len(covered_topics),
-            "jurisprudenceItems": len(jurisprudence["items"]),
+            "jurisprudenceItems": len(jurisprudence["items"]) + dataset_count,
             "discursivePrompts": len(extras["temas_discursivos"]),
             "questionsByGroup": by_group,
         },
@@ -259,7 +283,8 @@ def build() -> dict[str, Any]:
 
     print(
         f"OK  PWA {APP_VERSION}: {len(program)} tópicos, {len(questions)} questões, "
-        f"{len(covered_topics)} tópicos cobertos, {len(jurisprudence['items'])} itens de jurisprudência"
+        f"{len(covered_topics)} tópicos cobertos, "
+        f"{len(jurisprudence['items']) + dataset_count} itens de jurisprudência"
     )
     print(f"    questões por grupo: {by_group}")
     print(f"    saída: {DIST}")
