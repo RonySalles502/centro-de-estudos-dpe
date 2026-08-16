@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import http.cookiejar
 import json
 import pathlib
 import re
@@ -16,6 +17,7 @@ import shutil
 import ssl
 import subprocess
 import sys
+import tempfile
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -49,6 +51,11 @@ EXTRAS_PATH = PWA_ROOT / "src" / "extras.json"
 MAX_RESPONSE_BYTES = 20_000_000
 STF_INTERMEDIATE_CA_PATH = PWA_ROOT / "certs" / "globalsign-gcc-r6-alphassl-ca-2025.pem"
 STF_INTERMEDIATE_CA_SHA256 = "a883559231f8388daf35ce41c8101040ae8fd9b656434247b9475af592cc08ca"
+STF_SESSION_URL = "https://portal.stf.jus.br/textos/verTexto.asp?servico=informativoSTF"
+STF_BROWSER_USER_AGENT = (
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+)
 
 SOURCES = (
     {
@@ -112,30 +119,77 @@ def trusted_ssl_context() -> ssl.SSLContext:
 SSL_CONTEXT = trusted_ssl_context()
 
 
+def _read_response(response: Any) -> bytes:
+    payload = response.read(MAX_RESPONSE_BYTES + 1)
+    if len(payload) > MAX_RESPONSE_BYTES:
+        raise ValueError("A fonte oficial excedeu o limite de tamanho permitido.")
+    if not payload:
+        raise ValueError("A fonte oficial respondeu sem conteúdo.")
+    return payload
+
+
+def _request_headers(hostname: str, *, navigation: bool = False) -> dict[str, str]:
+    is_stf = hostname.endswith("stf.jus.br")
+    headers = {
+        "User-Agent": STF_BROWSER_USER_AGENT if is_stf else USER_AGENT,
+        "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.7",
+        "Cache-Control": "no-cache",
+    }
+    if is_stf:
+        headers.update(
+            {
+                "Accept": (
+                    "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,"
+                    "image/webp,*/*;q=0.8"
+                    if navigation
+                    else "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/octet-stream;q=0.9,*/*;q=0.5"
+                ),
+                "Referer": STF_SESSION_URL,
+                "Sec-Fetch-Dest": "document",
+                "Sec-Fetch-Mode": "navigate",
+                "Sec-Fetch-Site": "same-site",
+                "Upgrade-Insecure-Requests": "1",
+            }
+        )
+    else:
+        headers.update(
+            {
+                "Accept": "application/atom+xml, application/xml, text/html;q=0.9, */*;q=0.5",
+                "Referer": "https://www.stj.jus.br/",
+            }
+        )
+    return headers
+
+
+def fetch_with_urllib(url: str, timeout: int) -> bytes:
+    hostname = (urllib.parse.urlparse(url).hostname or "").lower()
+    request = urllib.request.Request(url, headers=_request_headers(hostname))
+    if hostname.endswith("stf.jus.br"):
+        cookie_jar = http.cookiejar.CookieJar()
+        opener = urllib.request.build_opener(
+            urllib.request.HTTPSHandler(context=SSL_CONTEXT),
+            urllib.request.HTTPCookieProcessor(cookie_jar),
+        )
+        landing = urllib.request.Request(
+            STF_SESSION_URL,
+            headers=_request_headers("portal.stf.jus.br", navigation=True),
+        )
+        with opener.open(landing, timeout=timeout) as response:
+            response.read(1_000_001)
+        with opener.open(request, timeout=timeout) as response:
+            return _read_response(response)
+    with urllib.request.urlopen(request, timeout=timeout, context=SSL_CONTEXT) as response:
+        return _read_response(response)
+
+
 def fetch(url: str, timeout: int) -> bytes:
     parsed = urllib.parse.urlparse(url)
     if parsed.scheme != "https":
         raise ValueError("A coleta automática aceita somente fontes HTTPS.")
     hostname = (parsed.hostname or "").lower()
-    referer = "https://portal.stf.jus.br/" if hostname.endswith("stf.jus.br") else "https://www.stj.jus.br/"
-    request = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": USER_AGENT,
-            "Accept": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/atom+xml, application/xml, text/html;q=0.9, */*;q=0.5",
-            "Accept-Language": "pt-BR,pt;q=0.9",
-            "Referer": referer,
-        },
-    )
     primary_error: Exception | None = None
     try:
-        with urllib.request.urlopen(request, timeout=timeout, context=SSL_CONTEXT) as response:
-            payload = response.read(MAX_RESPONSE_BYTES + 1)
-            if len(payload) > MAX_RESPONSE_BYTES:
-                raise ValueError("A fonte oficial excedeu o limite de tamanho permitido.")
-            if not payload:
-                raise ValueError("A fonte oficial respondeu sem conteúdo.")
-            return payload
+        return fetch_with_urllib(url, timeout)
     except (OSError, ValueError) as error:
         primary_error = error
 
@@ -146,42 +200,89 @@ def fetch(url: str, timeout: int) -> bytes:
     curl = shutil.which("curl.exe") or shutil.which("curl")
     if not curl:
         raise primary_error
-    curl_ca = ["--cacert", str(STF_INTERMEDIATE_CA)] if hostname.endswith("stf.jus.br") else []
-    completed = subprocess.run(
-        [
-            curl,
-            "--fail",
-            "--silent",
-            "--show-error",
-            "--location",
-            "--proto",
-            "=https",
-            "--proto-redir",
-            "=https",
-            "--retry",
-            "2",
-            "--retry-all-errors",
-            "--retry-delay",
-            "1",
-            "--max-time",
-            str(timeout),
-            "--max-filesize",
-            str(MAX_RESPONSE_BYTES),
-            "--user-agent",
-            USER_AGENT,
-            "--header",
-            "Accept: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/atom+xml, application/xml, text/html;q=0.9, */*;q=0.5",
-            "--header",
-            "Accept-Language: pt-BR,pt;q=0.9",
-            "--referer",
-            referer,
-            *curl_ca,
-            url,
-        ],
-        capture_output=True,
-        check=False,
-        timeout=timeout + 5,
-    )
+    is_stf = hostname.endswith("stf.jus.br")
+    curl_ca = ["--cacert", str(STF_INTERMEDIATE_CA)] if is_stf else []
+    headers = _request_headers(hostname)
+
+    def run_download(cookie_arguments: list[str]) -> subprocess.CompletedProcess[bytes]:
+        return subprocess.run(
+            [
+                curl,
+                "--fail",
+                "--silent",
+                "--show-error",
+                "--location",
+                "--proto",
+                "=https",
+                "--proto-redir",
+                "=https",
+                "--retry",
+                "2",
+                "--retry-all-errors",
+                "--retry-delay",
+                "1",
+                "--max-time",
+                str(timeout),
+                "--max-filesize",
+                str(MAX_RESPONSE_BYTES),
+                "--user-agent",
+                headers["User-Agent"],
+                "--header",
+                f"Accept: {headers['Accept']}",
+                "--header",
+                f"Accept-Language: {headers['Accept-Language']}",
+                "--header",
+                f"Cache-Control: {headers['Cache-Control']}",
+                "--referer",
+                headers["Referer"],
+                *cookie_arguments,
+                *curl_ca,
+                url,
+            ],
+            capture_output=True,
+            check=False,
+            timeout=timeout + 5,
+        )
+
+    if is_stf:
+        with tempfile.TemporaryDirectory(prefix="dpern-stf-session-") as temporary:
+            cookie_path = pathlib.Path(temporary) / "cookies.txt"
+            cookie_path.touch()
+            navigation_headers = _request_headers("portal.stf.jus.br", navigation=True)
+            subprocess.run(
+                [
+                    curl,
+                    "--fail",
+                    "--silent",
+                    "--show-error",
+                    "--location",
+                    "--proto",
+                    "=https",
+                    "--proto-redir",
+                    "=https",
+                    "--max-time",
+                    str(timeout),
+                    "--user-agent",
+                    navigation_headers["User-Agent"],
+                    "--header",
+                    f"Accept: {navigation_headers['Accept']}",
+                    "--header",
+                    f"Accept-Language: {navigation_headers['Accept-Language']}",
+                    "--cookie-jar",
+                    str(cookie_path),
+                    *curl_ca,
+                    STF_SESSION_URL,
+                ],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.PIPE,
+                check=False,
+                timeout=timeout + 5,
+            )
+            completed = run_download(
+                ["--cookie", str(cookie_path), "--cookie-jar", str(cookie_path)]
+            )
+    else:
+        completed = run_download([])
     if completed.returncode or not completed.stdout or len(completed.stdout) > MAX_RESPONSE_BYTES:
         detail = completed.stderr.decode("utf-8", errors="replace").strip()[:300]
         raise RuntimeError(

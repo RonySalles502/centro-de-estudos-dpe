@@ -141,20 +141,52 @@ class StaticJurisprudenceUpdaterTestCase(unittest.TestCase):
             args=["curl"], returncode=0, stdout=b"PK\x03\x04dados", stderr=b""
         )
         with mock.patch.object(
-            updater.urllib.request, "urlopen", side_effect=http_error
+            updater, "fetch_with_urllib", side_effect=http_error
         ), mock.patch.object(
             updater.shutil, "which", return_value="curl"
         ), mock.patch.object(
-            updater.subprocess, "run", return_value=completed
+            updater.subprocess,
+            "run",
+            side_effect=[
+                subprocess.CompletedProcess(args=["curl"], returncode=0, stdout=b"", stderr=b""),
+                completed,
+            ],
         ) as run:
             payload = updater.fetch("https://www.stf.jus.br/arquivo.xlsx", 5)
 
         self.assertEqual(payload, b"PK\x03\x04dados")
-        command = run.call_args.args[0]
+        self.assertEqual(run.call_count, 2)
+        landing_command = run.call_args_list[0].args[0]
+        command = run.call_args_list[1].args[0]
+        self.assertIn(updater.STF_SESSION_URL, landing_command)
         self.assertIn("--proto-redir", command)
         self.assertIn("--cacert", command)
+        self.assertIn("--cookie", command)
+        self.assertIn("--cookie-jar", command)
         self.assertIn(str(updater.STF_INTERMEDIATE_CA), command)
         self.assertNotIn("--insecure", command)
+
+    def test_stf_urllib_primes_official_session_before_download(self) -> None:
+        landing_response = mock.MagicMock()
+        landing_response.__enter__.return_value.read.return_value = b"<html></html>"
+        download_response = mock.MagicMock()
+        download_response.__enter__.return_value.read.return_value = b"PK\x03\x04dados"
+        opener = mock.MagicMock()
+        opener.open.side_effect = [landing_response, download_response]
+
+        with mock.patch.object(updater.urllib.request, "build_opener", return_value=opener):
+            payload = updater.fetch_with_urllib(
+                "https://www.stf.jus.br/arquivo.xlsx", timeout=5
+            )
+
+        self.assertEqual(payload, b"PK\x03\x04dados")
+        self.assertEqual(opener.open.call_count, 2)
+        landing_request = opener.open.call_args_list[0].args[0]
+        download_request = opener.open.call_args_list[1].args[0]
+        self.assertEqual(landing_request.full_url, updater.STF_SESSION_URL)
+        self.assertEqual(download_request.full_url, "https://www.stf.jus.br/arquivo.xlsx")
+        self.assertIn("Chrome/", download_request.get_header("User-agent"))
+        self.assertEqual(download_request.get_header("Referer"), updater.STF_SESSION_URL)
 
     def test_stf_intermediate_ca_is_pinned_to_the_official_certificate(self) -> None:
         pem = updater.STF_INTERMEDIATE_CA.read_text(encoding="ascii")
