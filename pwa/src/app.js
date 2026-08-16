@@ -266,6 +266,22 @@ function selecionarSimuladoGrupo(grupo,n){
 
 /* ---------------------------------------------------------------- motor de cronograma */
 const TIPOS={LEITURA:'Leitura',QUESTOES:'Questões',JURISPRUDENCIA:'Jurisprudência',REVISAO:'Revisão',DISCURSIVA:'Discursiva',SIMULADO:'Simulado'};
+const FOCOS_PRE_EDITAL={
+  MUITO_ALTA:{rotulo:'Muito alto',ordem:0,classe:'foco-muito-alto'},
+  ALTA:{rotulo:'Alto',ordem:1,classe:'foco-alto'},
+  MEDIA:{rotulo:'Médio',ordem:2,classe:'foco-medio'}
+};
+const BASES_PRE_EDITAL={
+  NUCLEO_RECORRENTE_E_FASE_APLICADA:'núcleo recorrente com incidência discursiva, oral ou prática',
+  RECORRENCIA_INSTITUCIONAL:'núcleo institucional recorrente nos concursos de Defensoria',
+  RECORRENCIA_PROGRAMATICA:'conteúdo recorrente nos programas Cebraspe analisados',
+  COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA:'complemento teórico ou ampliação específica da Resolução nº 344/2025'
+};
+function focoDoTopico(tid){
+  const raw=(((DADOS||{}).priorizacao||{}).topicos||{})[tid]||['ALTA','RECORRENCIA_PROGRAMATICA'];
+  const tier=raw[0], meta=FOCOS_PRE_EDITAL[tier]||FOCOS_PRE_EDITAL.ALTA;
+  return {tier,base:raw[1],rotulo:meta.rotulo,ordem:meta.ordem,classe:meta.classe,explicacao:BASES_PRE_EDITAL[raw[1]]||raw[1]};
+}
 function pesoEscolha(pesos,aloc){
   const ks=Object.keys(pesos).filter(k=>pesos[k]>0); if(!ks.length) return null;
   ks.sort((a,b)=>{ const ra=(aloc[a]||0)/pesos[a], rb=(aloc[b]||0)/pesos[b];
@@ -277,10 +293,11 @@ function scoreTopico(t,tipo){
   const pr={ALTA:0,MEDIA:1,BAIXA:2}[p.pr||'MEDIA'];
   const st={NAO_INICIADO:0,EM_ESTUDO:1,REVISAO:2,CONSOLIDADO:3}[p.st||'NAO_INICIADO'];
   const dm=p.dm||0;
+  const pe=focoDoTopico(t.id).ordem;
   // "nunca testado" NÃO equivale a "sempre errado": vale como neutro (0.5)
   const acc = (p.fz>0) ? (p.ac/p.fz) : 0.5;
-  if(tipo==='QUESTOES') return [pr,acc,dm,st,t.it];
-  return [pr,st,dm,acc,t.it];
+  if(tipo==='QUESTOES') return [pr,acc,pe,dm,st,t.it];
+  return [pr,st,dm,pe,acc,t.it];
 }
 function cmpArr(a,b){ for(let i=0;i<a.length;i++){ if(a[i]!==b[i]) return a[i]<b[i]?-1:1; } return 0; }
 function leiDoTopico(tid){
@@ -360,11 +377,14 @@ function gerarCiclo(){
         const t=lista[0];
         if(t){ usados[tipo+'|'+t.id]=1; bl.tid=t.id; bl.tit=t.to; bl.disc=t.di; bl.item=t.it;
           const p=S.topicos[t.id]||{};
+          const foco=focoDoTopico(t.id); bl.foco=foco.tier;
           const razoes=[];
           if(p.pr==='ALTA')razoes.push('prioridade alta');
           if((p.st||'NAO_INICIADO')==='NAO_INICIADO')razoes.push('ainda não iniciado');
           if(p.fz>0 && p.ac/p.fz<0.7) razoes.push(`acurácia de ${pct(p.ac,p.fz)}%`);
           if((p.dm||0)<=2 && (p.st||'')!=='NAO_INICIADO') razoes.push(`domínio ${p.dm||0}/5`);
+          if(foco.tier==='MUITO_ALTA') razoes.push('foco pré-edital muito alto');
+          else if(foco.tier==='ALTA') razoes.push('foco pré-edital alto');
           bl.why = razoes.length? ('Selecionado por '+razoes.join(', ')+'.') : 'Sequência programática do Anexo I.';
           bl.lei=leiDoTopico(t.id);
         }
@@ -473,6 +493,7 @@ function blocoCard(b,onChange){
   if(b.grupo) t.appendChild(el('span',{class:'tag g-'+b.grupo},'Grupo '+b.grupo));
   t.appendChild(el('span',{class:'tag'},b.min+' min'));
   if(b.disc) t.appendChild(el('span',{class:'tag'},esc(b.disc)));
+  if(b.foco){const f=FOCOS_PRE_EDITAL[b.foco]||FOCOS_PRE_EDITAL.ALTA; t.appendChild(el('span',{class:'tag '+f.classe},'Foco '+f.rotulo.toLowerCase()));}
   d.appendChild(t);
   d.appendChild(el('div',null,'<b>'+esc(b.tit||'Bloco de estudo')+'</b>'));
   if(b.why) d.appendChild(el('div',{class:'why'},esc(b.why)));
@@ -493,11 +514,11 @@ function blocoCard(b,onChange){
 }
 
 /* ---------------------------------------------------------------- view: programa */
-let fProg={g:'',d:'',st:'',q:''};
+let fProg={g:'',d:'',st:'',f:'',q:''};
 function vPrograma(m){
   const c=el('div',{class:'card'});
   c.appendChild(el('h2',null,'Programa verticalizado — Anexo I da Resolução nº 344/2025'));
-  c.appendChild(el('p',null,`<small>${DADOS.programa.length} tópicos, 12 disciplinas, 4 grupos objetivos de 25 questões cada.</small>`));
+  c.appendChild(el('p',null,`<small>${DADOS.programa.length} tópicos, 12 disciplinas, 4 grupos objetivos de 25 questões cada. O foco pré-edital ordena os tópicos dentro de cada grupo a partir de seis editais Cebraspe; não exclui nenhum item e não substitui sua prioridade pessoal.</small>`));
   const r=el('div',{class:'row'});
   const selG=el('select'); selG.innerHTML='<option value="">Todos os grupos</option>'+['I','II','III','IV'].map(g=>`<option ${fProg.g===g?'selected':''}>${g}</option>`).join('');
   selG.onchange=()=>{fProg.g=selG.value; fProg.d=''; render();};
@@ -506,9 +527,11 @@ function vPrograma(m){
   selD.onchange=()=>{fProg.d=selD.value; render();};
   const selS=el('select'); selS.innerHTML=['','NAO_INICIADO','EM_ESTUDO','REVISAO','CONSOLIDADO'].map(s=>`<option value="${s}" ${fProg.st===s?'selected':''}>${s?s.replace('_',' '):'Todas as situações'}</option>`).join('');
   selS.onchange=()=>{fProg.st=selS.value; render();};
+  const selF=el('select'); selF.innerHTML='<option value="">Todos os focos pré-edital</option>'+Object.entries(FOCOS_PRE_EDITAL).map(([k,v])=>`<option value="${k}" ${fProg.f===k?'selected':''}>Foco ${v.rotulo.toLowerCase()}</option>`).join('');
+  selF.onchange=()=>{fProg.f=selF.value; render();};
   const inp=el('input',{placeholder:'Buscar no texto do tópico...',value:fProg.q});
   inp.oninput=()=>{fProg.q=inp.value; clearTimeout(inp._t); inp._t=setTimeout(render,280);};
-  [selG,selD,selS].forEach(x=>{x.style.maxWidth='210px'; r.appendChild(x);});
+  [selG,selD,selS,selF].forEach(x=>{x.style.maxWidth='210px'; r.appendChild(x);});
   inp.style.maxWidth='280px'; r.appendChild(inp);
   c.appendChild(r); m.appendChild(c);
 
@@ -517,6 +540,7 @@ function vPrograma(m){
     if(fProg.d&&t.dc!==fProg.d) return false;
     const p=S.topicos[t.id]||{};
     if(fProg.st&&(p.st||'NAO_INICIADO')!==fProg.st) return false;
+    if(fProg.f&&focoDoTopico(t.id).tier!==fProg.f) return false;
     if(fProg.q&&t.to.toLowerCase().indexOf(fProg.q.toLowerCase())<0) return false;
     return true;
   });
@@ -526,13 +550,15 @@ function vPrograma(m){
   c2.appendChild(head);
   const wrap=el('div'); wrap.style.maxHeight='68vh'; wrap.style.overflow='auto';
   const tb=el('table');
-  tb.innerHTML='<thead><tr><th>#</th><th>Tópico</th><th>Situação</th><th>Prior.</th><th>Domínio</th><th>Questões</th><th></th></tr></thead>';
+  tb.innerHTML='<thead><tr><th>#</th><th>Tópico</th><th>Foco Cebraspe</th><th>Situação</th><th>Prior. pessoal</th><th>Domínio</th><th>Questões</th><th></th></tr></thead>';
   const tbody=el('tbody');
   lista.slice(0,600).forEach(t=>{
     const p=S.topicos[t.id]||{};
     const tr=el('tr');
     tr.appendChild(el('td',null,`<span class="tag g-${t.g}">${t.g}</span><br><small>${t.it}</small>`));
     tr.appendChild(el('td',null,`<div><b>${esc(t.di)}</b></div><div style="max-width:520px"><small>${esc(t.to.length>190?t.to.slice(0,190)+'…':t.to)}</small></div>`));
+    const foco=focoDoTopico(t.id);
+    tr.appendChild(el('td',null,`<span class="tag ${foco.classe}" title="${esc(foco.explicacao)}">${esc(foco.rotulo)}</span>`));
     const tdS=el('td'); const sS=el('select'); sS.innerHTML=['NAO_INICIADO','EM_ESTUDO','REVISAO','CONSOLIDADO'].map(s=>`<option ${((p.st||'NAO_INICIADO')===s)?'selected':''}>${s.replace('_',' ')}</option>`).join('');
     sS.onchange=()=>{p.st=sS.value.replace(' ','_'); if(p.st!=='NAO_INICIADO')garanteRevisao(t.id); salvar();}; sS.style.minWidth='130px'; tdS.appendChild(sS); tr.appendChild(tdS);
     const tdP=el('td'); const sP=el('select'); sP.innerHTML=['ALTA','MEDIA','BAIXA'].map(s=>`<option ${((p.pr||'MEDIA')===s)?'selected':''}>${s}</option>`).join('');
@@ -553,11 +579,13 @@ function vPrograma(m){
 }
 function abrirTopico(t){
   const p=S.topicos[t.id]||{}; const lei=leiDoTopico(t.id);
+  const foco=focoDoTopico(t.id); const disc=(((DADOS.priorizacao||{}).disciplinas||{})[t.dc]||{});
   const bd=el('div',{class:'modal',onclick:e=>{if(e.target===bd)bd.remove();}});
   const inn=el('div',{class:'in'});
-  inn.appendChild(el('div',{class:'row'},`<span class="tag g-${t.g}">Grupo ${t.g}</span><span class="tag">${esc(t.di)}</span><span class="tag">item ${t.it}</span>`));
+  inn.appendChild(el('div',{class:'row'},`<span class="tag g-${t.g}">Grupo ${t.g}</span><span class="tag">${esc(t.di)}</span><span class="tag">item ${t.it}</span><span class="tag ${foco.classe}">Foco ${esc(foco.rotulo.toLowerCase())}</span>`));
   inn.appendChild(el('h2',null,esc(t.di)+' — '+t.it));
   inn.appendChild(el('p',null,esc(t.to)));
+  inn.appendChild(el('div',{class:'note'},`<b>Leitura pré-edital:</b> ${esc(foco.explicacao)}. A disciplina apareceu em ${esc(disc.presence_in_notices||'—')} dos ${esc(disc.notices_analyzed||6)} editais analisados${disc.discursive?' e integra a prova discursiva':''}${disc.oral?' e a prova oral':''}.`));
   const L=el('div',{class:'lei'});
   if(!lei.length) L.innerHTML='<b>Leitura legislativa:</b> mapeamento ainda não definido.';
   else if(lei[0].sem) L.innerHTML='<b>Leitura legislativa:</b> sem faixa específica — tema predominantemente doutrinário, jurisprudencial ou internacional.';
@@ -1255,6 +1283,7 @@ function vDados(m){
   [
     `Versão ${DADOS.meta.versao} — PWA estática local-first, sem servidor de aplicação e instalável pelo navegador.`,
     `Programa: ${DADOS.programa.length} tópicos do Anexo I da ${DADOS.meta.resolucao}, 12 disciplinas, 4 grupos.`,
+    `Perfil pré-edital ${CONTENT_MANIFEST.preEditProfileVersion}: seis editais Cebraspe comparados, com foco interno por tópico e sem exclusões do programa.`,
     `Banco ${CONTENT_MANIFEST.questionBankVersion}: ${DADOS.questoes.length} questões autorais referenciadas + ${imp.length} importada(s) por você.`,
     `Mapa legislativo: ${Object.keys(DADOS.legislacao.topicos).length} tópicos com faixa de leitura e ${DADOS.legislacao.sem_dispositivo.length} classificados como sem faixa específica.`,
     `Jurisprudência ${CONTENT_MANIFEST.jurisprudenceVersion}: ${DADOS.precedentes.length} publicações e precedentes.`,

@@ -20,6 +20,22 @@ A pasta `pwa/` contém:
 
 Sessões encerradas armazenam uma fotografia das questões utilizadas. Assim, uma atualização do banco não altera retroativamente enunciado, gabarito ou explicação do histórico.
 
+## Perfil pré-edital Cebraspe
+
+O cronograma preserva a distribuição oficial de 25% para cada um dos quatro grupos objetivos e usa um perfil comparativo apenas para ordenar os tópicos dentro do grupo. Foram examinados os editais de Defensoria do RN/2015, PE/2017, SE/2021, TO/2021, RS/2021 e AC/2024, em conjunto com a Resolução nº 344/2025.
+
+O resultado atribui foco **muito alto**, **alto** ou **médio** aos 296 tópicos. A classificação considera recorrência programática, presença nas fases discursiva e oral e aptidão para cobrança prática. Prioridade pessoal, situação de estudo, desempenho em questões e revisões vencidas continuam prevalecendo. É um roteiro indicativo: nenhum item do Anexo I é removido e o edital de abertura futuro deverá substituir as inferências pré-edital.
+
+Arquivos de manutenção:
+
+- `data/pre_edit_priority.json`: perfil comparativo consumido pela aplicação Python;
+- `pwa/src/pre_edit_priority.json`: cópia embutida na PWA;
+- `scripts/build_pre_edit_profile.py`: geração determinística das duas cópias;
+- `data/legislation_reading_map.json`: leis, atos e faixas de artigos por tópico;
+- `scripts/refine_legislation_map.py`: refinamento e validação do mapa legislativo.
+
+O mapa atual cobre todos os tópicos: 272 possuem uma faixa normativa específica e 24 estão explicitamente classificados como predominantemente doutrinários, jurisprudenciais ou multidisciplinares. Os links apontam para Planalto, ALRN, DPE/RN, CNJ, STF, STJ, SENAPPEN, ANEEL ou para o organismo internacional responsável; o texto vigente da fonte deve ser conferido durante a leitura. A revisão `cebraspe-defensor-2` também corrige o deslocamento dos itens 17 a 26 de Processo Civil e amplia os diplomas expressamente nomeados no programa.
+
 ## Publicação gratuita no GitHub Pages
 
 1. Publique este projeto em um repositório público no GitHub.
@@ -43,7 +59,7 @@ python -m http.server 8765 --directory pwa/dist
 
 Abra `http://127.0.0.1:8765`.
 
-O build não baixa dependências. Ele valida quantidades, IDs, vínculos programáticos, gabaritos, cinco alternativas, URLs, mapa legislativo e integridade do pacote de jurisprudência. Os arquivos de conteúdo recebem nomes com hash, e o navegador verifica o SHA-256 antes de carregá-los.
+O build não baixa dependências. Ele valida quantidades, IDs, vínculos programáticos, gabaritos, cinco alternativas, URLs, cobertura integral do perfil pré-edital e do mapa legislativo e integridade do pacote de jurisprudência. Os arquivos de conteúdo recebem nomes com hash, e o navegador verifica o SHA-256 antes de carregá-los.
 
 ## Atualização da jurisprudência
 

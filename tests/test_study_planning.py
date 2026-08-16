@@ -140,9 +140,22 @@ class StudyPlanningServiceTestCase(unittest.TestCase):
         self.assertIn("art", first["legislation"][0]["article_reference"].lower())
         self.assertTrue(first["legislation"][0]["source_url"].startswith("https://www.planalto.gov.br/"))
 
+    def test_pre_edit_focus_refines_topics_without_overriding_personal_priority(self) -> None:
+        payload = self.diagnostic_payload()
+        payload["group_weights"] = {"I": 100, "II": 0, "III": 0, "IV": 0}
+        self.database.update_topic_progress("G1-CON-01", {"priority": "ALTA"})
+        self.service.save_diagnostic(payload)
+
+        plan = self.service.generate_plan({"start_date": "2026-08-17"})
+        first = plan["items"][0]
+
+        self.assertEqual(first["topic_id"], "G1-CON-01")
+        self.assertIn("foco pré-edital médio", first["rationale"])
+
     def test_doctrinal_topic_does_not_receive_invented_articles(self) -> None:
         payload = self.diagnostic_payload()
         payload["group_weights"] = {"I": 100, "II": 0, "III": 0, "IV": 0}
+        self.database.update_topic_progress("G1-CON-01", {"priority": "ALTA"})
         self.service.save_diagnostic(payload)
 
         first = self.service.generate_plan({"start_date": "2026-08-17"})["items"][0]

@@ -60,6 +60,7 @@ class StudyPlanningService:
     def __init__(self, database: Database):
         self.database = database
         self._legislation_catalog = self._load_legislation_catalog()
+        self._pre_edit_profile = self._load_pre_edit_profile()
         self._no_specific_articles = set(
             self._legislation_catalog.get("no_specific_articles", [])
         )
@@ -78,6 +79,18 @@ class StudyPlanningService:
                     raise ValueError(f"Mapeamento legislativo inválido: {topic_id}.")
                 if assignment[0] not in payload["sources"]:
                     raise ValueError(f"Fonte legislativa não cadastrada: {assignment[0]}.")
+        return payload
+
+    def _load_pre_edit_profile(self) -> dict[str, Any]:
+        path = self.database.project_root / "data" / "pre_edit_priority.json"
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        topics = payload.get("topics")
+        if not isinstance(topics, dict) or not topics:
+            raise ValueError("O perfil pré-edital está inválido.")
+        allowed = {"MUITO_ALTA", "ALTA", "MEDIA"}
+        for topic_id, profile in topics.items():
+            if not isinstance(profile, list) or len(profile) != 2 or profile[0] not in allowed:
+                raise ValueError(f"Prioridade pré-edital inválida: {topic_id}.")
         return payload
 
     def initialize(self) -> None:
@@ -168,7 +181,8 @@ class StudyPlanningService:
             connection.execute(
                 f"""
                 DELETE FROM topic_legislation_readings
-                WHERE mapping_method = 'IA_ASSISTIDA' AND id NOT IN ({placeholders})
+            WHERE mapping_method = 'IA_ASSISTIDA'
+                  AND id NOT IN ({placeholders})
                 """,
                 expected_ids,
             )
@@ -414,6 +428,9 @@ class StudyPlanningService:
     @staticmethod
     def _topic_score(item: dict[str, Any], experience_level: str) -> tuple[Any, ...]:
         priority = {"ALTA": 0, "MEDIA": 1, "BAIXA": 2}.get(item["priority"], 1)
+        pre_edit = {"MUITO_ALTA": 0, "ALTA": 1, "MEDIA": 2}.get(
+            item.get("pre_edit_priority"), 1
+        )
         status = {"NAO_INICIADO": 0, "EM_ESTUDO": 1, "REVISAO": 2, "CONSOLIDADO": 3}.get(
             item["study_status"], 1
         )
@@ -425,12 +442,12 @@ class StudyPlanningService:
         )
         if experience_level == "INICIANTE":
             # Preserva progressão programática antes de perseguir microgaps de desempenho.
-            return priority, status, item["item_number"], mastery, accuracy
+            return priority, status, pre_edit, item["item_number"], mastery, accuracy
         if experience_level == "AVANCADO":
             # No perfil avançado, lacunas já aferidas pesam antes da ordem do programa.
             measured_gap = accuracy if item["questions_done"] else 1.0
-            return priority, measured_gap, mastery, status, item["item_number"]
-        return priority, status, mastery, accuracy, item["item_number"]
+            return priority, measured_gap, mastery, pre_edit, status, item["item_number"]
+        return priority, status, mastery, pre_edit, accuracy, item["item_number"]
 
     def _planning_corpus(self, end_date: date, experience_level: str) -> dict[str, Any]:
         with self.database.connect() as connection:
@@ -518,6 +535,12 @@ class StudyPlanningService:
         legislation: dict[str, list[dict[str, Any]]] = defaultdict(list)
         for item in legislation_rows:
             legislation[item["topic_id"]].append(item)
+        for item in topics:
+            profile = self._pre_edit_profile["topics"].get(
+                item["id"], ["ALTA", "RECORRENCIA_PROGRAMATICA"]
+            )
+            item["pre_edit_priority"] = profile[0]
+            item["pre_edit_basis"] = profile[1]
         topics.sort(key=lambda item: self._topic_score(item, experience_level))
         grouped_topics = {group: [item for item in topics if item["objective_group"] == group] for group in GROUPS}
         grouped_reviews = {group: [item for item in reviews if item["objective_group"] == group] for group in GROUPS}
@@ -792,12 +815,18 @@ class StudyPlanningService:
                 return fallback
             counters[question_key] += 1
         action = "Resolver questões de" if content_type == "QUESTOES" else "Estudar"
+        pre_edit_label = {
+            "MEDIA": "médio",
+            "ALTA": "alto",
+            "MUITO_ALTA": "muito alto",
+        }[topic["pre_edit_priority"]]
         return {
             **base,
             "title": f"{action}: {topic['title']}",
             "rationale": (
                 f"Prioridade {topic['priority'].lower()}, domínio "
-                f"{topic['mastery'] if topic['mastery'] is not None else 'não aferido'}."
+                f"{topic['mastery'] if topic['mastery'] is not None else 'não aferido'}; "
+                f"foco pré-edital {pre_edit_label}."
             ),
         }
 
