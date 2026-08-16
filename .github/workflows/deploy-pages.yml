@@ -5,6 +5,7 @@ on:
     branches: [main, master]
     paths:
       - "pwa/**"
+      - "data/discursive_prompts.json"
       - ".github/workflows/deploy-pages.yml"
   schedule:
     # 06:17 em Fortaleza. Minuto não redondo reduz atrasos em horários de pico.
@@ -31,7 +32,7 @@ jobs:
 
       - name: Atualizar jurisprudência oficial
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        run: python3 pwa/update_jurisprudence.py
+        run: python3 pwa/update_jurisprudence.py --require-source stf-dados-informativos
 
       - name: Executar testes de domínio e atualização
         run: python3 -m unittest discover -v

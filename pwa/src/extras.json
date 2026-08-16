@@ -60,10 +60,10 @@
  {"trib":"Corte IDH","ref":"Ximenes Lopes vs. Brasil","g":"IV","tema":"Saúde mental","tese":"O Estado é responsável por violações à integridade e à vida de pessoa com transtorno mental sob cuidado de instituição de saúde, ainda que privada conveniada.","url":"https://www.corteidh.or.cr/"}
 ],
 "juris_links":[
- {"nome":"Informativo STF","url":"https://portal.stf.jus.br/informativos/"},
- {"nome":"Informativo STJ","url":"https://processo.stj.jus.br/jurisprudencia/externo/informativo/"},
- {"nome":"Jurisprudência em Teses (STJ)","url":"https://www.stj.jus.br/publicacaoinstitucional/index.php/JurTeses"},
- {"nome":"Súmulas do STF","url":"https://portal.stf.jus.br/jurisprudencia/menusumario.asp"},
+ {"nome":"Informativos STF","url":"https://jurisprudencia.stf.jus.br/pages/search?base=informativos&pesquisa_inteiro_teor=false&sinonimo=true&plural=true&radicais=false&buscaExata=true&page=1&pageSize=100&queryString=INFORMATIVO&sort=date&sortBy=desc"},
+ {"nome":"Informativos STJ","url":"https://processo.stj.jus.br/jurisprudencia/externo/informativo/?aplicacao=informativo.ea"},
+ {"nome":"Jurisprudência em Teses (STJ)","url":"https://processo.stj.jus.br/SCON/jt/jt.jsp"},
+ {"nome":"Súmulas do STF","url":"https://portal.stf.jus.br/jurisprudencia/sumariosumulas.asp?base=30"},
  {"nome":"Repositório da Corte IDH","url":"https://www.corteidh.or.cr/casos_sentencias.cfm"},
  {"nome":"Resolução nº 344/2025 — DPE/RN","url":"https://www.defensoria.rn.def.br/"}
 ]

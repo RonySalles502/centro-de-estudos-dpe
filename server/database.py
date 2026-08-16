@@ -123,6 +123,15 @@ class Database:
             "study_plan_runs": {
                 "adjustments_json": "TEXT NOT NULL DEFAULT '[]'",
             },
+            "discursive_prompts": {
+                "prompt_type": "TEXT NOT NULL DEFAULT 'QUESTAO'",
+                "discursive_group": "TEXT",
+                "line_limit": "INTEGER NOT NULL DEFAULT 30",
+                "max_score": "REAL NOT NULL DEFAULT 2.5",
+                "answer_key_json": "TEXT NOT NULL DEFAULT '[]'",
+                "jurisprudence_anchors_json": "TEXT NOT NULL DEFAULT '[]'",
+                "catalog_version": "TEXT NOT NULL DEFAULT ''",
+            },
         }
         for table, columns in migrations.items():
             existing = {
