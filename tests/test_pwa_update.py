@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import pathlib
+import ssl
 import subprocess
 import tempfile
 import unittest
@@ -150,7 +152,19 @@ class StaticJurisprudenceUpdaterTestCase(unittest.TestCase):
         self.assertEqual(payload, b"PK\x03\x04dados")
         command = run.call_args.args[0]
         self.assertIn("--proto-redir", command)
+        self.assertIn("--cacert", command)
+        self.assertIn(str(updater.STF_INTERMEDIATE_CA), command)
         self.assertNotIn("--insecure", command)
+
+    def test_stf_intermediate_ca_is_pinned_to_the_official_certificate(self) -> None:
+        pem = updater.STF_INTERMEDIATE_CA.read_text(encoding="ascii")
+        der = ssl.PEM_cert_to_DER_cert(pem)
+
+        self.assertEqual(
+            hashlib.sha256(der).hexdigest(),
+            updater.STF_INTERMEDIATE_CA_SHA256,
+        )
+        self.assertIsInstance(updater.trusted_ssl_context(), ssl.SSLContext)
 
     def test_stf_dataset_tries_only_official_mirrors(self) -> None:
         dataset = {"rows": [["registro"]], "columns": ["id"]}

@@ -47,6 +47,8 @@ from pwa.build import load_json, seed_jurisprudence  # noqa: E402
 CONTENT_PATH = PWA_ROOT / "content" / "jurisprudence.json"
 EXTRAS_PATH = PWA_ROOT / "src" / "extras.json"
 MAX_RESPONSE_BYTES = 20_000_000
+STF_INTERMEDIATE_CA_PATH = PWA_ROOT / "certs" / "globalsign-gcc-r6-alphassl-ca-2025.pem"
+STF_INTERMEDIATE_CA_SHA256 = "a883559231f8388daf35ce41c8101040ae8fd9b656434247b9475af592cc08ca"
 
 SOURCES = (
     {
@@ -73,6 +75,22 @@ SOURCES = (
 )
 
 
+def verified_stf_intermediate_ca() -> pathlib.Path:
+    """Return the pinned CA used to complete the chain omitted by the STF edge."""
+    try:
+        pem = STF_INTERMEDIATE_CA_PATH.read_text(encoding="ascii")
+        der = ssl.PEM_cert_to_DER_cert(pem)
+    except (OSError, ValueError) as error:
+        raise RuntimeError("O certificado intermediário fixado do STF não pôde ser lido.") from error
+    digest = hashlib.sha256(der).hexdigest()
+    if digest != STF_INTERMEDIATE_CA_SHA256:
+        raise RuntimeError("O certificado intermediário fixado do STF não passou na validação SHA-256.")
+    return STF_INTERMEDIATE_CA_PATH
+
+
+STF_INTERMEDIATE_CA = verified_stf_intermediate_ca()
+
+
 def trusted_ssl_context() -> ssl.SSLContext:
     context = ssl.create_default_context()
     # O runtime Python portátil do Windows pode não herdar o repositório do SO.
@@ -84,6 +102,10 @@ def trusted_ssl_context() -> ssl.SSLContext:
                 roots.append(ssl.DER_cert_to_PEM_cert(certificate))
         if roots:
             context.load_verify_locations(cadata="".join(roots))
+    # O servidor do STF não envia o intermediário GlobalSign GCC R6 AlphaSSL
+    # CA 2025. Ele é obtido do repositório oficial da GlobalSign, versionado e
+    # conferido pelo SHA-256 acima. A verificação TLS permanece obrigatória.
+    context.load_verify_locations(cafile=str(STF_INTERMEDIATE_CA))
     return context
 
 
@@ -124,6 +146,7 @@ def fetch(url: str, timeout: int) -> bytes:
     curl = shutil.which("curl.exe") or shutil.which("curl")
     if not curl:
         raise primary_error
+    curl_ca = ["--cacert", str(STF_INTERMEDIATE_CA)] if hostname.endswith("stf.jus.br") else []
     completed = subprocess.run(
         [
             curl,
@@ -152,6 +175,7 @@ def fetch(url: str, timeout: int) -> bytes:
             "Accept-Language: pt-BR,pt;q=0.9",
             "--referer",
             referer,
+            *curl_ca,
             url,
         ],
         capture_output=True,
