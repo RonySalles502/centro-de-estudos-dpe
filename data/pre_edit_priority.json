@@ -1,0 +1,1382 @@
+{
+  "schema_version": 1,
+  "profile_version": "2026.08-cebraspe-defensor-1",
+  "status": "PRE_EDITAL_INDICATIVO",
+  "generated_at": "2026-08-16",
+  "resolution": {
+    "file": "Resolução_344_NOVA_REDAÇÃO_Dispõe_sobre_a_realização_e_organização_do_III_Concurso_para_Defensor_Público_-_Publicada_em_15.03.2025_-_DOE_15.871_vKZDFdF_1.pdf",
+    "structure_page": 9,
+    "syllabus_page": 16,
+    "objective": "100 questões A–E, quatro grupos iguais de 25 e cinco horas (arts. 40 a 42)",
+    "discursive": "duas provas; em cada uma, duas questões e uma peça prática (arts. 45 e 46)",
+    "oral": "CON, CDC, DCA, PEN, DPP, CIV e DPC (art. 56)",
+    "weights": "objetiva 2, discursiva 4, oral 2 e títulos 1 (art. 60)"
+  },
+  "methodology": {
+    "rule": "Mantém 25% para cada grupo objetivo e ordena apenas os tópicos dentro do grupo.",
+    "signals": [
+      "recorrência da disciplina e de seu núcleo temático nos seis editais Cebraspe",
+      "presença na prova discursiva e na prova oral definidas pela Resolução nº 344/2025",
+      "aptidão do tema para questão prática, peça e leitura de legislação seca"
+    ],
+    "precedence": "A prioridade pessoal, o desempenho e as revisões vencidas continuam prevalecendo sobre o foco pré-edital.",
+    "caveat": "Perfil indicativo até a publicação do edital; nenhum tópico do Anexo I é excluído."
+  },
+  "comparative_findings": [
+    "Cinco dos seis editais usam questões de múltipla escolha A–E; o RS/2021 é a exceção certo/errado.",
+    "Todos os seis editais reservam cinco horas à prova objetiva.",
+    "RN/2015 e TO/2021 repetem a estrutura de quatro grupos iguais de 25 questões adotada pela Resolução nº 344/2025.",
+    "As etapas escritas anteriores combinam questões discursivas e peça prática, reforçando núcleos materiais-processuais."
+  ],
+  "notices": [
+    {
+      "id": "DPE-RN-2015",
+      "state": "RN",
+      "year": 2015,
+      "file": "dpe_rn_2015_ed_abertura.pdf",
+      "structure_page": 10,
+      "syllabus_page": 25,
+      "objective_format": "100 questões A–E, quatro grupos de 25, cinco horas",
+      "use": "precedente estrutural principal"
+    },
+    {
+      "id": "DPE-PE-2017",
+      "state": "PE",
+      "year": 2017,
+      "file": "Ed_2_2017_DPE_PE_DEFENSOR_17_Abertura_Republicacao.pdf",
+      "structure_page": 9,
+      "syllabus_page": 25,
+      "objective_format": "100 questões A–E, cinco horas",
+      "use": "recorrência e prova aplicada"
+    },
+    {
+      "id": "DPE-SE-2021",
+      "state": "SE",
+      "year": 2021,
+      "file": "ED_1_2020_DPE_SE_DEFENSOR_ABERTURA.pdf",
+      "structure_page": 12,
+      "syllabus_page": 29,
+      "objective_format": "100 questões A–E, cinco horas",
+      "use": "recorrência e prova aplicada"
+    },
+    {
+      "id": "DPE-TO-2021",
+      "state": "TO",
+      "year": 2021,
+      "file": "ED_1_DPE_TO_ABERTURA.pdf",
+      "structure_page": 14,
+      "syllabus_page": 35,
+      "objective_format": "100 questões A–E, quatro grupos de 25, cinco horas",
+      "use": "precedente estrutural principal"
+    },
+    {
+      "id": "DPE-RS-2021",
+      "state": "RS",
+      "year": 2021,
+      "file": "ED_2_DPRS_2021_ABERTURA.pdf",
+      "structure_page": 14,
+      "syllabus_page": 36,
+      "objective_format": "200 itens certo/errado, cinco blocos de 40, cinco horas",
+      "use": "somente recorrência temática; formato objetivo atípico"
+    },
+    {
+      "id": "DPE-AC-2024",
+      "state": "AC",
+      "year": 2024,
+      "file": "ED_1_2023_DPE_AC_DEFENSOR_ABERTURA_ATUALIZADO_RET_2.pdf",
+      "structure_page": 16,
+      "syllabus_page": 34,
+      "objective_format": "100 questões A–E, cinco horas, desconto parcial por erro",
+      "use": "precedente recente de cobrança e prova aplicada"
+    }
+  ],
+  "disciplines": {
+    "CON": {
+      "name": "Direito Constitucional",
+      "presence_in_notices": 6,
+      "notices_analyzed": 6,
+      "objective": true,
+      "discursive": true,
+      "oral": true
+    },
+    "ADM": {
+      "name": "Direito Administrativo",
+      "presence_in_notices": 6,
+      "notices_analyzed": 6,
+      "objective": true,
+      "discursive": true,
+      "oral": false
+    },
+    "PID": {
+      "name": "Princípios Institucionais da Defensoria Pública",
+      "presence_in_notices": 6,
+      "notices_analyzed": 6,
+      "objective": true,
+      "discursive": false,
+      "oral": false
+    },
+    "PEN": {
+      "name": "Direito Penal",
+      "presence_in_notices": 6,
+      "notices_analyzed": 6,
+      "objective": true,
+      "discursive": true,
+      "oral": true
+    },
+    "DPP": {
+      "name": "Direito Processual Penal",
+      "presence_in_notices": 6,
+      "notices_analyzed": 6,
+      "objective": true,
+      "discursive": true,
+      "oral": true
+    },
+    "DEP": {
+      "name": "Direito da Execução Penal",
+      "presence_in_notices": 5,
+      "notices_analyzed": 6,
+      "objective": true,
+      "discursive": true,
+      "oral": false
+    },
+    "CIV": {
+      "name": "Direito Civil",
+      "presence_in_notices": 6,
+      "notices_analyzed": 6,
+      "objective": true,
+      "discursive": true,
+      "oral": true
+    },
+    "DPC": {
+      "name": "Direito Processual Civil",
+      "presence_in_notices": 6,
+      "notices_analyzed": 6,
+      "objective": true,
+      "discursive": true,
+      "oral": true
+    },
+    "CDC": {
+      "name": "Direito do Consumidor",
+      "presence_in_notices": 6,
+      "notices_analyzed": 6,
+      "objective": true,
+      "discursive": true,
+      "oral": true
+    },
+    "DHU": {
+      "name": "Direitos Humanos",
+      "presence_in_notices": 6,
+      "notices_analyzed": 6,
+      "objective": true,
+      "discursive": true,
+      "oral": false
+    },
+    "DCO": {
+      "name": "Direitos Difusos e Coletivos",
+      "presence_in_notices": 4,
+      "notices_analyzed": 6,
+      "objective": true,
+      "discursive": true,
+      "oral": false
+    },
+    "DCA": {
+      "name": "Direito da Criança e do Adolescente",
+      "presence_in_notices": 6,
+      "notices_analyzed": 6,
+      "objective": true,
+      "discursive": true,
+      "oral": true
+    }
+  },
+  "tiers": {
+    "MUITO_ALTA": "núcleo recorrente com incidência aplicada ou institucional direta",
+    "ALTA": "conteúdo recorrente e relevante para o programa integral",
+    "MEDIA": "complemento teórico, expansão específica ou jurisprudência tratada em bloco próprio"
+  },
+  "topics": {
+    "G1-CON-01": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G1-CON-02": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G1-CON-03": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-04": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-05": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-CON-06": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-07": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-08": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-CON-09": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-CON-10": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-11": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-CON-12": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-CON-13": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-14": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-15": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-16": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-17": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-CON-18": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-CON-19": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-20": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-21": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-22": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-23": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-24": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G1-CON-25": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-CON-26": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-27": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-CON-28": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-29": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-30": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-31": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G1-CON-32": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G1-CON-33": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-34": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-CON-35": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-CON-36": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-CON-37": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-CON-38": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-CON-39": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G1-CON-40": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G1-CON-41": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-CON-42": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G1-ADM-01": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-ADM-02": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-ADM-03": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-ADM-04": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-ADM-05": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-ADM-06": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-ADM-07": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-ADM-08": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-ADM-09": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-ADM-10": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-ADM-11": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-ADM-12": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-ADM-13": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-ADM-14": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G1-ADM-15": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G1-PID-01": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G1-PID-02": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G1-PID-03": [
+      "MUITO_ALTA",
+      "RECORRENCIA_INSTITUCIONAL"
+    ],
+    "G1-PID-04": [
+      "MUITO_ALTA",
+      "RECORRENCIA_INSTITUCIONAL"
+    ],
+    "G1-PID-05": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G1-PID-06": [
+      "MUITO_ALTA",
+      "RECORRENCIA_INSTITUCIONAL"
+    ],
+    "G1-PID-07": [
+      "MUITO_ALTA",
+      "RECORRENCIA_INSTITUCIONAL"
+    ],
+    "G1-PID-08": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G1-PID-09": [
+      "MUITO_ALTA",
+      "RECORRENCIA_INSTITUCIONAL"
+    ],
+    "G1-PID-10": [
+      "MUITO_ALTA",
+      "RECORRENCIA_INSTITUCIONAL"
+    ],
+    "G1-PID-11": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G1-PID-12": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G2-PEN-01": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-PEN-02": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-PEN-03": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G2-PEN-04": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G2-PEN-05": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-PEN-06": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-PEN-07": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-PEN-08": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-PEN-09": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-PEN-10": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-PEN-11": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G2-PEN-12": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-PEN-13": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-PEN-14": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-PEN-15": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-PEN-16": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-PEN-17": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G2-DPP-01": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DPP-02": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G2-DPP-03": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G2-DPP-04": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G2-DPP-05": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G2-DPP-06": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DPP-07": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-DPP-08": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-DPP-09": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DPP-10": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DPP-11": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DPP-12": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DPP-13": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-DPP-14": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DPP-15": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G2-DPP-16": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DPP-17": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-DPP-18": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-DPP-19": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-DPP-20": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DPP-21": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DPP-22": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-DPP-23": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DPP-24": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DPP-25": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DPP-26": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-DPP-27": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DPP-28": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-DPP-29": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G2-DPP-30": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G2-DEP-01": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G2-DEP-02": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DEP-03": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DEP-04": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DEP-05": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DEP-06": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DEP-07": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DEP-08": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DEP-09": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-DEP-10": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-DEP-11": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G2-DEP-12": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G2-DEP-13": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G2-DEP-14": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G3-CIV-01": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G3-CIV-02": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G3-CIV-03": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G3-CIV-04": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G3-CIV-05": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G3-CIV-06": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G3-CIV-07": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G3-CIV-08": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-09": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-10": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-11": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-12": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-13": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-14": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-15": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-16": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-17": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-18": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-19": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-20": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-21": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-22": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G3-CIV-23": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-24": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-25": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-26": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-27": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-28": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-29": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-30": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-31": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-32": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-33": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-34": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-35": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-36": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-37": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-38": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-39": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-40": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-41": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-42": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CIV-43": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-44": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-45": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-46": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CIV-47": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G3-DPC-01": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-02": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-03": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-DPC-04": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-05": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-DPC-06": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-DPC-07": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-08": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-09": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-10": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-11": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-12": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-DPC-13": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-DPC-14": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-15": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-16": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-17": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-DPC-18": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-DPC-19": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-DPC-20": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-21": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-DPC-22": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-DPC-23": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-DPC-24": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-25": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-26": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-DPC-27": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-28": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-29": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-30": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-31": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-DPC-32": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-33": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-DPC-34": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-DPC-35": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G3-CDC-01": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CDC-02": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CDC-03": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CDC-04": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CDC-05": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G3-CDC-06": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G3-CDC-07": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G3-CDC-08": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DHU-01": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DHU-02": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DHU-03": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DHU-04": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DHU-05": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DHU-06": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DHU-07": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DHU-08": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DHU-09": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DHU-10": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DHU-11": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DHU-12": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DHU-13": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DHU-14": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DHU-15": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DHU-16": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DCO-01": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-02": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-03": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-04": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-05": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-06": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCO-07": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCO-08": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCO-09": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-10": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCO-11": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCO-12": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-13": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-14": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCO-15": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-16": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DCO-17": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DCO-18": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DCO-19": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DCO-20": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-21": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-22": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-23": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCO-24": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-25": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCO-26": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCO-27": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCO-28": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-29": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCO-30": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DCO-31": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-32": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DCO-33": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DCO-34": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DCO-35": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCO-36": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DCO-37": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DCA-01": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCA-02": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCA-03": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCA-04": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCA-05": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCA-06": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCA-07": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCA-08": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCA-09": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCA-10": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCA-11": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCA-12": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCA-13": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCA-14": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCA-15": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCA-16": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DCA-17": [
+      "ALTA",
+      "RECORRENCIA_PROGRAMATICA"
+    ],
+    "G4-DCA-18": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DCA-19": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ],
+    "G4-DCA-20": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCA-21": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCA-22": [
+      "MUITO_ALTA",
+      "NUCLEO_RECORRENTE_E_FASE_APLICADA"
+    ],
+    "G4-DCA-23": [
+      "MEDIA",
+      "COMPLEMENTO_OU_AMPLIACAO_ESPECIFICA"
+    ]
+  }
+}

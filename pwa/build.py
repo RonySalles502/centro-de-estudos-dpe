@@ -18,9 +18,9 @@ SRC = ROOT / "src"
 CONTENT = ROOT / "content"
 DIST = ROOT / "dist"
 
-APP_VERSION = "0.9.0"
+APP_VERSION = "0.10.1"
 STATE_SCHEMA_VERSION = 8
-CONTENT_SCHEMA_VERSION = 2
+CONTENT_SCHEMA_VERSION = 3
 QUESTION_BANK_VERSION = "2026.08-inicial-2"
 
 
@@ -73,6 +73,7 @@ def seed_jurisprudence(extras: dict[str, Any]) -> dict[str, Any]:
 def build() -> dict[str, Any]:
     program_raw = load_json(SRC / "program.json")
     legislation_raw = load_json(SRC / "legislation_reading_map.json")
+    pre_edit_raw = load_json(SRC / "pre_edit_priority.json")
     extras = load_json(SRC / "extras.json")
     question_catalog = load_json(SRC / "question_catalog.json")
 
@@ -104,6 +105,18 @@ def build() -> dict[str, Any]:
         "sem_dispositivo": legislation_raw["no_specific_articles"],
     }
 
+    pre_edit = {
+        "version": pre_edit_raw["profile_version"],
+        "status": pre_edit_raw["status"],
+        "resolucao": pre_edit_raw["resolution"],
+        "metodologia": pre_edit_raw["methodology"],
+        "achados": pre_edit_raw["comparative_findings"],
+        "editais": pre_edit_raw["notices"],
+        "disciplinas": pre_edit_raw["disciplines"],
+        "faixas": pre_edit_raw["tiers"],
+        "topicos": pre_edit_raw["topics"],
+    }
+
     for question in questions:
         question.setdefault("src", "official-pack")
         question.setdefault("authorship_type", "AUTORAL_ASSISTIDA")
@@ -131,6 +144,7 @@ def build() -> dict[str, Any]:
         "resolucao_url": "https://www.defensoria.rn.def.br/",
         "data_prova_estimada": "2026-12-13",
         "estrutura_objetiva": "100 questões, cinco alternativas (A–E), 0,10 ponto por acerto, 5 horas (arts. 40 e 41)",
+        "priorizacao_pre_edital": "Perfil comparativo de seis editais Cebraspe, sem excluir itens do Anexo I",
         "grupos": {
             "I": ["Direito Constitucional", "Direito Administrativo", "Princípios Institucionais da Defensoria Pública"],
             "II": ["Direito Penal", "Direito Processual Penal", "Direito da Execução Penal"],
@@ -144,6 +158,7 @@ def build() -> dict[str, Any]:
         "meta": meta,
         "programa": program,
         "legislacao": legislation,
+        "priorizacao": pre_edit,
         "questoes": questions,
         "questao_fontes": question_catalog["sources"],
         "direitos_policy": question_catalog["rights_policy"],
@@ -157,6 +172,15 @@ def build() -> dict[str, Any]:
         errors.append(f"programa com {len(program)} tópicos; esperado: 296")
     if len(topic_ids) != len(program):
         errors.append("IDs duplicados no programa")
+    priority_ids = set(pre_edit["topicos"])
+    if priority_ids != topic_ids:
+        missing = sorted(topic_ids - priority_ids)
+        extra = sorted(priority_ids - topic_ids)
+        errors.append(f"perfil pré-edital incompleto; ausentes={missing}, extras={extra}")
+    allowed_tiers = {"MUITO_ALTA", "ALTA", "MEDIA"}
+    for topic_id, profile in pre_edit["topicos"].items():
+        if not isinstance(profile, list) or len(profile) != 2 or profile[0] not in allowed_tiers:
+            errors.append(f"perfil pré-edital inválido: {topic_id}")
     if len(questions) < 260:
         errors.append(f"banco perdeu questões: {len(questions)}; mínimo: 260")
     question_ids = [item["id"] for item in questions]
@@ -184,6 +208,20 @@ def build() -> dict[str, Any]:
     for topic_id in legislation["topicos"]:
         if topic_id not in topic_ids:
             errors.append(f"mapa legislativo aponta tópico inexistente: {topic_id}")
+        for source_code, article_reference in legislation["topicos"][topic_id]:
+            if source_code not in legislation["fontes"]:
+                errors.append(f"mapa legislativo usa fonte inexistente: {topic_id}/{source_code}")
+            if not str(article_reference).strip():
+                errors.append(f"mapa legislativo sem faixa: {topic_id}/{source_code}")
+    no_specific = set(legislation["sem_dispositivo"])
+    mapped = set(legislation["topicos"])
+    if mapped & no_specific:
+        errors.append(f"tópicos legislativos em classificações conflitantes: {sorted(mapped & no_specific)}")
+    if mapped | no_specific != topic_ids:
+        errors.append(f"classificação legislativa não cobre os {len(topic_ids)} tópicos")
+    for source_code, source in legislation["fontes"].items():
+        if not isinstance(source, list) or len(source) != 2 or not is_http_url(source[1]):
+            errors.append(f"fonte legislativa inválida: {source_code}")
     if not jurisprudence.get("items"):
         errors.append("pacote de jurisprudência vazio")
     jurisprudence_ids: set[str] = set()
@@ -249,6 +287,7 @@ def build() -> dict[str, Any]:
         "contentSchemaVersion": CONTENT_SCHEMA_VERSION,
         "contentVersion": f"{QUESTION_BANK_VERSION}+{core_hash[:8]}",
         "questionBankVersion": QUESTION_BANK_VERSION,
+        "preEditProfileVersion": pre_edit["version"],
         "jurisprudenceVersion": jurisprudence.get("version", jurisprudence_hash[:12]),
         "generatedAt": generated_at,
         "assets": {

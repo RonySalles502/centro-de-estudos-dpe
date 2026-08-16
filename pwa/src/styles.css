@@ -94,6 +94,9 @@ button, input, select, textarea { color: inherit; font: inherit; }
 .chip, .pill, .tag { display: inline-flex; align-items: center; width: fit-content; border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft); white-space: nowrap; }
 .chip { border-radius: 99px; padding: 4px 10px; font-size: .7rem; letter-spacing: .025em; }
 .content-chip { border-color: color-mix(in srgb, var(--brass) 55%, var(--line)); color: var(--brass-bright); }
+.foco-muito-alto { border-color: color-mix(in srgb, var(--red) 70%, var(--line)); color: var(--red); background: color-mix(in srgb, var(--red) 10%, var(--surface)); }
+.foco-alto { border-color: color-mix(in srgb, var(--brass) 68%, var(--line)); color: var(--brass-bright); background: color-mix(in srgb, var(--brass) 9%, var(--surface)); }
+.foco-medio { border-color: color-mix(in srgb, var(--blue) 55%, var(--line)); color: var(--blue); background: color-mix(in srgb, var(--blue) 8%, var(--surface)); }
 
 .tabs { width: min(1240px, 100%); margin: 0 auto; padding: 0 14px 8px; display: flex; gap: 3px; overflow-x: auto; scrollbar-width: none; }
 .tabs::-webkit-scrollbar { display: none; }

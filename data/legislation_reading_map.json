@@ -1,309 +1,3183 @@
 {
-  "map_version": "2026.08-inicial-1",
+  "map_version": "2026.08-cebraspe-defensor-2",
   "mapping_method": "IA_ASSISTIDA",
   "validation_status": "PENDENTE_VALIDACAO",
-  "notice": "Faixas iniciais para orientação de leitura. Conferir o texto consolidado na fonte oficial antes de considerar o mapeamento validado.",
+  "notice": "Roteiro pré-edital revisto a partir da Resolução nº 344/2025, de seis editais Cebraspe e da auditoria comparativa dos anexos map_v2/cronograma. A dimensão temporal dos anexos foi descartada. As faixas orientam a leitura; abra sempre o texto vigente na fonte oficial.",
   "sources": {
-    "CF": ["Constituição Federal de 1988", "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm"],
-    "CP": ["Código Penal — Decreto-Lei nº 2.848/1940", "https://www.planalto.gov.br/ccivil_03/decreto-lei/del2848compilado.htm"],
-    "CPP": ["Código de Processo Penal — Decreto-Lei nº 3.689/1941", "https://www.planalto.gov.br/ccivil_03/decreto-lei/del3689compilado.htm"],
-    "LEP": ["Lei de Execução Penal — Lei nº 7.210/1984", "https://www.planalto.gov.br/ccivil_03/leis/l7210.htm"],
-    "CC": ["Código Civil — Lei nº 10.406/2002", "https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm"],
-    "CPC": ["Código de Processo Civil — Lei nº 13.105/2015", "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13105.htm"],
-    "CDC": ["Código de Defesa do Consumidor — Lei nº 8.078/1990", "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm"],
-    "D2181": ["Regulamento do Sistema Nacional de Defesa do Consumidor — Decreto nº 2.181/1997", "https://www.planalto.gov.br/ccivil_03/decreto/d2181.htm"],
-    "ECA": ["Estatuto da Criança e do Adolescente — Lei nº 8.069/1990", "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm"],
-    "LINDB": ["Lei de Introdução às Normas do Direito Brasileiro — Decreto-Lei nº 4.657/1942", "https://www.planalto.gov.br/ccivil_03/decreto-lei/del4657compilado.htm"],
-    "LC80": ["Lei Orgânica Nacional da Defensoria Pública — LC nº 80/1994", "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp80.htm"],
-    "L9784": ["Lei do Processo Administrativo Federal — Lei nº 9.784/1999", "https://www.planalto.gov.br/ccivil_03/leis/l9784.htm"],
-    "L14133": ["Lei de Licitações e Contratos Administrativos — Lei nº 14.133/2021", "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm"],
-    "L13460": ["Lei de Defesa dos Usuários de Serviços Públicos — Lei nº 13.460/2017", "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13460.htm"],
-    "L8987": ["Lei de Concessões — Lei nº 8.987/1995", "https://www.planalto.gov.br/ccivil_03/leis/l8987compilada.htm"],
-    "L8429": ["Lei de Improbidade Administrativa — Lei nº 8.429/1992", "https://www.planalto.gov.br/ccivil_03/leis/l8429.htm"],
-    "LAI": ["Lei de Acesso à Informação — Lei nº 12.527/2011", "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12527.htm"],
-    "LGPD": ["Lei Geral de Proteção de Dados — Lei nº 13.709/2018", "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"],
-    "L10216": ["Lei da Reforma Psiquiátrica — Lei nº 10.216/2001", "https://www.planalto.gov.br/ccivil_03/leis/leis_2001/l10216.htm"],
-    "L13146": ["Lei Brasileira de Inclusão — Lei nº 13.146/2015", "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm"],
-    "L9099": ["Lei dos Juizados Especiais — Lei nº 9.099/1995", "https://www.planalto.gov.br/ccivil_03/leis/l9099.htm"],
-    "L7960": ["Lei da Prisão Temporária — Lei nº 7.960/1989", "https://www.planalto.gov.br/ccivil_03/leis/l7960.htm"],
-    "L9296": ["Lei de Interceptação Telefônica — Lei nº 9.296/1996", "https://www.planalto.gov.br/ccivil_03/leis/l9296.htm"],
-    "L12850": ["Lei de Organizações Criminosas — Lei nº 12.850/2013", "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/lei/l12850.htm"],
-    "L11343": ["Lei de Drogas — Lei nº 11.343/2006", "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11343.htm"],
-    "L6015": ["Lei de Registros Públicos — Lei nº 6.015/1973", "https://www.planalto.gov.br/ccivil_03/leis/l6015compilada.htm"],
-    "L8245": ["Lei de Locações — Lei nº 8.245/1991", "https://www.planalto.gov.br/ccivil_03/leis/l8245.htm"],
-    "L10257": ["Estatuto da Cidade — Lei nº 10.257/2001", "https://www.planalto.gov.br/ccivil_03/leis/leis_2001/l10257.htm"],
-    "L11340": ["Lei Maria da Penha — Lei nº 11.340/2006", "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11340.htm"],
-    "L8009": ["Lei do Bem de Família — Lei nº 8.009/1990", "https://www.planalto.gov.br/ccivil_03/leis/l8009.htm"],
-    "L5478": ["Lei de Alimentos — Lei nº 5.478/1968", "https://www.planalto.gov.br/ccivil_03/leis/l5478.htm"],
-    "L11804": ["Lei de Alimentos Gravídicos — Lei nº 11.804/2008", "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2008/lei/l11804.htm"],
-    "L6766": ["Lei de Parcelamento do Solo Urbano — Lei nº 6.766/1979", "https://www.planalto.gov.br/ccivil_03/leis/l6766.htm"],
-    "L13874": ["Lei da Liberdade Econômica — Lei nº 13.874/2019", "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2019/lei/l13874.htm"],
-    "L13140": ["Lei de Mediação — Lei nº 13.140/2015", "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13140.htm"],
-    "L11419": ["Lei do Processo Eletrônico — Lei nº 11.419/2006", "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11419.htm"],
-    "L7347": ["Lei da Ação Civil Pública — Lei nº 7.347/1985", "https://www.planalto.gov.br/ccivil_03/leis/l7347orig.htm"],
-    "L4717": ["Lei da Ação Popular — Lei nº 4.717/1965", "https://www.planalto.gov.br/ccivil_03/leis/l4717.htm"],
-    "L9008": ["Lei do Fundo de Defesa de Direitos Difusos — Lei nº 9.008/1995", "https://www.planalto.gov.br/ccivil_03/leis/l9008.htm"],
-    "L8080": ["Lei Orgânica da Saúde — Lei nº 8.080/1990", "https://www.planalto.gov.br/ccivil_03/leis/l8080.htm"],
-    "L9656": ["Lei dos Planos de Saúde — Lei nº 9.656/1998", "https://www.planalto.gov.br/ccivil_03/leis/l9656.htm"],
-    "L13465": ["Lei de Regularização Fundiária — Lei nº 13.465/2017", "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13465.htm"],
-    "L11346": ["Lei de Segurança Alimentar e Nutricional — Lei nº 11.346/2006", "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11346.htm"],
-    "L12587": ["Lei da Mobilidade Urbana — Lei nº 12.587/2012", "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12587.htm"],
-    "L9394": ["Lei de Diretrizes e Bases da Educação — Lei nº 9.394/1996", "https://www.planalto.gov.br/ccivil_03/leis/l9394.htm"],
-    "L10741": ["Estatuto da Pessoa Idosa — Lei nº 10.741/2003", "https://www.planalto.gov.br/ccivil_03/leis/2003/l10.741.htm"],
-    "L7853": ["Lei de Apoio às Pessoas com Deficiência — Lei nº 7.853/1989", "https://www.planalto.gov.br/ccivil_03/leis/l7853.htm"],
-    "L14344": ["Lei Henry Borel — Lei nº 14.344/2022", "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/l14344.htm"],
-    "L13185": ["Programa de Combate à Intimidação Sistemática — Lei nº 13.185/2015", "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13185.htm"],
-    "L13812": ["Política Nacional de Busca de Pessoas Desaparecidas — Lei nº 13.812/2019", "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2019/lei/l13812.htm"],
-    "L12594": ["Lei do SINASE — Lei nº 12.594/2012", "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12594.htm"]
+    "CF": [
+      "Constituição Federal de 1988",
+      "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm"
+    ],
+    "CP": [
+      "Código Penal — Decreto-Lei nº 2.848/1940",
+      "https://www.planalto.gov.br/ccivil_03/decreto-lei/del2848compilado.htm"
+    ],
+    "CPP": [
+      "Código de Processo Penal — Decreto-Lei nº 3.689/1941",
+      "https://www.planalto.gov.br/ccivil_03/decreto-lei/del3689compilado.htm"
+    ],
+    "LEP": [
+      "Lei de Execução Penal — Lei nº 7.210/1984",
+      "https://www.planalto.gov.br/ccivil_03/leis/l7210.htm"
+    ],
+    "CC": [
+      "Código Civil — Lei nº 10.406/2002",
+      "https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm"
+    ],
+    "CPC": [
+      "Código de Processo Civil — Lei nº 13.105/2015",
+      "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13105.htm"
+    ],
+    "CDC": [
+      "Código de Defesa do Consumidor — Lei nº 8.078/1990",
+      "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm"
+    ],
+    "D2181": [
+      "Regulamento do Sistema Nacional de Defesa do Consumidor — Decreto nº 2.181/1997",
+      "https://www.planalto.gov.br/ccivil_03/decreto/d2181.htm"
+    ],
+    "ECA": [
+      "Estatuto da Criança e do Adolescente — Lei nº 8.069/1990",
+      "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm"
+    ],
+    "LINDB": [
+      "Lei de Introdução às Normas do Direito Brasileiro — Decreto-Lei nº 4.657/1942",
+      "https://www.planalto.gov.br/ccivil_03/decreto-lei/del4657compilado.htm"
+    ],
+    "LC80": [
+      "Lei Orgânica Nacional da Defensoria Pública — LC nº 80/1994",
+      "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp80.htm"
+    ],
+    "L9784": [
+      "Lei do Processo Administrativo Federal — Lei nº 9.784/1999",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9784.htm"
+    ],
+    "L14133": [
+      "Lei de Licitações e Contratos Administrativos — Lei nº 14.133/2021",
+      "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm"
+    ],
+    "L13460": [
+      "Lei de Defesa dos Usuários de Serviços Públicos — Lei nº 13.460/2017",
+      "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13460.htm"
+    ],
+    "L8987": [
+      "Lei de Concessões — Lei nº 8.987/1995",
+      "https://www.planalto.gov.br/ccivil_03/leis/l8987compilada.htm"
+    ],
+    "L8429": [
+      "Lei de Improbidade Administrativa — Lei nº 8.429/1992",
+      "https://www.planalto.gov.br/ccivil_03/leis/l8429.htm"
+    ],
+    "LAI": [
+      "Lei de Acesso à Informação — Lei nº 12.527/2011",
+      "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12527.htm"
+    ],
+    "LGPD": [
+      "Lei Geral de Proteção de Dados — Lei nº 13.709/2018",
+      "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+    ],
+    "L10216": [
+      "Lei da Reforma Psiquiátrica — Lei nº 10.216/2001",
+      "https://www.planalto.gov.br/ccivil_03/leis/leis_2001/l10216.htm"
+    ],
+    "L13146": [
+      "Lei Brasileira de Inclusão — Lei nº 13.146/2015",
+      "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm"
+    ],
+    "L9099": [
+      "Lei dos Juizados Especiais — Lei nº 9.099/1995",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9099.htm"
+    ],
+    "L7960": [
+      "Lei da Prisão Temporária — Lei nº 7.960/1989",
+      "https://www.planalto.gov.br/ccivil_03/leis/l7960.htm"
+    ],
+    "L9296": [
+      "Lei de Interceptação Telefônica — Lei nº 9.296/1996",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9296.htm"
+    ],
+    "L12850": [
+      "Lei de Organizações Criminosas — Lei nº 12.850/2013",
+      "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/lei/l12850.htm"
+    ],
+    "L11343": [
+      "Lei de Drogas — Lei nº 11.343/2006",
+      "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11343.htm"
+    ],
+    "L6015": [
+      "Lei de Registros Públicos — Lei nº 6.015/1973",
+      "https://www.planalto.gov.br/ccivil_03/leis/l6015compilada.htm"
+    ],
+    "L8245": [
+      "Lei de Locações — Lei nº 8.245/1991",
+      "https://www.planalto.gov.br/ccivil_03/leis/l8245.htm"
+    ],
+    "L10257": [
+      "Estatuto da Cidade — Lei nº 10.257/2001",
+      "https://www.planalto.gov.br/ccivil_03/leis/leis_2001/l10257.htm"
+    ],
+    "L11340": [
+      "Lei Maria da Penha — Lei nº 11.340/2006",
+      "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11340.htm"
+    ],
+    "L8009": [
+      "Lei do Bem de Família — Lei nº 8.009/1990",
+      "https://www.planalto.gov.br/ccivil_03/leis/l8009.htm"
+    ],
+    "L5478": [
+      "Lei de Alimentos — Lei nº 5.478/1968",
+      "https://www.planalto.gov.br/ccivil_03/leis/l5478.htm"
+    ],
+    "L11804": [
+      "Lei de Alimentos Gravídicos — Lei nº 11.804/2008",
+      "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2008/lei/l11804.htm"
+    ],
+    "L6766": [
+      "Lei de Parcelamento do Solo Urbano — Lei nº 6.766/1979",
+      "https://www.planalto.gov.br/ccivil_03/leis/l6766.htm"
+    ],
+    "L13874": [
+      "Lei da Liberdade Econômica — Lei nº 13.874/2019",
+      "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2019/lei/l13874.htm"
+    ],
+    "L13140": [
+      "Lei de Mediação — Lei nº 13.140/2015",
+      "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13140.htm"
+    ],
+    "L11419": [
+      "Lei do Processo Eletrônico — Lei nº 11.419/2006",
+      "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11419.htm"
+    ],
+    "L7347": [
+      "Lei da Ação Civil Pública — Lei nº 7.347/1985",
+      "https://www.planalto.gov.br/ccivil_03/leis/l7347orig.htm"
+    ],
+    "L4717": [
+      "Lei da Ação Popular — Lei nº 4.717/1965",
+      "https://www.planalto.gov.br/ccivil_03/leis/l4717.htm"
+    ],
+    "L9008": [
+      "Lei do Fundo de Defesa de Direitos Difusos — Lei nº 9.008/1995",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9008.htm"
+    ],
+    "L8080": [
+      "Lei Orgânica da Saúde — Lei nº 8.080/1990",
+      "https://www.planalto.gov.br/ccivil_03/leis/l8080.htm"
+    ],
+    "L9656": [
+      "Lei dos Planos de Saúde — Lei nº 9.656/1998",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9656.htm"
+    ],
+    "L13465": [
+      "Lei de Regularização Fundiária — Lei nº 13.465/2017",
+      "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13465.htm"
+    ],
+    "L11346": [
+      "Lei de Segurança Alimentar e Nutricional — Lei nº 11.346/2006",
+      "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11346.htm"
+    ],
+    "L12587": [
+      "Lei da Mobilidade Urbana — Lei nº 12.587/2012",
+      "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12587.htm"
+    ],
+    "L9394": [
+      "Lei de Diretrizes e Bases da Educação — Lei nº 9.394/1996",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9394.htm"
+    ],
+    "L10741": [
+      "Estatuto da Pessoa Idosa — Lei nº 10.741/2003",
+      "https://www.planalto.gov.br/ccivil_03/leis/2003/l10.741.htm"
+    ],
+    "L7853": [
+      "Lei de Apoio às Pessoas com Deficiência — Lei nº 7.853/1989",
+      "https://www.planalto.gov.br/ccivil_03/leis/l7853.htm"
+    ],
+    "L14344": [
+      "Lei Henry Borel — Lei nº 14.344/2022",
+      "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/l14344.htm"
+    ],
+    "L13185": [
+      "Programa de Combate à Intimidação Sistemática — Lei nº 13.185/2015",
+      "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13185.htm"
+    ],
+    "L13812": [
+      "Política Nacional de Busca de Pessoas Desaparecidas — Lei nº 13.812/2019",
+      "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2019/lei/l13812.htm"
+    ],
+    "L12594": [
+      "Lei do SINASE — Lei nº 12.594/2012",
+      "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12594.htm"
+    ],
+    "L12965": [
+      "Marco Civil da Internet — Lei nº 12.965/2014",
+      "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l12965.htm"
+    ],
+    "L8560": [
+      "Lei de Investigação de Paternidade — Lei nº 8.560/1992",
+      "https://www.planalto.gov.br/ccivil_03/leis/l8560.htm"
+    ],
+    "L14821": [
+      "Política Nacional de Trabalho Digno e Cidadania para a População em Situação de Rua — Lei nº 14.821/2024",
+      "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2024/lei/l14821.htm"
+    ],
+    "D7053": [
+      "Política Nacional para a População em Situação de Rua — Decreto nº 7.053/2009",
+      "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2009/decreto/d7053.htm"
+    ],
+    "L12288": [
+      "Estatuto da Igualdade Racial — Lei nº 12.288/2010",
+      "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2010/lei/l12288.htm"
+    ],
+    "L7716": [
+      "Lei dos Crimes de Discriminação ou Preconceito — Lei nº 7.716/1989",
+      "https://www.planalto.gov.br/ccivil_03/leis/l7716compilado.htm"
+    ],
+    "L8742": [
+      "Lei Orgânica da Assistência Social — Lei nº 8.742/1993",
+      "https://www.planalto.gov.br/ccivil_03/leis/l8742.htm"
+    ],
+    "D6040": [
+      "Política Nacional de Desenvolvimento Sustentável dos Povos e Comunidades Tradicionais — Decreto nº 6.040/2007",
+      "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2007/decreto/d6040.htm"
+    ],
+    "D592": [
+      "Pacto Internacional sobre Direitos Civis e Políticos — Decreto nº 592/1992",
+      "https://www.planalto.gov.br/ccivil_03/decreto/1990-1994/d0592.htm"
+    ],
+    "D591": [
+      "Pacto Internacional sobre Direitos Econômicos, Sociais e Culturais — Decreto nº 591/1992",
+      "https://www.planalto.gov.br/ccivil_03/decreto/1990-1994/d0591.htm"
+    ],
+    "D678": [
+      "Convenção Americana sobre Direitos Humanos — Decreto nº 678/1992",
+      "https://www.planalto.gov.br/ccivil_03/decreto/d0678.htm"
+    ],
+    "D3956": [
+      "Convenção Interamericana para Eliminação da Discriminação contra Pessoas com Deficiência — Decreto nº 3.956/2001",
+      "https://www.planalto.gov.br/ccivil_03/decreto/2001/d3956.htm"
+    ],
+    "D99710": [
+      "Convenção sobre os Direitos da Criança — Decreto nº 99.710/1990",
+      "https://www.planalto.gov.br/ccivil_03/decreto/1990-1994/d99710.htm"
+    ],
+    "CNJ425": [
+      "Resolução CNJ nº 425/2021 — população em situação de rua",
+      "https://atos.cnj.jus.br/atos/detalhar/4169"
+    ],
+    "CNJ287": [
+      "Resolução CNJ nº 287/2019 — pessoas indígenas no sistema criminal",
+      "https://atos.cnj.jus.br/atos/detalhar/2959"
+    ],
+    "CNJ487": [
+      "Resolução CNJ nº 487/2023 — Política Antimanicomial",
+      "https://atos.cnj.jus.br/atos/detalhar/4960"
+    ],
+    "CNPCP14": [
+      "Resolução CNPCP nº 14/1994 — Regras Mínimas para o Tratamento do Preso",
+      "https://www.gov.br/senappen/pt-br/pt-br/composicao/cnpcp/resolucoes/1994/resolucao-no-14-de-11-de-novembro-de-1994.pdf/view"
+    ],
+    "BANGKOK": [
+      "Regras de Bangkok — edição do CNJ",
+      "https://bibliotecadigital.cnj.jus.br/jspui/handle/123456789/404"
+    ],
+    "MANDELA": [
+      "Regras de Mandela — edição do CNJ",
+      "https://bibliotecadigital.cnj.jus.br/jspui/handle/123456789/403"
+    ],
+    "BRASILIA": [
+      "100 Regras de Brasília — Cúpula Judicial Ibero-Americana",
+      "https://www.cumbrejudicial.org/node/1172"
+    ],
+    "BEIJING": [
+      "Regras de Beijing — edição do CNJ",
+      "https://bibliotecadigital.cnj.jus.br/jspui/bitstream/123456789/947/1/regras-beijing.pdf"
+    ],
+    "RISTF": [
+      "Regimento Interno do Supremo Tribunal Federal",
+      "https://portal.stf.jus.br/textos/verTexto.asp?servico=legislacaoRegimentoInterno"
+    ],
+    "RISTJ": [
+      "Regimento Interno do Superior Tribunal de Justiça",
+      "https://www.stj.jus.br/sites/portalp/Leis-e-normas/Regimento-Interno"
+    ],
+    "REN1000": [
+      "Resolução Normativa ANEEL nº 1.000/2021",
+      "https://www2.aneel.gov.br/cedoc/ren20211000.pdf"
+    ],
+    "CNASCONANDA1": [
+      "Resolução Conjunta CNAS/CONANDA nº 1/2009 — serviços de acolhimento",
+      "https://aplicacoes.mds.gov.br/snas/regulacao/visualizar.php?codigo=3819"
+    ],
+    "CERN": [
+      "Constituição do Estado do Rio Grande do Norte — edição atualizada da ALRN",
+      "https://www.al.rn.leg.br/documentos/Constituicao_Estadual_versao_final_2023.pdf"
+    ],
+    "LC251": [
+      "Lei Orgânica da DPE/RN — LC estadual nº 251/2003 e alterações",
+      "https://www.al.rn.leg.br/legislacao/leis-complementares"
+    ],
+    "L1060": [
+      "Lei de Assistência Judiciária — Lei nº 1.060/1950 (dispositivos não revogados)",
+      "https://www.planalto.gov.br/ccivil_03/leis/l1060compilada.htm"
+    ],
+    "L9868": [
+      "Lei da ADI e da ADC — Lei nº 9.868/1999",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9868.htm"
+    ],
+    "L9882": [
+      "Lei da ADPF — Lei nº 9.882/1999",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9882.htm"
+    ],
+    "L12562": [
+      "Lei da Representação Interventiva — Lei nº 12.562/2011",
+      "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12562.htm"
+    ],
+    "L12016": [
+      "Lei do Mandado de Segurança — Lei nº 12.016/2009",
+      "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2009/lei/l12016.htm"
+    ],
+    "L9507": [
+      "Lei do Habeas Data — Lei nº 9.507/1997",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9507.htm"
+    ],
+    "L13300": [
+      "Lei do Mandado de Injunção — Lei nº 13.300/2016",
+      "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2016/lei/l13300.htm"
+    ],
+    "L11107": [
+      "Lei dos Consórcios Públicos — Lei nº 11.107/2005",
+      "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2005/lei/l11107.htm"
+    ],
+    "L11079": [
+      "Lei das Parcerias Público-Privadas — Lei nº 11.079/2004",
+      "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/lei/l11079.htm"
+    ],
+    "L13303": [
+      "Lei das Estatais — Lei nº 13.303/2016",
+      "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2016/lei/l13303.htm"
+    ],
+    "L13019": [
+      "Marco Regulatório das Organizações da Sociedade Civil — Lei nº 13.019/2014",
+      "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l13019.htm"
+    ],
+    "L9503": [
+      "Código de Trânsito Brasileiro — Lei nº 9.503/1997",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm"
+    ],
+    "L9605": [
+      "Lei de Crimes Ambientais — Lei nº 9.605/1998",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9605.htm"
+    ],
+    "L10826": [
+      "Estatuto do Desarmamento — Lei nº 10.826/2003",
+      "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2003/lei/l10.826.htm"
+    ],
+    "D9847": [
+      "Decreto nº 9.847/2019 — referência expressa da Resolução nº 344/2025, parcialmente revogado",
+      "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2019/decreto/d9847.htm"
+    ],
+    "D11615": [
+      "Regulamentação vigente do Estatuto do Desarmamento — Decreto nº 11.615/2023",
+      "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/decreto/d11615.htm"
+    ],
+    "L8072": [
+      "Lei dos Crimes Hediondos — Lei nº 8.072/1990",
+      "https://www.planalto.gov.br/ccivil_03/leis/l8072.htm"
+    ],
+    "L11101": [
+      "Lei de Recuperação e Falência — Lei nº 11.101/2005",
+      "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2005/lei/l11101.htm"
+    ],
+    "L1521": [
+      "Lei dos Crimes contra a Economia Popular — Lei nº 1.521/1951",
+      "https://www.planalto.gov.br/ccivil_03/leis/l1521.htm"
+    ],
+    "L8137": [
+      "Lei dos Crimes contra a Ordem Tributária — Lei nº 8.137/1990",
+      "https://www.planalto.gov.br/ccivil_03/leis/l8137.htm"
+    ],
+    "L9249": [
+      "Lei nº 9.249/1995 — pagamento e extinção da punibilidade tributária",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9249.htm"
+    ],
+    "L9430": [
+      "Lei nº 9.430/1996 — representação fiscal para fins penais",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9430compilada.htm"
+    ],
+    "L10684": [
+      "Lei nº 10.684/2003 — parcelamento e punibilidade tributária",
+      "https://www.planalto.gov.br/ccivil_03/leis/2003/l10.684.htm"
+    ],
+    "L9613": [
+      "Lei de Lavagem de Dinheiro — Lei nº 9.613/1998",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9613.htm"
+    ],
+    "L6001": [
+      "Estatuto do Índio — Lei nº 6.001/1973",
+      "https://www.planalto.gov.br/ccivil_03/leis/l6001.htm"
+    ],
+    "L13869": [
+      "Lei de Abuso de Autoridade — Lei nº 13.869/2019",
+      "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2019/lei/l13869.htm"
+    ],
+    "DL3688": [
+      "Lei das Contravenções Penais — Decreto-Lei nº 3.688/1941",
+      "https://www.planalto.gov.br/ccivil_03/decreto-lei/del3688.htm"
+    ],
+    "L9455": [
+      "Lei de Tortura — Lei nº 9.455/1997",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9455.htm"
+    ],
+    "L12847": [
+      "Sistema Nacional de Prevenção e Combate à Tortura — Lei nº 12.847/2013",
+      "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/lei/l12847.htm"
+    ],
+    "L9807": [
+      "Programa de Proteção a Vítimas e Testemunhas — Lei nº 9.807/1999",
+      "https://www.planalto.gov.br/ccivil_03/leis/l9807.htm"
+    ],
+    "L11671": [
+      "Transferência para estabelecimentos penais federais — Lei nº 11.671/2008",
+      "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2008/lei/l11671.htm"
+    ],
+    "D40": [
+      "Convenção da ONU contra a Tortura — Decreto nº 40/1991",
+      "https://www.planalto.gov.br/ccivil_03/decreto/1990-1994/d0040.htm"
+    ],
+    "D98386": [
+      "Convenção Interamericana para Prevenir e Punir a Tortura — Decreto nº 98.386/1989",
+      "https://www.planalto.gov.br/ccivil_03/decreto/1980-1989/d98386.htm"
+    ],
+    "CNJ414": [
+      "Resolução CNJ nº 414/2021 — exames periciais em casos de tortura",
+      "https://atos.cnj.jus.br/atos/detalhar/4105"
+    ],
+    "ISTAMBUL": [
+      "Protocolo de Istambul — edição revisada de 2022 do ACNUDH",
+      "https://www.ohchr.org/sites/default/files/documents/publications/2022-06-29/Istanbul-Protocol_Rev2_EN.pdf"
+    ],
+    "MINNESOTA": [
+      "Protocolo de Minnesota — ACNUDH",
+      "https://cambodia.ohchr.org/en/node/3902"
+    ],
+    "YOGYA": [
+      "Princípios de Yogyakarta — publicação das Nações Unidas",
+      "https://paraguay.un.org/es/231701-los-principios-de-yogyakarta"
+    ],
+    "D30822": [
+      "Convenção para a Prevenção e a Repressão do Crime de Genocídio — Decreto nº 30.822/1952",
+      "https://www.planalto.gov.br/ccivil_03/atos/decretos/1952/d30822.html"
+    ],
+    "D50215": [
+      "Convenção relativa ao Estatuto dos Refugiados — Decreto nº 50.215/1961",
+      "https://www.planalto.gov.br/ccivil_03/decreto/1950-1969/d50215.htm"
+    ],
+    "D70946": [
+      "Protocolo sobre o Estatuto dos Refugiados — Decreto nº 70.946/1972",
+      "https://www.planalto.gov.br/ccivil_03/decreto/1970-1979/d70946.htm"
+    ],
+    "D65810": [
+      "Convenção para Eliminação da Discriminação Racial — Decreto nº 65.810/1969",
+      "https://www.planalto.gov.br/ccivil_03/decreto/1950-1969/d65810.html"
+    ],
+    "D4377": [
+      "CEDAW — Decreto nº 4.377/2002",
+      "https://www.planalto.gov.br/ccivil_03/decreto/2002/d4377.htm"
+    ],
+    "D4316": [
+      "Protocolo Facultativo à CEDAW — Decreto nº 4.316/2002",
+      "https://www.planalto.gov.br/ccivil_03/decreto/2002/d4316.htm"
+    ],
+    "D6085": [
+      "Protocolo Facultativo à Convenção contra a Tortura — Decreto nº 6.085/2007",
+      "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2007/decreto/d6085.htm"
+    ],
+    "D5006": [
+      "Protocolo sobre envolvimento de crianças em conflitos armados — Decreto nº 5.006/2004",
+      "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/decreto/d5006.htm"
+    ],
+    "D5007": [
+      "Protocolo sobre venda, prostituição e pornografia infantil — Decreto nº 5.007/2004",
+      "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/decreto/d5007.htm"
+    ],
+    "D4388": [
+      "Estatuto de Roma do Tribunal Penal Internacional — Decreto nº 4.388/2002",
+      "https://www.planalto.gov.br/ccivil_03/decreto/2002/d4388.htm"
+    ],
+    "D6949": [
+      "Convenção sobre os Direitos das Pessoas com Deficiência — Decreto nº 6.949/2009",
+      "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2009/decreto/d6949.htm"
+    ],
+    "D8767": [
+      "Convenção contra o Desaparecimento Forçado — Decreto nº 8.767/2016",
+      "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2016/decreto/d8767.htm"
+    ],
+    "D11777": [
+      "Protocolos Facultativos ao PIDCP — Decreto nº 11.777/2023",
+      "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/decreto/d11777.htm"
+    ],
+    "D3413": [
+      "Convenção da Haia sobre Sequestro Internacional de Crianças — Decreto nº 3.413/2000",
+      "https://www.planalto.gov.br/ccivil_03/decreto/d3413.htm"
+    ],
+    "D3087": [
+      "Convenção da Haia sobre Adoção Internacional — Decreto nº 3.087/1999",
+      "https://www.planalto.gov.br/ccivil_03/decreto/d3087.htm"
+    ],
+    "D10088": [
+      "Convenções da OIT ratificadas pelo Brasil — Decreto nº 10.088/2019",
+      "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2019/decreto/d10088.htm"
+    ],
+    "L12711": [
+      "Lei de Cotas no ensino federal — Lei nº 12.711/2012",
+      "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12711.htm"
+    ],
+    "L8142": [
+      "Participação social e transferências no SUS — Lei nº 8.142/1990",
+      "https://www.planalto.gov.br/ccivil_03/leis/l8142.htm"
+    ],
+    "D4887": [
+      "Titulação de territórios quilombolas — Decreto nº 4.887/2003",
+      "https://www.planalto.gov.br/ccivil_03/decreto/2003/d4887.htm"
+    ],
+    "CNAS145": [
+      "Política Nacional de Assistência Social — Resolução CNAS nº 145/2004",
+      "https://aplicacoes.mds.gov.br/snas/regulacao/visualizar.php?codigo=3395"
+    ],
+    "CNAS109": [
+      "Tipificação Nacional de Serviços Socioassistenciais — Resolução CNAS nº 109/2009",
+      "https://aplicacoes.mds.gov.br/snas/regulacao/visualizar.php?codigo=3866"
+    ],
+    "L12212": [
+      "Tarifa Social de Energia Elétrica — Lei nº 12.212/2010",
+      "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2010/lei/l12212.htm"
+    ]
   },
   "topics": {
-    "G1-CON-05": [["CF", "arts. 52, X; 97; 102; 103; 103-A; 125, § 2º"]],
-    "G1-CON-06": [["CF", "art. 60 e ADCT pertinente"]],
-    "G1-CON-07": [["CF", "Preâmbulo e arts. 1º a 4º"]],
-    "G1-CON-08": [["CF", "art. 5º, §§ 1º a 4º, e art. 60, § 4º, IV"]],
-    "G1-CON-09": [["CF", "arts. 5º a 13"]],
-    "G1-CON-10": [["CF", "arts. 14 a 17; art. 29, XII e XIII; art. 61, § 2º"]],
-    "G1-CON-11": [["CF", "art. 5º, §§ 2º a 4º; art. 109, V-A e § 5º"]],
-    "G1-CON-12": [["CF", "arts. 18 a 36"]],
-    "G1-CON-13": [["CF", "arts. 37 a 43"]],
-    "G1-CON-14": [["CF", "art. 2º e arts. 44 a 135"]],
-    "G1-CON-15": [["CF", "arts. 44 a 75"]],
-    "G1-CON-16": [["CF", "arts. 62 e 76 a 91"]],
-    "G1-CON-17": [["CF", "arts. 92 a 126; 102; 103-A e 103-B"]],
-    "G1-CON-18": [["CF", "arts. 127 a 135"]],
-    "G1-CON-19": [["CF", "arts. 136 a 144"]],
-    "G1-CON-20": [["CF", "arts. 145 a 162"]],
-    "G1-CON-21": [["CF", "arts. 163 a 169"]],
-    "G1-CON-22": [["CF", "arts. 170 a 181"]],
-    "G1-CON-23": [["CF", "arts. 182 a 191; 215 e 216; 231 e 232; ADCT, art. 68"]],
-    "G1-CON-24": [["CF", "art. 192"]],
-    "G1-CON-25": [["CF", "arts. 193 a 232"]],
-    "G1-CON-26": [["CF", "arts. 194 a 202"]],
-    "G1-CON-27": [["CF", "arts. 196 a 200"]],
-    "G1-CON-28": [["CF", "art. 6º e arts. 203 e 204"]],
-    "G1-CON-29": [["CF", "arts. 205 a 214"]],
-    "G1-CON-30": [["CF", "arts. 215, 216 e 216-A"]],
-    "G1-CON-31": [["CF", "art. 217"]],
-    "G1-CON-32": [["CF", "arts. 218 a 219-B"]],
-    "G1-CON-33": [["CF", "arts. 220 a 224"]],
-    "G1-CON-34": [["CF", "art. 225"]],
-    "G1-CON-35": [["CF", "art. 5º, XXXII; art. 170, V; ADCT, art. 48"]],
-    "G1-CON-36": [["CF", "arts. 226 a 230"]],
-    "G1-CON-37": [["CF", "arts. 215 e 216; 231 e 232; ADCT, art. 68"]],
-    "G1-CON-39": [["CF", "art. 5º; art. 37, § 6º; ADCT, art. 8º"]],
-    "G1-CON-40": [["CF", "arts. 233 a 250 e ADCT"]],
-    "G1-CON-41": [["CF", "texto constitucional integral, com seleção conforme o tópico do ciclo"]],
-
-    "G1-ADM-03": [["CF", "art. 37"], ["LAI", "arts. 3º a 32"], ["LGPD", "arts. 1º a 32"]],
-    "G1-ADM-04": [["L9784", "arts. 1º a 69, com ênfase nos arts. 2º, 50 e 53 a 55"]],
-    "G1-ADM-05": [["CF", "arts. 5º, II, e 37"], ["L9784", "arts. 2º, 53 a 55 e 68"]],
-    "G1-ADM-06": [["CF", "arts. 37 a 41"]],
-    "G1-ADM-07": [["CF", "art. 175"], ["L13460", "texto integral"], ["L8987", "arts. 1º a 40"]],
-    "G1-ADM-08": [["CF", "art. 37, XIX e XX; art. 175"]],
-    "G1-ADM-09": [["L14133", "arts. 1º a 71 e 155 a 168"]],
-    "G1-ADM-10": [["L14133", "arts. 89 a 154"]],
-    "G1-ADM-11": [["CC", "arts. 98 a 103"], ["CF", "arts. 20 e 26"]],
-    "G1-ADM-12": [["CF", "art. 5º, XXIV e XXV; arts. 182 a 191"], ["L10257", "arts. 2º, 4º a 8º e 40 a 45"]],
-    "G1-ADM-13": [["CF", "art. 37, § 6º"], ["CC", "arts. 43, 186 a 188 e 927 a 954"]],
-    "G1-ADM-14": [["CF", "arts. 70 a 75"], ["L8429", "texto consolidado integral"]],
-
-    "G1-PID-03": [["CF", "art. 5º, LXXIV, e arts. 134 e 135"]],
-    "G1-PID-04": [["CF", "arts. 134 e 135"], ["LC80", "arts. 1º a 4º e dispositivos sobre garantias e prerrogativas"]],
-    "G1-PID-06": [["LC80", "texto consolidado integral"]],
-    "G1-PID-07": [["CPC", "arts. 98 a 102"]],
-    "G1-PID-08": [["LC80", "arts. 4º, 44, 89, 108 e dispositivos correlatos"]],
-    "G1-PID-09": [["CF", "arts. 134 e 135"], ["LC80", "dispositivos sobre organização, carreira, garantias e prerrogativas"]],
-    "G1-PID-10": [["LC80", "normas gerais aplicáveis às Defensorias Públicas estaduais"]],
-
-    "G2-PEN-02": [["CP", "arts. 1º a 12"]],
-    "G2-PEN-06": [["CP", "arts. 13 a 17"]],
-    "G2-PEN-07": [["CP", "arts. 13, 18 e 19"]],
-    "G2-PEN-08": [["CP", "arts. 23 a 25"]],
-    "G2-PEN-09": [["CP", "arts. 26 a 28"]],
-    "G2-PEN-10": [["CP", "arts. 14 a 22; 29 a 31; 69 a 76"]],
-    "G2-PEN-12": [["CP", "arts. 32 a 82"]],
-    "G2-PEN-13": [["CP", "arts. 26 e 96 a 99"], ["L10216", "texto integral"], ["L13146", "arts. 1º a 13 e 84 a 87"]],
-    "G2-PEN-14": [["CP", "arts. 91 a 95 e 107 a 120"]],
-    "G2-PEN-15": [["CP", "arts. 121 a 359-T"]],
-    "G2-PEN-16": [["L12850", "tipos penais e disposições processuais"], ["L11343", "tipos penais e disposições processuais"], ["L11340", "disposições penais e processuais"]],
-
-    "G2-DPP-01": [["CF", "art. 5º, incisos LIV a LXVIII"], ["CPP", "arts. 1º a 3º-F"]],
-    "G2-DPP-06": [["LC80", "prerrogativas e funções institucionais"], ["CPP", "arts. 261 a 267"]],
-    "G2-DPP-07": [["CPP", "art. 3º-A"]],
-    "G2-DPP-08": [["CPP", "arts. 1º a 3º"]],
-    "G2-DPP-09": [["CPP", "arts. 4º a 23 e 3º-A a 3º-F"]],
-    "G2-DPP-10": [["CPP", "arts. 155 a 250"], ["L9296", "texto integral"], ["L12850", "arts. 3º-A a 7º"]],
-    "G2-DPP-11": [["CPP", "arts. 125 a 144-A e 282 a 350"], ["L7960", "texto integral"]],
-    "G2-DPP-12": [["CPP", "arts. 24 a 62"]],
-    "G2-DPP-13": [["CPP", "arts. 63 a 91"]],
-    "G2-DPP-14": [["CPP", "art. 28-A e arts. 251 a 281"]],
-    "G2-DPP-16": [["CPP", "arts. 261 a 267"]],
-    "G2-DPP-17": [["CPP", "arts. 92 a 154"]],
-    "G2-DPP-18": [["CPP", "arts. 351 a 372"]],
-    "G2-DPP-19": [["L9099", "art. 89"]],
-    "G2-DPP-20": [["CPP", "arts. 381 a 393 e 492 a 512"]],
-    "G2-DPP-21": [["CPP", "arts. 394 a 497"], ["L9099", "arts. 60 a 92"]],
-    "G2-DPP-22": [["CPP", "arts. 563 a 573"]],
-    "G2-DPP-23": [["CPP", "arts. 574 a 667"], ["CF", "art. 5º, LXVIII e LXIX"]],
-    "G2-DPP-25": [["L12850", "disposições processuais"], ["L11343", "disposições processuais"], ["L11340", "disposições processuais"], ["L13146", "disposições de proteção processual"]],
-
-    "G2-DEP-02": [["LEP", "arts. 1º a 4º"]],
-    "G2-DEP-03": [["LEP", "arts. 5º a 41"]],
-    "G2-DEP-04": [["LEP", "arts. 38 a 60"]],
-    "G2-DEP-05": [["LEP", "arts. 61 a 104"]],
-    "G2-DEP-06": [["LEP", "arts. 105 a 179"]],
-    "G2-DEP-07": [["LEP", "arts. 111 a 119"]],
-    "G2-DEP-08": [["LEP", "arts. 120 a 130"]],
-    "G2-DEP-09": [["LEP", "dispositivos sobre transferência e competência"]],
-    "G2-DEP-10": [["LEP", "arts. 146-B a 146-D"]],
-    "G2-DEP-11": [["CP", "arts. 107 a 120"], ["LEP", "arts. 187 a 193"]],
-    "G2-DEP-13": [["LEP", "arts. 171 a 197"], ["L10216", "texto integral"]],
-
-    "G3-CIV-08": [["LINDB", "arts. 1º a 30"]],
-    "G3-CIV-09": [["CC", "arts. 1º a 39 e 70 a 78"]],
-    "G3-CIV-10": [["CC", "arts. 40 a 69"]],
-    "G3-CIV-11": [["CC", "arts. 79 a 103"]],
-    "G3-CIV-12": [["CC", "arts. 104 a 184"]],
-    "G3-CIV-13": [["CC", "arts. 186 e 188"]],
-    "G3-CIV-14": [["CC", "art. 187"]],
-    "G3-CIV-15": [["CC", "arts. 189 a 211"]],
-    "G3-CIV-16": [["CC", "arts. 212 a 232"]],
-    "G3-CIV-17": [["CC", "arts. 233 a 420"]],
-    "G3-CIV-18": [["CC", "arts. 421 a 480"]],
-    "G3-CIV-19": [["CC", "arts. 481 a 853"]],
-    "G3-CIV-20": [["CC", "arts. 854 a 886"]],
-    "G3-CIV-21": [["CC", "arts. 927 a 954"]],
-    "G3-CIV-22": [["CC", "arts. 955 a 965"]],
-    "G3-CIV-23": [["CC", "arts. 966 a 1.195"]],
-    "G3-CIV-24": [["CC", "arts. 1.196 a 1.224"]],
-    "G3-CIV-25": [["CC", "arts. 1.225 a 1.276"], ["CF", "art. 5º, XXII e XXIII; arts. 182 a 191"]],
-    "G3-CIV-26": [["CC", "arts. 1.277 a 1.411"]],
-    "G3-CIV-27": [["CC", "arts. 1.369 a 1.416"]],
-    "G3-CIV-28": [["CC", "arts. 1.417 e 1.418"]],
-    "G3-CIV-29": [["CC", "arts. 1.419 a 1.505"]],
-    "G3-CIV-30": [["CF", "art. 226"], ["CC", "arts. 1.511 a 1.727"]],
-    "G3-CIV-31": [["CC", "arts. 1.511 a 1.722"]],
-    "G3-CIV-32": [["CC", "arts. 1.591 a 1.638"], ["ECA", "arts. 39 a 52-D"]],
-    "G3-CIV-33": [["CC", "arts. 1.583 a 1.590 e 1.630 a 1.638"]],
-    "G3-CIV-34": [["CC", "arts. 1.723 a 1.727"]],
-    "G3-CIV-35": [["CC", "arts. 1.694 a 1.710 e 1.728 a 1.783-A"]],
-    "G3-CIV-36": [["CC", "arts. 1.784 a 2.027"]],
-    "G3-CIV-37": [["L6015", "texto consolidado integral"]],
-    "G3-CIV-38": [["L8245", "texto consolidado integral"]],
-    "G3-CIV-39": [["L10257", "texto consolidado integral"]],
-    "G3-CIV-40": [["L11340", "texto consolidado integral"]],
-    "G3-CIV-41": [["L8009", "texto integral"]],
-    "G3-CIV-42": [["L5478", "texto consolidado integral"]],
-    "G3-CIV-43": [["L11804", "texto integral"]],
-    "G3-CIV-44": [["L6766", "texto consolidado integral"]],
-    "G3-CIV-45": [["L13874", "texto integral"]],
-    "G3-CIV-46": [["LGPD", "texto consolidado integral"]],
-
-    "G3-DPC-01": [["CPC", "texto consolidado integral"]],
-    "G3-DPC-02": [["CF", "art. 5º, XXXV, LIV e LV"], ["CPC", "arts. 1º a 12"]],
-    "G3-DPC-03": [["CPC", "arts. 1º a 15"]],
-    "G3-DPC-04": [["CPC", "arts. 16 a 69"], ["L13140", "texto integral"]],
-    "G3-DPC-05": [["CPC", "arts. 17 a 20 e 327"]],
-    "G3-DPC-06": [["CPC", "arts. 188 a 293"]],
-    "G3-DPC-07": [["CPC", "arts. 70 a 187"]],
-    "G3-DPC-08": [["CPC", "arts. 294 a 311"]],
-    "G3-DPC-09": [["CPC", "arts. 318 a 512 e procedimentos especiais aplicáveis"]],
-    "G3-DPC-10": [["CPC", "arts. 513 a 538"]],
-    "G3-DPC-11": [["CPC", "arts. 369 a 484"]],
-    "G3-DPC-12": [["ECA", "normas processuais e medidas tutelares"], ["L10741", "normas processuais e medidas tutelares"], ["L10257", "instrumentos processuais"], ["L13146", "normas processuais"], ["CDC", "arts. 81 a 104"], ["L11340", "medidas protetivas e procedimento"]],
-    "G3-DPC-13": [["CPC", "arts. 497 a 501 e 536 e 537"]],
-    "G3-DPC-14": [["CPC", "arts. 771 a 925"]],
-    "G3-DPC-15": [["CPC", "arts. 926 a 993"]],
-    "G3-DPC-16": [["CPC", "arts. 966 a 975 e 994 a 1.044"]],
-    "G3-DPC-17": [["CPC", "arts. 1.036 a 1.041"]],
-    "G3-DPC-18": [["CPC", "arts. 976 a 987"]],
-    "G3-DPC-19": [["CPC", "arts. 926 a 993"]],
-    "G3-DPC-21": [["CPC", "art. 927"]],
-    "G3-DPC-22": [["CPC", "arts. 1º a 69"]],
-    "G3-DPC-23": [["CPC", "arts. 70 a 107"]],
-    "G3-DPC-24": [["CPC", "arts. 98 a 102"]],
-    "G3-DPC-25": [["CPC", "arts. 176 a 181"]],
-    "G3-DPC-26": [["CPC", "arts. 103 a 107"]],
-    "G3-DPC-27": [["CPC", "arts. 554 a 568"]],
-    "G3-DPC-28": [["CPC", "arts. 528 a 533 e 911 a 913"], ["L5478", "texto consolidado integral"]],
-    "G3-DPC-30": [["CPC", "arts. 731 a 734"]],
-    "G3-DPC-31": [["CPC", "arts. 610 a 673"]],
-    "G3-DPC-32": [["L9099", "arts. 1º a 59"]],
-    "G3-DPC-33": [["CPC", "arts. 98 a 102"]],
-    "G3-DPC-34": [["L11419", "texto consolidado integral"]],
-
-    "G3-CDC-01": [["CDC", "arts. 1º a 60"]],
-    "G3-CDC-02": [["CDC", "arts. 61 a 80"]],
-    "G3-CDC-03": [["CDC", "arts. 81 a 104"]],
-    "G3-CDC-04": [["CDC", "arts. 105 e 106"]],
-    "G3-CDC-05": [["CDC", "art. 107"]],
-    "G3-CDC-06": [["CDC", "texto consolidado integral"]],
-    "G3-CDC-07": [["D2181", "texto integral"]],
-
-    "G4-DHU-02": [["CF", "art. 5º, §§ 2º a 4º; art. 109, V-A e § 5º"]],
-    "G4-DHU-09": [["CF", "arts. 3º, IV, e 5º, XLII"]],
-    "G4-DHU-10": [["L7853", "texto consolidado integral"], ["L13146", "texto consolidado integral"]],
-    "G4-DHU-12": [["CF", "arts. 1º, III; 3º e 6º"]],
-
-    "G4-DCO-01": [["CF", "art. 5º, XXI, LXX e LXXIII; art. 129, III; art. 134"], ["L7347", "arts. 1º a 21"], ["CDC", "arts. 81 a 104"]],
-    "G4-DCO-02": [["L4717", "texto consolidado integral"], ["L7347", "texto consolidado integral"], ["CDC", "arts. 81 a 104"]],
-    "G4-DCO-03": [["CDC", "art. 81, parágrafo único"]],
-    "G4-DCO-04": [["L7347", "art. 5º"], ["CDC", "art. 82"], ["LC80", "art. 4º, VII, VIII, X e XI"]],
-    "G4-DCO-05": [["L7347", "art. 2º"], ["CDC", "art. 93"]],
-    "G4-DCO-06": [["CPC", "arts. 113 a 118"]],
-    "G4-DCO-07": [["CDC", "art. 6º, VIII"], ["CPC", "art. 373"]],
-    "G4-DCO-08": [["CDC", "art. 104"], ["CPC", "arts. 55 a 59"]],
-    "G4-DCO-09": [["L7347", "art. 12"], ["CPC", "arts. 294 a 311"]],
-    "G4-DCO-10": [["L7347", "arts. 3º e 11"]],
-    "G4-DCO-11": [["L7347", "art. 14"], ["CPC", "arts. 994 a 1.044"]],
-    "G4-DCO-12": [["CDC", "arts. 103 e 104"]],
-    "G4-DCO-13": [["CDC", "arts. 95 a 100"]],
-    "G4-DCO-14": [["L9008", "texto integral"]],
-    "G4-DCO-15": [["L7347", "art. 5º, § 6º"]],
-    "G4-DCO-20": [["CF", "arts. 6º e 196 a 214"]],
-    "G4-DCO-21": [["L8080", "texto consolidado integral"], ["L9656", "texto consolidado integral"]],
-    "G4-DCO-22": [["CF", "arts. 6º e 182 e 183"], ["L10257", "texto consolidado integral"], ["L13465", "dispositivos sobre Reurb"]],
-    "G4-DCO-23": [["CF", "arts. 183, 186 e 191"]],
-    "G4-DCO-26": [["CF", "art. 6º"], ["L11346", "texto integral"]],
-    "G4-DCO-27": [["CF", "art. 6º"], ["L12587", "texto consolidado integral"], ["L8987", "dispositivos sobre serviço adequado e direitos dos usuários"]],
-    "G4-DCO-28": [["L7853", "texto consolidado integral"], ["L13146", "texto consolidado integral"]],
-    "G4-DCO-29": [["L10741", "texto consolidado integral"]],
-    "G4-DCO-31": [["CF", "arts. 205 a 214"], ["L9394", "texto consolidado integral"]],
-    "G4-DCO-32": [["CF", "arts. 215 e 216"]],
-    "G4-DCO-35": [["LC80", "art. 4º, VII, VIII, X e XI"]],
-
-    "G4-DCA-01": [["CF", "art. 227"], ["ECA", "arts. 1º a 69"]],
-    "G4-DCA-02": [["ECA", "arts. 86 a 97"]],
-    "G4-DCA-03": [["ECA", "arts. 131 a 140"]],
-    "G4-DCA-04": [["ECA", "arts. 98 a 102 e 28 a 52-D"]],
-    "G4-DCA-05": [["ECA", "arts. 129 e 130"]],
-    "G4-DCA-06": [["ECA", "arts. 19 a 52-D e 155 a 163"]],
-    "G4-DCA-07": [["ECA", "arts. 103 a 128"]],
-    "G4-DCA-08": [["ECA", "arts. 141 a 151"]],
-    "G4-DCA-09": [["ECA", "arts. 152 a 197-E"]],
-    "G4-DCA-10": [["ECA", "arts. 198 a 199-E"]],
-    "G4-DCA-11": [["ECA", "arts. 200 a 205"]],
-    "G4-DCA-12": [["ECA", "arts. 206 e 207"]],
-    "G4-DCA-13": [["ECA", "arts. 208 a 224"]],
-    "G4-DCA-14": [["ECA", "arts. 225 a 258-C"]],
-    "G4-DCA-15": [["L14344", "texto integral"]],
-    "G4-DCA-16": [["L13185", "texto integral"]],
-    "G4-DCA-17": [["CP", "art. 128, II"], ["ECA", "arts. 7º e 11"]],
-    "G4-DCA-18": [["L13812", "texto integral"]],
-    "G4-DCA-20": [["L12594", "texto consolidado integral"]],
-    "G4-DCA-22": [["ECA", "arts. 141 e 206"]]
+    "G1-CON-05": [
+      [
+        "CF",
+        "arts. 52, X; 97; 102; 103; 103-A; 125, § 2º"
+      ],
+      [
+        "L9868",
+        "texto consolidado integral, com ênfase nos arts. 2º a 12-H e 22 a 28"
+      ],
+      [
+        "L9882",
+        "texto integral, com ênfase nos arts. 1º a 12"
+      ],
+      [
+        "L12562",
+        "texto integral"
+      ],
+      [
+        "L13300",
+        "arts. 1º a 14"
+      ]
+    ],
+    "G1-CON-06": [
+      [
+        "CF",
+        "art. 60 e ADCT pertinente"
+      ]
+    ],
+    "G1-CON-07": [
+      [
+        "CF",
+        "Preâmbulo e arts. 1º a 4º"
+      ]
+    ],
+    "G1-CON-08": [
+      [
+        "CF",
+        "art. 5º, §§ 1º a 4º, e art. 60, § 4º, IV"
+      ]
+    ],
+    "G1-CON-09": [
+      [
+        "CF",
+        "arts. 5º a 13, com ênfase no art. 5º, I a LXXVIII"
+      ],
+      [
+        "L12016",
+        "texto consolidado integral"
+      ],
+      [
+        "L9507",
+        "texto integral"
+      ],
+      [
+        "L13300",
+        "texto integral"
+      ],
+      [
+        "L4717",
+        "texto consolidado integral"
+      ]
+    ],
+    "G1-CON-10": [
+      [
+        "CF",
+        "arts. 14 a 17; art. 29, XII e XIII; art. 61, § 2º"
+      ]
+    ],
+    "G1-CON-11": [
+      [
+        "CF",
+        "art. 5º, §§ 2º a 4º; art. 109, V-A e § 5º"
+      ]
+    ],
+    "G1-CON-12": [
+      [
+        "CF",
+        "arts. 18 a 36"
+      ]
+    ],
+    "G1-CON-13": [
+      [
+        "CF",
+        "arts. 37 a 43"
+      ]
+    ],
+    "G1-CON-14": [
+      [
+        "CF",
+        "art. 2º e arts. 44 a 135"
+      ]
+    ],
+    "G1-CON-15": [
+      [
+        "CF",
+        "arts. 44 a 75"
+      ]
+    ],
+    "G1-CON-16": [
+      [
+        "CF",
+        "arts. 62 e 76 a 91"
+      ]
+    ],
+    "G1-CON-17": [
+      [
+        "CF",
+        "arts. 92 a 126; 102; 103-A e 103-B"
+      ]
+    ],
+    "G1-CON-18": [
+      [
+        "CF",
+        "arts. 127 a 135"
+      ]
+    ],
+    "G1-CON-19": [
+      [
+        "CF",
+        "arts. 136 a 144"
+      ]
+    ],
+    "G1-CON-20": [
+      [
+        "CF",
+        "arts. 145 a 162"
+      ]
+    ],
+    "G1-CON-21": [
+      [
+        "CF",
+        "arts. 163 a 169"
+      ]
+    ],
+    "G1-CON-22": [
+      [
+        "CF",
+        "arts. 170 a 181"
+      ]
+    ],
+    "G1-CON-23": [
+      [
+        "CF",
+        "arts. 182 a 191; 215 e 216; 231 e 232; ADCT, art. 68"
+      ]
+    ],
+    "G1-CON-24": [
+      [
+        "CF",
+        "art. 192"
+      ]
+    ],
+    "G1-CON-25": [
+      [
+        "CF",
+        "arts. 193 a 232"
+      ]
+    ],
+    "G1-CON-26": [
+      [
+        "CF",
+        "arts. 194 a 202"
+      ]
+    ],
+    "G1-CON-27": [
+      [
+        "CF",
+        "arts. 196 a 200"
+      ]
+    ],
+    "G1-CON-28": [
+      [
+        "CF",
+        "art. 6º e arts. 203 e 204"
+      ]
+    ],
+    "G1-CON-29": [
+      [
+        "CF",
+        "arts. 205 a 214"
+      ]
+    ],
+    "G1-CON-30": [
+      [
+        "CF",
+        "arts. 215, 216 e 216-A"
+      ]
+    ],
+    "G1-CON-31": [
+      [
+        "CF",
+        "art. 217"
+      ]
+    ],
+    "G1-CON-32": [
+      [
+        "CF",
+        "arts. 218 a 219-B"
+      ]
+    ],
+    "G1-CON-33": [
+      [
+        "CF",
+        "arts. 220 a 224"
+      ]
+    ],
+    "G1-CON-34": [
+      [
+        "CF",
+        "art. 225"
+      ]
+    ],
+    "G1-CON-35": [
+      [
+        "CF",
+        "art. 5º, XXXII; art. 170, V; ADCT, art. 48"
+      ]
+    ],
+    "G1-CON-36": [
+      [
+        "CF",
+        "arts. 226 a 230"
+      ]
+    ],
+    "G1-CON-37": [
+      [
+        "CF",
+        "arts. 215 e 216; 231 e 232; ADCT, art. 68"
+      ]
+    ],
+    "G1-CON-39": [
+      [
+        "CF",
+        "art. 5º; art. 37, § 6º; ADCT, art. 8º"
+      ]
+    ],
+    "G1-CON-40": [
+      [
+        "CF",
+        "arts. 233 a 250 e ADCT"
+      ]
+    ],
+    "G1-CON-41": [
+      [
+        "CF",
+        "texto constitucional vigente integral"
+      ],
+      [
+        "CERN",
+        "texto estadual vigente integral, com ênfase no art. 89"
+      ]
+    ],
+    "G1-ADM-03": [
+      [
+        "CF",
+        "art. 37"
+      ],
+      [
+        "LAI",
+        "arts. 3º a 32"
+      ],
+      [
+        "LGPD",
+        "arts. 1º a 32"
+      ]
+    ],
+    "G1-ADM-04": [
+      [
+        "L9784",
+        "arts. 1º a 69, com ênfase nos arts. 2º, 50 e 53 a 55"
+      ]
+    ],
+    "G1-ADM-05": [
+      [
+        "CF",
+        "arts. 5º, II, e 37"
+      ],
+      [
+        "L9784",
+        "arts. 2º, 53 a 55 e 68"
+      ]
+    ],
+    "G1-ADM-06": [
+      [
+        "CF",
+        "arts. 37 a 41"
+      ]
+    ],
+    "G1-ADM-07": [
+      [
+        "CF",
+        "art. 175"
+      ],
+      [
+        "L13460",
+        "texto integral"
+      ],
+      [
+        "L8987",
+        "arts. 1º a 40"
+      ]
+    ],
+    "G1-ADM-08": [
+      [
+        "CF",
+        "art. 37, XIX e XX; art. 175"
+      ],
+      [
+        "L11107",
+        "texto consolidado integral"
+      ],
+      [
+        "L11079",
+        "texto consolidado integral"
+      ],
+      [
+        "L8987",
+        "texto consolidado integral"
+      ],
+      [
+        "L13303",
+        "arts. 1º a 27"
+      ],
+      [
+        "L13019",
+        "arts. 1º a 3º e conceitos aplicáveis"
+      ]
+    ],
+    "G1-ADM-09": [
+      [
+        "L14133",
+        "arts. 1º a 71 e 155 a 168"
+      ]
+    ],
+    "G1-ADM-10": [
+      [
+        "L14133",
+        "arts. 89 a 154"
+      ]
+    ],
+    "G1-ADM-11": [
+      [
+        "CC",
+        "arts. 98 a 103"
+      ],
+      [
+        "CF",
+        "arts. 20 e 26"
+      ]
+    ],
+    "G1-ADM-12": [
+      [
+        "CF",
+        "art. 5º, XXIV e XXV; arts. 182 a 191"
+      ],
+      [
+        "L10257",
+        "arts. 2º, 4º a 8º e 40 a 45"
+      ]
+    ],
+    "G1-ADM-13": [
+      [
+        "CF",
+        "art. 37, § 6º"
+      ],
+      [
+        "CC",
+        "arts. 43, 186 a 188 e 927 a 954"
+      ]
+    ],
+    "G1-ADM-14": [
+      [
+        "CF",
+        "arts. 70 a 75"
+      ],
+      [
+        "L8429",
+        "texto consolidado integral"
+      ]
+    ],
+    "G1-PID-03": [
+      [
+        "CF",
+        "art. 5º, LXXIV, e arts. 134 e 135"
+      ],
+      [
+        "CERN",
+        "art. 89"
+      ]
+    ],
+    "G1-PID-04": [
+      [
+        "CF",
+        "arts. 127 a 135"
+      ],
+      [
+        "LC80",
+        "arts. 1º a 4º-A e dispositivos sobre garantias e prerrogativas"
+      ]
+    ],
+    "G1-PID-06": [
+      [
+        "CF",
+        "art. 134, §§ 1º a 4º"
+      ],
+      [
+        "LC80",
+        "arts. 1º a 4º-A"
+      ]
+    ],
+    "G1-PID-07": [
+      [
+        "CPC",
+        "arts. 98 a 102"
+      ],
+      [
+        "L1060",
+        "dispositivos não revogados"
+      ],
+      [
+        "LC80",
+        "art. 4º, § 8º"
+      ]
+    ],
+    "G1-PID-08": [
+      [
+        "LC80",
+        "arts. 4º, 44, 89 e 128"
+      ],
+      [
+        "CPC",
+        "arts. 72, II, e 186"
+      ]
+    ],
+    "G1-PID-09": [
+      [
+        "CF",
+        "arts. 134 e 135"
+      ],
+      [
+        "LC80",
+        "Título IV, a partir do art. 97"
+      ],
+      [
+        "LC251",
+        "texto vigente sobre organização, carreira e regime jurídico"
+      ]
+    ],
+    "G1-PID-10": [
+      [
+        "LC251",
+        "texto vigente integral; conferir alterações no catálogo oficial da ALRN"
+      ],
+      [
+        "LC80",
+        "Título IV, a partir do art. 97"
+      ],
+      [
+        "CERN",
+        "art. 89"
+      ]
+    ],
+    "G2-PEN-02": [
+      [
+        "CP",
+        "arts. 1º a 12"
+      ]
+    ],
+    "G2-PEN-06": [
+      [
+        "CP",
+        "arts. 13 a 17"
+      ]
+    ],
+    "G2-PEN-07": [
+      [
+        "CP",
+        "arts. 13, 18 e 19"
+      ]
+    ],
+    "G2-PEN-08": [
+      [
+        "CP",
+        "arts. 23 a 25"
+      ]
+    ],
+    "G2-PEN-09": [
+      [
+        "CP",
+        "arts. 26 a 28"
+      ]
+    ],
+    "G2-PEN-10": [
+      [
+        "CP",
+        "arts. 14 a 22; 29 a 31; 69 a 76"
+      ]
+    ],
+    "G2-PEN-12": [
+      [
+        "CP",
+        "arts. 32 a 82"
+      ]
+    ],
+    "G2-PEN-13": [
+      [
+        "CP",
+        "arts. 26 e 96 a 99"
+      ],
+      [
+        "L10216",
+        "texto integral"
+      ],
+      [
+        "L13146",
+        "arts. 1º a 13 e 84 a 87"
+      ]
+    ],
+    "G2-PEN-14": [
+      [
+        "CP",
+        "arts. 91 a 95 e 107 a 120"
+      ]
+    ],
+    "G2-PEN-15": [
+      [
+        "CP",
+        "arts. 121 a 359-T"
+      ]
+    ],
+    "G2-PEN-16": [
+      [
+        "L12850",
+        "texto consolidado integral"
+      ],
+      [
+        "L9503",
+        "arts. 291 a 312-B"
+      ],
+      [
+        "L9605",
+        "arts. 2º a 79-A"
+      ],
+      [
+        "L10826",
+        "arts. 12 a 21"
+      ],
+      [
+        "D9847",
+        "referência expressa do programa; conferir apenas os dispositivos ainda vigentes"
+      ],
+      [
+        "D11615",
+        "regulamentação vigente correlata"
+      ],
+      [
+        "L8072",
+        "texto consolidado integral"
+      ],
+      [
+        "L11101",
+        "arts. 168 a 182"
+      ],
+      [
+        "L11343",
+        "arts. 27 a 48"
+      ],
+      [
+        "CDC",
+        "arts. 61 a 80"
+      ],
+      [
+        "L1521",
+        "texto integral"
+      ],
+      [
+        "L8137",
+        "arts. 1º a 3º"
+      ],
+      [
+        "L9249",
+        "art. 34"
+      ],
+      [
+        "L9430",
+        "arts. 83 e 83-A"
+      ],
+      [
+        "L10684",
+        "art. 9º"
+      ],
+      [
+        "L9613",
+        "texto consolidado integral"
+      ],
+      [
+        "L7716",
+        "texto consolidado integral"
+      ],
+      [
+        "L6001",
+        "arts. 58 e 59"
+      ],
+      [
+        "L13869",
+        "texto consolidado integral"
+      ],
+      [
+        "L14133",
+        "art. 178"
+      ],
+      [
+        "CP",
+        "arts. 337-E a 337-P"
+      ],
+      [
+        "L10741",
+        "arts. 93 a 108"
+      ],
+      [
+        "L6766",
+        "arts. 50 a 52, no texto consolidado"
+      ],
+      [
+        "L11340",
+        "art. 24-A e disposições penais"
+      ],
+      [
+        "ECA",
+        "arts. 225 a 244-B"
+      ],
+      [
+        "L14344",
+        "texto consolidado integral"
+      ],
+      [
+        "DL3688",
+        "texto consolidado integral"
+      ],
+      [
+        "L9455",
+        "texto integral"
+      ],
+      [
+        "L12847",
+        "texto consolidado integral"
+      ],
+      [
+        "D40",
+        "texto integral"
+      ],
+      [
+        "D98386",
+        "texto integral"
+      ],
+      [
+        "ISTAMBUL",
+        "edição revisada de 2022"
+      ],
+      [
+        "CNJ414",
+        "texto consolidado integral"
+      ]
+    ],
+    "G2-DPP-01": [
+      [
+        "CF",
+        "art. 5º, incisos LIV a LXVIII"
+      ],
+      [
+        "CPP",
+        "arts. 1º a 3º-F"
+      ]
+    ],
+    "G2-DPP-06": [
+      [
+        "LC80",
+        "prerrogativas e funções institucionais"
+      ],
+      [
+        "CPP",
+        "arts. 261 a 267"
+      ]
+    ],
+    "G2-DPP-07": [
+      [
+        "CPP",
+        "art. 3º-A"
+      ]
+    ],
+    "G2-DPP-08": [
+      [
+        "CPP",
+        "arts. 1º a 3º"
+      ]
+    ],
+    "G2-DPP-09": [
+      [
+        "CPP",
+        "arts. 4º a 23 e 3º-A a 3º-F"
+      ]
+    ],
+    "G2-DPP-10": [
+      [
+        "CPP",
+        "arts. 155 a 250"
+      ],
+      [
+        "L9296",
+        "texto integral"
+      ],
+      [
+        "L12850",
+        "arts. 3º-A a 7º"
+      ]
+    ],
+    "G2-DPP-11": [
+      [
+        "CPP",
+        "arts. 125 a 144-A e 282 a 350"
+      ],
+      [
+        "L7960",
+        "texto integral"
+      ]
+    ],
+    "G2-DPP-12": [
+      [
+        "CPP",
+        "arts. 24 a 62"
+      ]
+    ],
+    "G2-DPP-13": [
+      [
+        "CPP",
+        "arts. 63 a 91"
+      ]
+    ],
+    "G2-DPP-14": [
+      [
+        "CPP",
+        "art. 28-A e arts. 251 a 281"
+      ]
+    ],
+    "G2-DPP-16": [
+      [
+        "CPP",
+        "arts. 261 a 267"
+      ]
+    ],
+    "G2-DPP-17": [
+      [
+        "CPP",
+        "arts. 92 a 154"
+      ]
+    ],
+    "G2-DPP-18": [
+      [
+        "CPP",
+        "arts. 351 a 372"
+      ]
+    ],
+    "G2-DPP-19": [
+      [
+        "L9099",
+        "art. 89"
+      ]
+    ],
+    "G2-DPP-20": [
+      [
+        "CPP",
+        "arts. 381 a 393 e 492 a 512"
+      ]
+    ],
+    "G2-DPP-21": [
+      [
+        "CPP",
+        "arts. 394 a 497"
+      ],
+      [
+        "L9099",
+        "arts. 60 a 92"
+      ]
+    ],
+    "G2-DPP-22": [
+      [
+        "CPP",
+        "arts. 563 a 573"
+      ]
+    ],
+    "G2-DPP-23": [
+      [
+        "CPP",
+        "arts. 574 a 667"
+      ],
+      [
+        "CF",
+        "art. 5º, LXVIII e LXIX"
+      ]
+    ],
+    "G2-DPP-25": [
+      [
+        "L13869",
+        "disposições penais e processuais"
+      ],
+      [
+        "L8072",
+        "art. 2º"
+      ],
+      [
+        "L12850",
+        "arts. 3º-A a 23"
+      ],
+      [
+        "L9455",
+        "art. 1º, §§ 5º a 7º"
+      ],
+      [
+        "L9099",
+        "arts. 60 a 92"
+      ],
+      [
+        "L9807",
+        "texto consolidado integral"
+      ],
+      [
+        "L10826",
+        "disposições processuais"
+      ],
+      [
+        "L11343",
+        "arts. 48 a 59"
+      ],
+      [
+        "L11340",
+        "arts. 12 a 24-A"
+      ],
+      [
+        "L9503",
+        "arts. 291 a 301"
+      ],
+      [
+        "L9605",
+        "arts. 26 a 28"
+      ],
+      [
+        "L7716",
+        "disposições processuais"
+      ],
+      [
+        "CDC",
+        "arts. 61 a 80"
+      ],
+      [
+        "L10741",
+        "arts. 94 a 96"
+      ],
+      [
+        "L13146",
+        "arts. 79 a 83"
+      ]
+    ],
+    "G2-DEP-02": [
+      [
+        "LEP",
+        "arts. 1º a 4º"
+      ]
+    ],
+    "G2-DEP-03": [
+      [
+        "LEP",
+        "arts. 5º a 41"
+      ]
+    ],
+    "G2-DEP-04": [
+      [
+        "LEP",
+        "arts. 38 a 60"
+      ]
+    ],
+    "G2-DEP-05": [
+      [
+        "LEP",
+        "arts. 61 a 104"
+      ]
+    ],
+    "G2-DEP-06": [
+      [
+        "LEP",
+        "arts. 105 a 179"
+      ]
+    ],
+    "G2-DEP-07": [
+      [
+        "LEP",
+        "arts. 111 a 119"
+      ]
+    ],
+    "G2-DEP-08": [
+      [
+        "LEP",
+        "arts. 120 a 125; 126 a 130; 131 a 146"
+      ],
+      [
+        "CP",
+        "arts. 42 e 83 a 90"
+      ]
+    ],
+    "G2-DEP-09": [
+      [
+        "LEP",
+        "arts. 86 e 103 e dispositivos sobre transferência"
+      ],
+      [
+        "CNJ425",
+        "texto consolidado integral"
+      ],
+      [
+        "L11671",
+        "texto consolidado integral"
+      ]
+    ],
+    "G2-DEP-10": [
+      [
+        "LEP",
+        "arts. 146-B a 146-D"
+      ]
+    ],
+    "G2-DEP-11": [
+      [
+        "CP",
+        "arts. 107 a 120"
+      ],
+      [
+        "LEP",
+        "arts. 187 a 193"
+      ]
+    ],
+    "G2-DEP-13": [
+      [
+        "LEP",
+        "arts. 171 a 197"
+      ],
+      [
+        "L10216",
+        "texto integral"
+      ]
+    ],
+    "G3-CIV-08": [
+      [
+        "LINDB",
+        "arts. 1º a 30"
+      ]
+    ],
+    "G3-CIV-09": [
+      [
+        "CC",
+        "arts. 1º a 39 e 70 a 78"
+      ]
+    ],
+    "G3-CIV-10": [
+      [
+        "CC",
+        "arts. 40 a 69"
+      ]
+    ],
+    "G3-CIV-11": [
+      [
+        "CC",
+        "arts. 79 a 103"
+      ]
+    ],
+    "G3-CIV-12": [
+      [
+        "CC",
+        "arts. 104 a 184"
+      ]
+    ],
+    "G3-CIV-13": [
+      [
+        "CC",
+        "arts. 186 e 188"
+      ]
+    ],
+    "G3-CIV-14": [
+      [
+        "CC",
+        "art. 187"
+      ]
+    ],
+    "G3-CIV-15": [
+      [
+        "CC",
+        "arts. 189 a 211"
+      ]
+    ],
+    "G3-CIV-16": [
+      [
+        "CC",
+        "arts. 212 a 232"
+      ]
+    ],
+    "G3-CIV-17": [
+      [
+        "CC",
+        "arts. 233 a 420"
+      ]
+    ],
+    "G3-CIV-18": [
+      [
+        "CC",
+        "arts. 421 a 480"
+      ]
+    ],
+    "G3-CIV-19": [
+      [
+        "CC",
+        "arts. 481 a 853"
+      ]
+    ],
+    "G3-CIV-20": [
+      [
+        "CC",
+        "arts. 854 a 886"
+      ]
+    ],
+    "G3-CIV-21": [
+      [
+        "CC",
+        "arts. 927 a 954"
+      ]
+    ],
+    "G3-CIV-22": [
+      [
+        "CC",
+        "arts. 955 a 965"
+      ]
+    ],
+    "G3-CIV-23": [
+      [
+        "CC",
+        "arts. 966 a 1.195"
+      ]
+    ],
+    "G3-CIV-24": [
+      [
+        "CC",
+        "arts. 1.196 a 1.224"
+      ]
+    ],
+    "G3-CIV-25": [
+      [
+        "CC",
+        "arts. 1.225 a 1.276"
+      ],
+      [
+        "CF",
+        "art. 5º, XXII e XXIII; arts. 182 a 191"
+      ]
+    ],
+    "G3-CIV-26": [
+      [
+        "CC",
+        "arts. 1.277 a 1.411"
+      ]
+    ],
+    "G3-CIV-27": [
+      [
+        "CC",
+        "arts. 1.369 a 1.416"
+      ]
+    ],
+    "G3-CIV-28": [
+      [
+        "CC",
+        "arts. 1.417 e 1.418"
+      ]
+    ],
+    "G3-CIV-29": [
+      [
+        "CC",
+        "arts. 1.419 a 1.505"
+      ]
+    ],
+    "G3-CIV-30": [
+      [
+        "CF",
+        "art. 226"
+      ],
+      [
+        "CC",
+        "arts. 1.511 a 1.727"
+      ]
+    ],
+    "G3-CIV-31": [
+      [
+        "CC",
+        "arts. 1.511 a 1.722"
+      ]
+    ],
+    "G3-CIV-32": [
+      [
+        "CC",
+        "arts. 1.591 a 1.638"
+      ],
+      [
+        "ECA",
+        "arts. 39 a 52-D"
+      ]
+    ],
+    "G3-CIV-33": [
+      [
+        "CC",
+        "arts. 1.583 a 1.590 e 1.630 a 1.638"
+      ]
+    ],
+    "G3-CIV-34": [
+      [
+        "CC",
+        "arts. 1.723 a 1.727"
+      ]
+    ],
+    "G3-CIV-35": [
+      [
+        "CC",
+        "arts. 1.694 a 1.710 e 1.728 a 1.783-A"
+      ]
+    ],
+    "G3-CIV-36": [
+      [
+        "CC",
+        "arts. 1.784 a 2.027"
+      ]
+    ],
+    "G3-CIV-37": [
+      [
+        "L6015",
+        "texto consolidado integral"
+      ]
+    ],
+    "G3-CIV-38": [
+      [
+        "L8245",
+        "texto consolidado integral"
+      ]
+    ],
+    "G3-CIV-39": [
+      [
+        "L10257",
+        "texto consolidado integral"
+      ]
+    ],
+    "G3-CIV-40": [
+      [
+        "L11340",
+        "texto consolidado integral"
+      ]
+    ],
+    "G3-CIV-41": [
+      [
+        "L8009",
+        "texto integral"
+      ]
+    ],
+    "G3-CIV-42": [
+      [
+        "L5478",
+        "texto consolidado integral"
+      ]
+    ],
+    "G3-CIV-43": [
+      [
+        "L11804",
+        "texto integral"
+      ]
+    ],
+    "G3-CIV-44": [
+      [
+        "L6766",
+        "texto consolidado integral"
+      ]
+    ],
+    "G3-CIV-45": [
+      [
+        "L13874",
+        "texto integral"
+      ]
+    ],
+    "G3-CIV-46": [
+      [
+        "LGPD",
+        "texto consolidado integral"
+      ]
+    ],
+    "G3-DPC-01": [
+      [
+        "CPC",
+        "texto consolidado integral"
+      ]
+    ],
+    "G3-DPC-02": [
+      [
+        "CF",
+        "art. 5º, XXXV, LIV e LV"
+      ],
+      [
+        "CPC",
+        "arts. 1º a 12"
+      ]
+    ],
+    "G3-DPC-03": [
+      [
+        "CPC",
+        "arts. 1º a 15"
+      ]
+    ],
+    "G3-DPC-04": [
+      [
+        "CPC",
+        "arts. 16 a 69"
+      ],
+      [
+        "L13140",
+        "texto integral"
+      ]
+    ],
+    "G3-DPC-05": [
+      [
+        "CPC",
+        "arts. 17 a 20 e 327"
+      ]
+    ],
+    "G3-DPC-06": [
+      [
+        "CPC",
+        "arts. 188 a 293"
+      ]
+    ],
+    "G3-DPC-07": [
+      [
+        "CPC",
+        "arts. 70 a 187"
+      ]
+    ],
+    "G3-DPC-08": [
+      [
+        "CPC",
+        "arts. 294 a 311"
+      ]
+    ],
+    "G3-DPC-09": [
+      [
+        "CPC",
+        "arts. 318 a 512 e procedimentos especiais aplicáveis"
+      ]
+    ],
+    "G3-DPC-10": [
+      [
+        "CPC",
+        "arts. 513 a 538"
+      ]
+    ],
+    "G3-DPC-11": [
+      [
+        "CPC",
+        "arts. 369 a 484"
+      ]
+    ],
+    "G3-DPC-12": [
+      [
+        "ECA",
+        "normas processuais e medidas tutelares"
+      ],
+      [
+        "L10741",
+        "normas processuais e medidas tutelares"
+      ],
+      [
+        "L10257",
+        "instrumentos processuais"
+      ],
+      [
+        "L13146",
+        "normas processuais"
+      ],
+      [
+        "CDC",
+        "arts. 81 a 104"
+      ],
+      [
+        "L11340",
+        "medidas protetivas e procedimento"
+      ]
+    ],
+    "G3-DPC-13": [
+      [
+        "CPC",
+        "arts. 497 a 501 e 536 e 537"
+      ]
+    ],
+    "G3-DPC-14": [
+      [
+        "CPC",
+        "arts. 771 a 925"
+      ]
+    ],
+    "G3-DPC-15": [
+      [
+        "CPC",
+        "arts. 926 a 993"
+      ]
+    ],
+    "G3-DPC-16": [
+      [
+        "CPC",
+        "arts. 966 a 975 e 994 a 1.044"
+      ]
+    ],
+    "G3-DPC-17": [
+      [
+        "CPC",
+        "arts. 72, II; 91; 186; 287, parágrafo único; 341, parágrafo único; 455, § 4º, IV; 554, § 1º"
+      ],
+      [
+        "LC80",
+        "arts. 44, 89 e 128"
+      ]
+    ],
+    "G3-DPC-18": [
+      [
+        "CPC",
+        "arts. 91; 183; 496; 534 e 535; 910"
+      ],
+      [
+        "CF",
+        "art. 100"
+      ]
+    ],
+    "G3-DPC-19": [
+      [
+        "CPC",
+        "arts. 246, § 3º, e 259, I"
+      ],
+      [
+        "CC",
+        "arts. 1.238 a 1.244"
+      ],
+      [
+        "L10257",
+        "art. 10"
+      ],
+      [
+        "L6015",
+        "art. 216-A"
+      ]
+    ],
+    "G3-DPC-21": [
+      [
+        "L9868",
+        "texto consolidado integral"
+      ],
+      [
+        "L9882",
+        "texto integral"
+      ],
+      [
+        "CF",
+        "arts. 102, I, 'a', e § 1º; 103"
+      ]
+    ],
+    "G3-DPC-22": [
+      [
+        "CPP",
+        "arts. 647 a 667"
+      ],
+      [
+        "L9507",
+        "texto integral"
+      ],
+      [
+        "L13300",
+        "texto integral"
+      ],
+      [
+        "CF",
+        "art. 5º, LXVIII, LXXI e LXXII"
+      ]
+    ],
+    "G3-DPC-23": [
+      [
+        "CPC",
+        "arts. 988 a 993"
+      ],
+      [
+        "CF",
+        "arts. 102, I, 'l'; 103-A, § 3º; 105, I, 'f'"
+      ]
+    ],
+    "G3-DPC-24": [
+      [
+        "L4717",
+        "texto consolidado integral"
+      ],
+      [
+        "CF",
+        "art. 5º, LXXIII"
+      ]
+    ],
+    "G3-DPC-25": [
+      [
+        "L12016",
+        "texto consolidado integral"
+      ],
+      [
+        "CF",
+        "art. 5º, LXIX e LXX"
+      ]
+    ],
+    "G3-DPC-26": [
+      [
+        "L8245",
+        "arts. 9º a 25 e 58 a 75"
+      ],
+      [
+        "CPC",
+        "arts. 539 a 549"
+      ]
+    ],
+    "G3-DPC-27": [
+      [
+        "CPC",
+        "arts. 554 a 568"
+      ]
+    ],
+    "G3-DPC-28": [
+      [
+        "CPC",
+        "arts. 528 a 533 e 911 a 913"
+      ],
+      [
+        "L5478",
+        "texto consolidado integral"
+      ]
+    ],
+    "G3-DPC-30": [
+      [
+        "CPC",
+        "arts. 731 a 734"
+      ]
+    ],
+    "G3-DPC-31": [
+      [
+        "CPC",
+        "arts. 610 a 673"
+      ]
+    ],
+    "G3-DPC-32": [
+      [
+        "L9099",
+        "arts. 1º a 59"
+      ]
+    ],
+    "G3-DPC-33": [
+      [
+        "CPC",
+        "arts. 98 a 102"
+      ]
+    ],
+    "G3-DPC-34": [
+      [
+        "L11419",
+        "texto consolidado integral"
+      ]
+    ],
+    "G3-CDC-01": [
+      [
+        "CDC",
+        "arts. 1º a 60"
+      ]
+    ],
+    "G3-CDC-02": [
+      [
+        "CDC",
+        "arts. 61 a 80"
+      ]
+    ],
+    "G3-CDC-03": [
+      [
+        "CDC",
+        "arts. 81 a 104"
+      ]
+    ],
+    "G3-CDC-04": [
+      [
+        "CDC",
+        "arts. 105 e 106"
+      ]
+    ],
+    "G3-CDC-05": [
+      [
+        "CDC",
+        "art. 107"
+      ]
+    ],
+    "G3-CDC-06": [
+      [
+        "CDC",
+        "texto consolidado integral"
+      ]
+    ],
+    "G3-CDC-07": [
+      [
+        "D2181",
+        "texto integral"
+      ]
+    ],
+    "G4-DHU-02": [
+      [
+        "CF",
+        "art. 5º, §§ 2º a 4º; art. 109, V-A e § 5º"
+      ]
+    ],
+    "G4-DHU-09": [
+      [
+        "CF",
+        "arts. 3º, IV, e 5º, XLII"
+      ],
+      [
+        "L12288",
+        "texto consolidado integral"
+      ],
+      [
+        "L7716",
+        "texto consolidado integral"
+      ]
+    ],
+    "G4-DHU-10": [
+      [
+        "L7853",
+        "texto consolidado integral"
+      ],
+      [
+        "L13146",
+        "texto consolidado integral"
+      ]
+    ],
+    "G4-DHU-12": [
+      [
+        "CF",
+        "arts. 1º, III; 3º e 6º"
+      ],
+      [
+        "D7053",
+        "arts. 1º a 7º"
+      ],
+      [
+        "L14821",
+        "arts. 1º a 32"
+      ],
+      [
+        "CNJ425",
+        "texto consolidado integral"
+      ]
+    ],
+    "G4-DCO-01": [
+      [
+        "CF",
+        "art. 5º, XXI, LXX e LXXIII; art. 129, III; art. 134"
+      ],
+      [
+        "L7347",
+        "arts. 1º a 21"
+      ],
+      [
+        "CDC",
+        "arts. 81 a 104"
+      ]
+    ],
+    "G4-DCO-02": [
+      [
+        "L4717",
+        "texto consolidado integral"
+      ],
+      [
+        "L7347",
+        "texto consolidado integral"
+      ],
+      [
+        "CDC",
+        "arts. 81 a 104"
+      ]
+    ],
+    "G4-DCO-03": [
+      [
+        "CDC",
+        "art. 81, parágrafo único"
+      ]
+    ],
+    "G4-DCO-04": [
+      [
+        "L7347",
+        "art. 5º"
+      ],
+      [
+        "CDC",
+        "art. 82"
+      ],
+      [
+        "LC80",
+        "art. 4º, VII, VIII, X e XI"
+      ]
+    ],
+    "G4-DCO-05": [
+      [
+        "L7347",
+        "art. 2º"
+      ],
+      [
+        "CDC",
+        "art. 93"
+      ]
+    ],
+    "G4-DCO-06": [
+      [
+        "CPC",
+        "arts. 113 a 118"
+      ]
+    ],
+    "G4-DCO-07": [
+      [
+        "CDC",
+        "art. 6º, VIII"
+      ],
+      [
+        "CPC",
+        "art. 373"
+      ]
+    ],
+    "G4-DCO-08": [
+      [
+        "CDC",
+        "art. 104"
+      ],
+      [
+        "CPC",
+        "arts. 55 a 59"
+      ]
+    ],
+    "G4-DCO-09": [
+      [
+        "L7347",
+        "art. 12"
+      ],
+      [
+        "CPC",
+        "arts. 294 a 311"
+      ]
+    ],
+    "G4-DCO-10": [
+      [
+        "L7347",
+        "arts. 3º e 11"
+      ]
+    ],
+    "G4-DCO-11": [
+      [
+        "L7347",
+        "art. 14"
+      ],
+      [
+        "CPC",
+        "arts. 994 a 1.044"
+      ]
+    ],
+    "G4-DCO-12": [
+      [
+        "CDC",
+        "arts. 103 e 104"
+      ]
+    ],
+    "G4-DCO-13": [
+      [
+        "CDC",
+        "arts. 95 a 100"
+      ]
+    ],
+    "G4-DCO-14": [
+      [
+        "L9008",
+        "texto integral"
+      ]
+    ],
+    "G4-DCO-15": [
+      [
+        "L7347",
+        "art. 5º, § 6º"
+      ]
+    ],
+    "G4-DCO-20": [
+      [
+        "CF",
+        "arts. 6º e 196 a 214"
+      ]
+    ],
+    "G4-DCO-21": [
+      [
+        "CF",
+        "arts. 196 a 200"
+      ],
+      [
+        "L8080",
+        "texto consolidado integral"
+      ],
+      [
+        "L8142",
+        "texto integral"
+      ],
+      [
+        "L9656",
+        "texto consolidado integral"
+      ]
+    ],
+    "G4-DCO-22": [
+      [
+        "CF",
+        "arts. 6º e 182 e 183"
+      ],
+      [
+        "L10257",
+        "texto consolidado integral"
+      ],
+      [
+        "L13465",
+        "dispositivos sobre Reurb"
+      ]
+    ],
+    "G4-DCO-23": [
+      [
+        "CF",
+        "arts. 183, 186 e 191"
+      ]
+    ],
+    "G4-DCO-26": [
+      [
+        "CF",
+        "art. 6º"
+      ],
+      [
+        "L11346",
+        "texto integral"
+      ]
+    ],
+    "G4-DCO-27": [
+      [
+        "CF",
+        "art. 6º"
+      ],
+      [
+        "L12587",
+        "texto consolidado integral"
+      ],
+      [
+        "L8987",
+        "dispositivos sobre serviço adequado e direitos dos usuários"
+      ]
+    ],
+    "G4-DCO-28": [
+      [
+        "L7853",
+        "texto consolidado integral"
+      ],
+      [
+        "L13146",
+        "texto consolidado integral"
+      ]
+    ],
+    "G4-DCO-29": [
+      [
+        "L10741",
+        "texto consolidado integral"
+      ]
+    ],
+    "G4-DCO-31": [
+      [
+        "CF",
+        "arts. 205 a 214"
+      ],
+      [
+        "L9394",
+        "texto consolidado integral"
+      ]
+    ],
+    "G4-DCO-32": [
+      [
+        "CF",
+        "arts. 215 e 216"
+      ]
+    ],
+    "G4-DCO-35": [
+      [
+        "D678",
+        "texto integral"
+      ],
+      [
+        "D592",
+        "texto integral"
+      ],
+      [
+        "D591",
+        "texto integral"
+      ],
+      [
+        "D6949",
+        "texto integral"
+      ],
+      [
+        "D99710",
+        "texto integral"
+      ],
+      [
+        "D65810",
+        "texto integral"
+      ],
+      [
+        "D4377",
+        "texto integral"
+      ],
+      [
+        "LC80",
+        "art. 4º, VII, VIII, X e XI"
+      ]
+    ],
+    "G4-DCA-01": [
+      [
+        "CF",
+        "art. 227"
+      ],
+      [
+        "ECA",
+        "arts. 1º a 69"
+      ]
+    ],
+    "G4-DCA-02": [
+      [
+        "ECA",
+        "arts. 86 a 97"
+      ]
+    ],
+    "G4-DCA-03": [
+      [
+        "ECA",
+        "arts. 131 a 140"
+      ]
+    ],
+    "G4-DCA-04": [
+      [
+        "ECA",
+        "arts. 98 a 102 e 28 a 52-D"
+      ]
+    ],
+    "G4-DCA-05": [
+      [
+        "ECA",
+        "arts. 129 e 130"
+      ]
+    ],
+    "G4-DCA-06": [
+      [
+        "ECA",
+        "arts. 19 a 52-D e 155 a 163"
+      ]
+    ],
+    "G4-DCA-07": [
+      [
+        "ECA",
+        "arts. 103 a 128"
+      ]
+    ],
+    "G4-DCA-08": [
+      [
+        "ECA",
+        "arts. 141 a 151"
+      ]
+    ],
+    "G4-DCA-09": [
+      [
+        "ECA",
+        "arts. 152 a 197-E"
+      ]
+    ],
+    "G4-DCA-10": [
+      [
+        "ECA",
+        "arts. 198 a 199-E"
+      ]
+    ],
+    "G4-DCA-11": [
+      [
+        "ECA",
+        "arts. 200 a 205"
+      ]
+    ],
+    "G4-DCA-12": [
+      [
+        "ECA",
+        "arts. 206 e 207"
+      ]
+    ],
+    "G4-DCA-13": [
+      [
+        "ECA",
+        "arts. 208 a 224"
+      ]
+    ],
+    "G4-DCA-14": [
+      [
+        "ECA",
+        "arts. 225 a 258-C"
+      ]
+    ],
+    "G4-DCA-15": [
+      [
+        "L14344",
+        "texto integral"
+      ]
+    ],
+    "G4-DCA-16": [
+      [
+        "L13185",
+        "texto integral"
+      ]
+    ],
+    "G4-DCA-17": [
+      [
+        "CP",
+        "art. 128, II"
+      ],
+      [
+        "ECA",
+        "arts. 7º e 11"
+      ]
+    ],
+    "G4-DCA-18": [
+      [
+        "L13812",
+        "texto integral"
+      ]
+    ],
+    "G4-DCA-20": [
+      [
+        "L12594",
+        "texto consolidado integral"
+      ]
+    ],
+    "G4-DCA-22": [
+      [
+        "ECA",
+        "arts. 141 e 206"
+      ]
+    ],
+    "G1-CON-38": [
+      [
+        "CF",
+        "arts. 1º, III; 3º; 5º e 6º"
+      ],
+      [
+        "D7053",
+        "arts. 1º a 7º"
+      ],
+      [
+        "L14821",
+        "arts. 1º a 32"
+      ],
+      [
+        "CNJ425",
+        "texto consolidado integral"
+      ]
+    ],
+    "G1-PID-11": [
+      [
+        "LC80",
+        "arts. 3º-A e 4º, XI"
+      ]
+    ],
+    "G1-PID-12": [
+      [
+        "LC80",
+        "arts. 5º a 96"
+      ]
+    ],
+    "G2-PEN-05": [
+      [
+        "CF",
+        "arts. 1º, III; 4º, II; 5º, §§ 2º a 4º"
+      ],
+      [
+        "D592",
+        "arts. 6º a 15"
+      ],
+      [
+        "D678",
+        "arts. 4º a 10"
+      ]
+    ],
+    "G2-PEN-11": [
+      [
+        "CF",
+        "art. 5º, XLV a L; XLVII a XLIX"
+      ],
+      [
+        "CP",
+        "arts. 32 a 52"
+      ]
+    ],
+    "G2-DPP-02": [
+      [
+        "CF",
+        "art. 5º, IV, V, IX, X, XIV, LIV, LV e LVII; arts. 220 a 224"
+      ]
+    ],
+    "G2-DPP-03": [
+      [
+        "CF",
+        "arts. 3º, IV, e 5º, caput"
+      ],
+      [
+        "L11340",
+        "arts. 1º a 8º"
+      ],
+      [
+        "L12288",
+        "arts. 1º a 4º"
+      ]
+    ],
+    "G2-DPP-05": [
+      [
+        "CPP",
+        "arts. 158-A a 158-F e 240 a 250"
+      ],
+      [
+        "L12965",
+        "arts. 7º, 10 a 15 e 22 e 23"
+      ],
+      [
+        "LGPD",
+        "arts. 7º e 11"
+      ]
+    ],
+    "G2-DPP-24": [
+      [
+        "CNJ425",
+        "arts. 1º a 30"
+      ],
+      [
+        "CNJ287",
+        "arts. 1º a 15"
+      ],
+      [
+        "L13146",
+        "arts. 79 a 87"
+      ],
+      [
+        "D7053",
+        "arts. 1º a 7º"
+      ]
+    ],
+    "G2-DPP-26": [
+      [
+        "CNJ425",
+        "texto consolidado integral"
+      ],
+      [
+        "CNJ287",
+        "texto integral"
+      ]
+    ],
+    "G2-DPP-27": [
+      [
+        "CNJ487",
+        "texto consolidado integral"
+      ],
+      [
+        "L10216",
+        "texto consolidado integral"
+      ]
+    ],
+    "G2-DPP-28": [
+      [
+        "CNPCP14",
+        "arts. 1º a 64"
+      ]
+    ],
+    "G2-DPP-29": [
+      [
+        "RISTF",
+        "texto vigente integral"
+      ],
+      [
+        "RISTJ",
+        "texto vigente integral"
+      ]
+    ],
+    "G2-DEP-01": [
+      [
+        "CF",
+        "art. 5º, XLV a L"
+      ],
+      [
+        "LEP",
+        "arts. 1º a 4º"
+      ]
+    ],
+    "G2-DEP-12": [
+      [
+        "BANGKOK",
+        "regras 1 a 70"
+      ],
+      [
+        "MANDELA",
+        "regras 1 a 122"
+      ],
+      [
+        "LEP",
+        "arts. 14, § 3º; 82, § 1º; 83, §§ 2º e 3º; 89"
+      ]
+    ],
+    "G3-CIV-03": [
+      [
+        "CF",
+        "arts. 1º, III; 3º; 5º; 170, III; 226 a 230"
+      ]
+    ],
+    "G3-CIV-04": [
+      [
+        "CC",
+        "arts. 1º a 5º, 113, 187, 421 e 422"
+      ]
+    ],
+    "G3-CIV-05": [
+      [
+        "CC",
+        "arts. 113, 187, 421, 422 e 1.228, § 1º"
+      ]
+    ],
+    "G3-CIV-06": [
+      [
+        "CC",
+        "arts. 113, 187, 421 e 422"
+      ]
+    ],
+    "G3-CIV-07": [
+      [
+        "CF",
+        "art. 5º, XXIII; arts. 170, III; 182 e 186"
+      ],
+      [
+        "CC",
+        "arts. 421 e 1.228, § 1º"
+      ]
+    ],
+    "G3-DPC-20": [
+      [
+        "L7347",
+        "texto consolidado integral"
+      ],
+      [
+        "CDC",
+        "arts. 81 a 104"
+      ],
+      [
+        "L4717",
+        "texto consolidado integral"
+      ],
+      [
+        "L12016",
+        "arts. 21 e 22"
+      ],
+      [
+        "LC80",
+        "art. 4º, VII, VIII, X e XI"
+      ]
+    ],
+    "G3-DPC-29": [
+      [
+        "CC",
+        "arts. 1.593 a 1.617"
+      ],
+      [
+        "L8560",
+        "arts. 1º a 8º"
+      ]
+    ],
+    "G4-DHU-03": [
+      [
+        "D592",
+        "texto integral do PIDCP"
+      ],
+      [
+        "D11777",
+        "Protocolos Facultativos ao PIDCP"
+      ],
+      [
+        "D591",
+        "texto integral do PIDESC"
+      ],
+      [
+        "D30822",
+        "texto integral da Convenção sobre Genocídio"
+      ],
+      [
+        "D50215",
+        "texto vigente da Convenção sobre Refugiados"
+      ],
+      [
+        "D70946",
+        "texto integral do Protocolo sobre Refugiados"
+      ],
+      [
+        "D65810",
+        "texto integral"
+      ],
+      [
+        "D4377",
+        "texto integral da CEDAW"
+      ],
+      [
+        "D4316",
+        "texto integral do Protocolo Facultativo à CEDAW"
+      ],
+      [
+        "D40",
+        "texto integral"
+      ],
+      [
+        "D6085",
+        "texto integral"
+      ],
+      [
+        "ISTAMBUL",
+        "edição revisada de 2022"
+      ],
+      [
+        "MINNESOTA",
+        "edição de 2016"
+      ],
+      [
+        "D99710",
+        "texto integral da Convenção sobre os Direitos da Criança"
+      ],
+      [
+        "D5006",
+        "texto integral"
+      ],
+      [
+        "D5007",
+        "texto integral"
+      ],
+      [
+        "D4388",
+        "texto integral do Estatuto de Roma"
+      ],
+      [
+        "D6949",
+        "texto integral"
+      ],
+      [
+        "D8767",
+        "texto integral"
+      ]
+    ],
+    "G4-DHU-04": [
+      [
+        "D678",
+        "texto integral da Convenção Americana"
+      ],
+      [
+        "D3956",
+        "texto integral"
+      ]
+    ],
+    "G4-DHU-05": [
+      [
+        "BRASILIA",
+        "regras 1 a 100"
+      ]
+    ],
+    "G4-DHU-13": [
+      [
+        "CF",
+        "arts. 3º, III e IV, e 5º, caput"
+      ],
+      [
+        "L12288",
+        "arts. 1º a 5º"
+      ],
+      [
+        "L12711",
+        "texto consolidado integral"
+      ]
+    ],
+    "G4-DHU-15": [
+      [
+        "CF",
+        "arts. 5º, LXXIV, e 134"
+      ],
+      [
+        "LC80",
+        "arts. 3º-A e 4º, XI"
+      ]
+    ],
+    "G4-DCO-16": [
+      [
+        "CF",
+        "arts. 97, 102, 103 e 125, § 2º"
+      ],
+      [
+        "CPC",
+        "arts. 948 a 950"
+      ]
+    ],
+    "G4-DCO-17": [
+      [
+        "L7347",
+        "art. 5º, §§ 2º e 5º"
+      ],
+      [
+        "CPC",
+        "art. 138"
+      ],
+      [
+        "LC80",
+        "art. 4º, VII, VIII, X, XI e XXII"
+      ]
+    ],
+    "G4-DCO-18": [
+      [
+        "LC80",
+        "art. 4º, VII, VIII, X e XI"
+      ],
+      [
+        "L7347",
+        "arts. 5º, § 6º, e 8º"
+      ]
+    ],
+    "G4-DCO-19": [
+      [
+        "CF",
+        "art. 1º, parágrafo único; arts. 14, 194, VII, 198, III, 204, II, e 206, VI"
+      ]
+    ],
+    "G4-DCO-24": [
+      [
+        "D7053",
+        "arts. 1º a 7º"
+      ],
+      [
+        "L14821",
+        "arts. 1º a 32"
+      ],
+      [
+        "CNJ425",
+        "texto consolidado integral"
+      ]
+    ],
+    "G4-DCO-25": [
+      [
+        "CF",
+        "arts. 215, 216, 231 e 232; ADCT, art. 68"
+      ],
+      [
+        "D6040",
+        "arts. 1º a 4º e Anexo"
+      ],
+      [
+        "L6001",
+        "texto consolidado integral"
+      ],
+      [
+        "D4887",
+        "texto consolidado integral"
+      ]
+    ],
+    "G4-DCO-30": [
+      [
+        "CF",
+        "arts. 203 e 204"
+      ],
+      [
+        "L8742",
+        "texto consolidado integral"
+      ],
+      [
+        "CNAS145",
+        "texto integral da PNAS"
+      ],
+      [
+        "CNAS109",
+        "texto integral e anexo de tipificação"
+      ]
+    ],
+    "G4-DCO-33": [
+      [
+        "REN1000",
+        "dispositivos vigentes sobre tarifa social, atendimento, faturamento e suspensão"
+      ],
+      [
+        "L12212",
+        "texto consolidado integral, com atenção à redação dada pela Lei nº 15.235/2025"
+      ]
+    ],
+    "G4-DCO-36": [
+      [
+        "BRASILIA",
+        "regras 1 a 100"
+      ]
+    ],
+    "G4-DCA-19": [
+      [
+        "ECA",
+        "arts. 90 a 94"
+      ],
+      [
+        "CNASCONANDA1",
+        "arts. 1º a 3º e documento técnico aprovado"
+      ]
+    ],
+    "G4-DCA-21": [
+      [
+        "D99710",
+        "texto integral da Convenção sobre os Direitos da Criança"
+      ],
+      [
+        "D5006",
+        "texto integral"
+      ],
+      [
+        "D5007",
+        "texto integral"
+      ],
+      [
+        "D3413",
+        "texto integral"
+      ],
+      [
+        "D3087",
+        "texto integral"
+      ],
+      [
+        "BEIJING",
+        "texto integral"
+      ],
+      [
+        "D10088",
+        "Anexos LXVIII e LXX — Convenções OIT nº 182 e nº 138"
+      ]
+    ],
+    "G1-PID-01": [
+      [
+        "CF",
+        "art. 5º, LXXIV"
+      ],
+      [
+        "LC80",
+        "art. 1º"
+      ]
+    ],
+    "G1-PID-02": [
+      [
+        "CF",
+        "art. 5º, LXXIV; art. 134; ADCT, art. 98"
+      ]
+    ],
+    "G1-PID-05": [
+      [
+        "LC80",
+        "arts. 1º, 3º-A e 4º, III, X e XI"
+      ]
+    ],
+    "G2-PEN-01": [
+      [
+        "CP",
+        "arts. 1º a 5º"
+      ],
+      [
+        "CF",
+        "art. 5º, XXXIX a XLVII"
+      ]
+    ],
+    "G4-DHU-06": [
+      [
+        "CF",
+        "arts. 3º, IV, e 5º, caput e XLI"
+      ],
+      [
+        "L12288",
+        "arts. 1º a 4º"
+      ],
+      [
+        "L13146",
+        "arts. 4º a 8º"
+      ]
+    ],
+    "G4-DHU-07": [
+      [
+        "CF",
+        "art. 5º, caput e I"
+      ],
+      [
+        "D65810",
+        "art. 1º, § 4º"
+      ]
+    ],
+    "G4-DHU-08": [
+      [
+        "CF",
+        "art. 5º, XLI e XLII"
+      ],
+      [
+        "L7716",
+        "texto consolidado integral"
+      ],
+      [
+        "L12288",
+        "texto consolidado integral"
+      ]
+    ],
+    "G4-DHU-11": [
+      [
+        "YOGYA",
+        "texto integral"
+      ],
+      [
+        "CF",
+        "arts. 1º, III, e 3º, IV"
+      ],
+      [
+        "L7716",
+        "art. 20, conforme interpretação constitucional aplicável"
+      ]
+    ],
+    "G4-DHU-14": [
+      [
+        "CF",
+        "art. 6º"
+      ],
+      [
+        "L13146",
+        "arts. 8º a 13"
+      ],
+      [
+        "L10741",
+        "arts. 8º a 10"
+      ],
+      [
+        "D7053",
+        "arts. 1º a 7º"
+      ]
+    ],
+    "G4-DCO-34": [
+      [
+        "L13146",
+        "texto consolidado integral"
+      ],
+      [
+        "L10741",
+        "texto consolidado integral"
+      ],
+      [
+        "L11340",
+        "texto consolidado integral"
+      ],
+      [
+        "L12288",
+        "texto consolidado integral"
+      ],
+      [
+        "D7053",
+        "texto integral"
+      ],
+      [
+        "L14821",
+        "texto integral"
+      ],
+      [
+        "L6001",
+        "texto consolidado integral"
+      ],
+      [
+        "L10216",
+        "texto consolidado integral"
+      ]
+    ]
   },
   "no_specific_articles": [
-    "G1-CON-01", "G1-CON-02", "G1-CON-03", "G1-CON-04", "G1-CON-38", "G1-CON-42",
-    "G1-ADM-01", "G1-ADM-02", "G1-ADM-15",
-    "G1-PID-01", "G1-PID-02", "G1-PID-05", "G1-PID-11", "G1-PID-12",
-    "G2-PEN-01", "G2-PEN-03", "G2-PEN-04", "G2-PEN-05", "G2-PEN-11", "G2-PEN-17",
-    "G2-DPP-02", "G2-DPP-03", "G2-DPP-04", "G2-DPP-05", "G2-DPP-15", "G2-DPP-24", "G2-DPP-29", "G2-DPP-30",
-    "G2-DEP-01", "G2-DEP-12", "G2-DEP-14",
-    "G3-CIV-01", "G3-CIV-02", "G3-CIV-03", "G3-CIV-04", "G3-CIV-05", "G3-CIV-06", "G3-CIV-07", "G3-CIV-47",
-    "G3-DPC-20", "G3-DPC-29", "G3-DPC-35", "G3-CDC-08",
-    "G4-DHU-01", "G4-DHU-03", "G4-DHU-04", "G4-DHU-05", "G4-DHU-06", "G4-DHU-07", "G4-DHU-08", "G4-DHU-11", "G4-DHU-13", "G4-DHU-14", "G4-DHU-15", "G4-DHU-16",
-    "G4-DCO-16", "G4-DCO-17", "G4-DCO-18", "G4-DCO-19", "G4-DCO-24", "G4-DCO-25", "G4-DCO-30", "G4-DCO-33", "G4-DCO-34", "G4-DCO-36", "G4-DCO-37",
-    "G4-DCA-19", "G4-DCA-21", "G4-DCA-23"
+    "G1-CON-01",
+    "G1-CON-02",
+    "G1-CON-03",
+    "G1-CON-04",
+    "G1-CON-42",
+    "G1-ADM-01",
+    "G1-ADM-02",
+    "G1-ADM-15",
+    "G2-PEN-03",
+    "G2-PEN-04",
+    "G2-PEN-17",
+    "G2-DPP-04",
+    "G2-DPP-15",
+    "G2-DPP-30",
+    "G2-DEP-14",
+    "G3-CIV-01",
+    "G3-CIV-02",
+    "G3-CIV-47",
+    "G3-DPC-35",
+    "G3-CDC-08",
+    "G4-DHU-01",
+    "G4-DHU-16",
+    "G4-DCO-37",
+    "G4-DCA-23"
+  ],
+  "review_notes": [
+    "Foram aproveitadas somente correções ou lacunas de conteúdo e legislação.",
+    "Foram corrigidas as referências deslocadas de G3-DPC-17 a G3-DPC-26 e a faixa de livramento condicional em G2-DEP-08.",
+    "Foram ampliados os blocos de controle de constitucionalidade, legislação institucional estadual, legislação penal especial e tratados expressamente nomeados no programa.",
+    "Não foram incorporados o horizonte de 120 dias, cargas horárias, metas de questões nem a divisão de grupos da Resolução nº 21/2018 citada no Markdown.",
+    "A alegação de inexistência de G4-DCO-36 e G4-DCO-37 foi rejeitada: ambos constam na página 29 da Resolução nº 344/2025."
   ]
 }
