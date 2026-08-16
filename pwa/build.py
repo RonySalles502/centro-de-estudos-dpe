@@ -14,14 +14,15 @@ from urllib.parse import urlparse
 
 
 ROOT = pathlib.Path(__file__).resolve().parent
+PROJECT = ROOT.parent
 SRC = ROOT / "src"
 CONTENT = ROOT / "content"
 DIST = ROOT / "dist"
 
-APP_VERSION = "0.10.1"
+APP_VERSION = "0.11.0"
 STATE_SCHEMA_VERSION = 8
-CONTENT_SCHEMA_VERSION = 3
-QUESTION_BANK_VERSION = "2026.08-inicial-2"
+CONTENT_SCHEMA_VERSION = 4
+QUESTION_BANK_VERSION = "2026.08-auditoria-1"
 
 
 def load_json(path: pathlib.Path) -> Any:
@@ -44,6 +45,31 @@ def sha256(payload: bytes) -> str:
 def is_http_url(value: str) -> bool:
     parsed = urlparse(value)
     return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
+
+def quarantine_broken_jurisprudence(document: dict[str, Any]) -> int:
+    """Omit records whose source text was irreversibly decoded with U+FFFD."""
+    omitted = 0
+    valid_items = []
+    for item in document.get("items", []):
+        if "\ufffd" in json.dumps(item, ensure_ascii=False):
+            omitted += 1
+        else:
+            valid_items.append(item)
+    document["items"] = valid_items
+
+    for dataset in document.get("datasets", {}).values():
+        valid_rows = []
+        for row in dataset.get("rows", []):
+            if "\ufffd" in json.dumps(row, ensure_ascii=False):
+                omitted += 1
+            else:
+                valid_rows.append(row)
+        dataset["rows"] = valid_rows
+
+    if omitted:
+        document["quality"] = {"omitted_corrupted_records": omitted}
+    return omitted
 
 
 def seed_jurisprudence(extras: dict[str, Any]) -> dict[str, Any]:
@@ -75,6 +101,7 @@ def build() -> dict[str, Any]:
     legislation_raw = load_json(SRC / "legislation_reading_map.json")
     pre_edit_raw = load_json(SRC / "pre_edit_priority.json")
     extras = load_json(SRC / "extras.json")
+    discursive_catalog = load_json(PROJECT / "data" / "discursive_prompts.json")
     question_catalog = load_json(SRC / "question_catalog.json")
 
     questions: list[dict[str, Any]] = []
@@ -132,6 +159,7 @@ def build() -> dict[str, Any]:
         if jurisprudence_path.exists()
         else seed_jurisprudence(extras)
     )
+    quarantine_broken_jurisprudence(jurisprudence)
 
     meta = {
         "versao": APP_VERSION,
@@ -162,7 +190,11 @@ def build() -> dict[str, Any]:
         "questoes": questions,
         "questao_fontes": question_catalog["sources"],
         "direitos_policy": question_catalog["rights_policy"],
-        "temas_discursivos": extras["temas_discursivos"],
+        "temas_discursivos": discursive_catalog["prompts"],
+        "discursivas_meta": {
+            "version": discursive_catalog["catalog_version"],
+            "methodology": discursive_catalog["methodology"],
+        },
         "juris_links": extras["juris_links"],
     }
 
@@ -205,6 +237,28 @@ def build() -> dict[str, Any]:
     for group, count in by_group.items():
         if count < 25:
             errors.append(f"grupo {group} possui somente {count} questões")
+    discursive_prompts = discursive_catalog.get("prompts", [])
+    discursive_ids = [item.get("id") for item in discursive_prompts]
+    if len(discursive_prompts) < 24:
+        errors.append(f"catálogo discursivo possui somente {len(discursive_prompts)} temas")
+    if len(set(discursive_ids)) != len(discursive_ids) or not all(discursive_ids):
+        errors.append("IDs ausentes ou duplicados no catálogo discursivo")
+    for prompt in discursive_prompts:
+        prompt_id = prompt.get("id", "sem-id")
+        expected_score = 5.0 if prompt.get("tipo") == "PECA" else 2.5
+        if prompt.get("tipo") not in {"QUESTAO", "PECA"}:
+            errors.append(f"{prompt_id}: tipo discursivo inválido")
+        if prompt.get("gd") not in {"I", "II"} or prompt.get("g") not in {"I", "II", "III", "IV"}:
+            errors.append(f"{prompt_id}: grupo discursivo ou objetivo inválido")
+        mirror = prompt.get("espelho", [])
+        if len(mirror) < 4:
+            errors.append(f"{prompt_id}: espelho insuficiente")
+        score = sum(float(item.get("pontos", 0)) for item in mirror)
+        if abs(score - expected_score) > 0.001:
+            errors.append(f"{prompt_id}: espelho soma {score}; esperado {expected_score}")
+        anchors = prompt.get("ancoras", [])
+        if not anchors or any(not is_http_url(str(item.get("url", ""))) for item in anchors):
+            errors.append(f"{prompt_id}: âncora jurisprudencial inválida")
     for topic_id in legislation["topicos"]:
         if topic_id not in topic_ids:
             errors.append(f"mapa legislativo aponta tópico inexistente: {topic_id}")
@@ -299,7 +353,7 @@ def build() -> dict[str, Any]:
             "questions": len(questions),
             "questionTopicsCovered": len(covered_topics),
             "jurisprudenceItems": len(jurisprudence["items"]) + dataset_count,
-            "discursivePrompts": len(extras["temas_discursivos"]),
+            "discursivePrompts": len(discursive_prompts),
             "questionsByGroup": by_group,
         },
     }

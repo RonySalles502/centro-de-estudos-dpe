@@ -5,7 +5,7 @@
 /* ---------------------------------------------------------------- utils */
 const $ = (s,r)=> (r||document).querySelector(s);
 const $$ = (s,r)=> Array.from((r||document).querySelectorAll(s));
-const el = (t,a,h)=>{const n=document.createElement(t); if(a) for(const k in a){ if(k==='class')n.className=a[k]; else if(k.slice(0,2)==='on')n.addEventListener(k.slice(2),a[k]); else if(a[k]!=null)n.setAttribute(k,a[k]); } if(h!=null)n.innerHTML=h; return n;};
+const el = (t,a,h)=>{const n=document.createElement(t); if(t==='button')n.type='button'; if(a) for(const k in a){ if(k==='class')n.className=a[k]; else if(k.slice(0,2)==='on')n.addEventListener(k.slice(2),a[k]); else if(a[k]!=null)n.setAttribute(k,a[k]); } if(h!=null)n.innerHTML=h; return n;};
 const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid = ()=> (Date.now().toString(36)+Math.random().toString(36).slice(2,8));
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -67,9 +67,9 @@ function expandJurisprudence(juris){
 async function carregarConteudo(){
   const manifestUrl=new URL('./content/manifest.json',location.href);
   const response=await fetch(manifestUrl,{cache:'no-store'});
-  if(!response.ok) throw new Error(`Manifesto de conteúdo indisponível (${response.status}).`);
+  if(!response.ok) throw new Error(`Não foi possível carregar o conteúdo (${response.status}).`);
   const manifest=await response.json();
-  if(manifest.format!=='centro-estudos-dpern-content'||manifest.formatVersion!==1) throw new Error('Manifesto de conteúdo incompatível.');
+  if(manifest.format!=='centro-estudos-dpern-content'||manifest.formatVersion!==1) throw new Error('Este conteúdo não é compatível com o aplicativo.');
   const [core,juris]=await Promise.all([
     fetchVerified(manifest.assets.core,manifestUrl),
     fetchVerified(manifest.assets.jurisprudence,manifestUrl)
@@ -132,7 +132,7 @@ async function carregar(){
 }
 function migrar(o){
   const version=Number(o.schema||7);
-  if(version>SCHEMA) throw new Error(`Os dados usam o esquema ${version}, mais novo que o esquema ${SCHEMA} deste aplicativo.`);
+  if(version>SCHEMA) throw new Error('Esta cópia foi criada por uma versão mais nova do aplicativo.');
   if(!o.topicos||typeof o.topicos!=='object') throw new Error('Estado local inválido: progresso por tópicos ausente.');
   if(!o.disc||typeof o.disc!=='object')o.disc={temas:[],tentativas:[]};
   if(!Array.isArray(o.disc.temas))o.disc.temas=[]; if(!Array.isArray(o.disc.tentativas))o.disc.tentativas=[];
@@ -412,14 +412,14 @@ function semanasDoCiclo(){
 const VIEWS=[
   ['painel','Painel'],['programa','Programa'],['cronograma','Cronograma'],['questoes','Questões'],
   ['simulados','Simulados'],['discursivas','Discursivas'],['revisoes','Revisões'],
-  ['juris','Jurisprudência'],['dados','Dados']
+  ['juris','Jurisprudência'],['dados','Ajustes']
 ];
 let atual='painel';
 function nav(){
   const n=$('#tabs'); n.innerHTML='';
-  VIEWS.forEach(([k,l])=>{ n.appendChild(el('button',{class:atual===k?'on':'',onclick:()=>go(k)},esc(l))); });
+  VIEWS.forEach(([k,l])=>{ n.appendChild(el('button',{class:atual===k?'on':'',onclick:()=>go(k),'aria-current':atual===k?'page':null},esc(l))); });
 }
-function go(k){ atual=k; nav(); render(); window.scrollTo({top:0,behavior:'instant'}); }
+function go(k){ atual=k; nav(); render(); window.scrollTo({top:0,behavior:'instant'}); $('#main').focus({preventScroll:true}); }
 function render(){
   const m=$('#main'); m.innerHTML='';
   ({painel:vPainel,programa:vPrograma,cronograma:vCronograma,questoes:vQuestoes,simulados:vSimulados,
@@ -442,7 +442,7 @@ function vPainel(m){
   // desempenho por grupo com peso oficial
   const c1=el('div',{class:'card'});
   c1.appendChild(el('h2',null,'Desempenho por grupo objetivo'));
-  c1.appendChild(el('p',null,'<small>Cada grupo vale 25 questões na prova objetiva (art. 42 da Resolução nº 344/2025). O peso é igual, mas a massa de conteúdo não — a coluna de tópicos mostra a densidade real.</small>'));
+  c1.appendChild(el('p',{class:'section-lead'},'Cada grupo vale 25 questões. Compare sua cobertura e seus acertos para decidir onde estudar primeiro.'));
   const tb=el('table'); tb.innerHTML='<thead><tr><th>Grupo</th><th>Disciplinas</th><th>Tópicos</th><th>Iniciados</th><th>Questões</th><th>Acurácia</th></tr></thead>';
   const tbody=el('tbody');
   ['I','II','III','IV'].forEach(g=>{
@@ -455,7 +455,7 @@ function vPainel(m){
   // pesos das etapas
   const c2=el('div',{class:'card'});
   c2.appendChild(el('h2',null,'Onde a nota é decidida'));
-  c2.appendChild(el('p',null,'<small>Ponderação do art. 60 da Resolução nº 344/2025. A segunda etapa vale o dobro da objetiva.</small>'));
+  c2.appendChild(el('p',{class:'section-lead'},'A etapa discursiva tem o maior peso. Use esta visão para equilibrar objetiva, escrita e prova oral.'));
   const et=el('table'); et.innerHTML='<thead><tr><th>Etapa</th><th>Peso</th><th>Corte</th><th>Seu registro</th></tr></thead>';
   const tent=S.disc.tentativas.filter(t=>t.fim);
   const eb=el('tbody');
@@ -517,8 +517,9 @@ function blocoCard(b,onChange){
 let fProg={g:'',d:'',st:'',f:'',q:''};
 function vPrograma(m){
   const c=el('div',{class:'card'});
-  c.appendChild(el('h2',null,'Programa verticalizado — Anexo I da Resolução nº 344/2025'));
-  c.appendChild(el('p',null,`<small>${DADOS.programa.length} tópicos, 12 disciplinas, 4 grupos objetivos de 25 questões cada. O foco pré-edital ordena os tópicos dentro de cada grupo a partir de seis editais Cebraspe; não exclui nenhum item e não substitui sua prioridade pessoal.</small>`));
+  c.appendChild(el('span',{class:'eyebrow'},'Mapa completo'));
+  c.appendChild(el('h2',null,'Programa de estudos'));
+  c.appendChild(el('p',{class:'section-lead'},`${DADOS.programa.length} tópicos organizados por grupo, disciplina e recorrência em concursos Cebraspe. Nenhum conteúdo da Resolução nº 344/2025 foi excluído.`));
   const r=el('div',{class:'row'});
   const selG=el('select'); selG.innerHTML='<option value="">Todos os grupos</option>'+['I','II','III','IV'].map(g=>`<option ${fProg.g===g?'selected':''}>${g}</option>`).join('');
   selG.onchange=()=>{fProg.g=selG.value; fProg.d=''; render();};
@@ -606,7 +607,9 @@ function abrirTopico(t){
 function vCronograma(m){
   const d=S.diag;
   const c=el('div',{class:'card'});
-  c.appendChild(el('h2',null,'Diagnóstico'));
+  c.appendChild(el('span',{class:'eyebrow'},'Planejamento pessoal'));
+  c.appendChild(el('h2',null,'Monte seu ciclo'));
+  c.appendChild(el('p',{class:'section-lead'},'Informe o tempo disponível e distribua seu foco. O plano poderá ser ajustado a qualquer momento.'));
   const g=el('div',{class:'grid g3'});
   DIAS.forEach((k,i)=>{
     const b=el('div'); b.appendChild(el('label',{class:'f'},DIAS_L[i]+' (min)'));
@@ -703,9 +706,10 @@ function iniciarSessao(tipo,filtro,n){
 function vQuestoes(m){
   if(S.sessaoAtiva){ return sessaoUI(m); }
   const c=el('div',{class:'card'});
+  c.appendChild(el('span',{class:'eyebrow'},'Objetiva'));
   c.appendChild(el('h2',null,'Prática dirigida'));
   const banco=bancoQuestoes();
-  c.appendChild(el('p',null,`<small>Banco com <b>${banco.length}</b> questões autorais referenciadas, adaptadas ao perfil CEBRASPE e ao formato previsto no art. 41 (cinco alternativas, uma correta). Não são questões oficiais da banca; confira a fonte indicada antes de consolidar a matéria.</small>`));
+  c.appendChild(el('p',{class:'section-lead'},`Escolha um recorte entre <b>${banco.length}</b> questões no formato Cebraspe. Após responder, revise a explicação e a fonte indicada.`));
   const g=el('div',{class:'grid g3'});
   const bg=el('div'); bg.appendChild(el('label',{class:'f'},'Grupo'));
   const sg=el('select'); sg.innerHTML='<option value="">Todos</option>'+['I','II','III','IV'].map(x=>`<option>${x}</option>`).join(''); bg.appendChild(sg); g.appendChild(bg);
@@ -725,7 +729,7 @@ function vQuestoes(m){
     const f={grupo:sg.value||null,disc:sd.value||null,nivel:sn.value||null};
     const pool=poolQuestoes(f);
     const ined=pool.filter(q=>!S.exposicao[q.id]).length;
-    info.textContent=`${pool.length} questão(ões) no filtro · ${ined} ainda não respondida(s). A seleção prioriza inéditas, depois as que você errou, respeitando ${COOLDOWN} dias de intervalo antes de repetir.`;
+    info.textContent=`${pool.length} disponíveis · ${ined} inéditas. A prática começa pelas inéditas e retoma seus erros no momento certo.`;
     iq.max=Math.max(1,pool.length);
   }
   sg.onchange=refreshD; sd.onchange=upd; sn.onchange=upd; refreshD();
@@ -755,8 +759,9 @@ function vQuestoes(m){
 function vSimulados(m){
   if(S.sessaoAtiva){ return sessaoUI(m); }
   const c=el('div',{class:'card'});
+  c.appendChild(el('span',{class:'eyebrow'},'Treino de prova'));
   c.appendChild(el('h2',null,'Simulados no formato oficial'));
-  c.appendChild(el('p',null,'<small>Art. 40: 100 questões, 0,10 ponto cada, 5 horas de duração. Art. 42: quatro grupos de 25 questões. Art. 43: habilitação com nota ≥ 6,00 e classificação até a 400ª posição.</small>'));
+  c.appendChild(el('p',{class:'section-lead'},'Treine por grupo ou faça a prova completa: 100 questões, divididas igualmente entre os quatro grupos, com duração de 5 horas.'));
   const g=el('div',{class:'grid g2'});
   ['I','II','III','IV'].forEach(gr=>{
     const pool=poolQuestoes({grupo:gr});
@@ -776,7 +781,7 @@ function vSimulados(m){
   const bc=el('button',{class:'btn',onclick:()=>iniciarSessao('SIMULADO_COMPLETO',{},100)},'Simulado completo — 100 questões');
   if(!podeCompleto) bc.disabled=true;
   c.appendChild(bc);
-  c.appendChild(el('div',{class:'note'},podeCompleto?`Banco atual: ${total} questões. O simulado completo sorteia 25 por grupo, distribuídas proporcionalmente entre as disciplinas.`:'É preciso ao menos 25 questões em cada grupo. Importe mais questões na aba Dados.'));
+  c.appendChild(el('div',{class:'note'},podeCompleto?`${total} questões disponíveis. A prova completa sorteia 25 de cada grupo.`:'É preciso ter ao menos 25 questões em cada grupo. Adicione questões em Ajustes.'));
   m.appendChild(c);
 
   const sims=S.sessoes.filter(s=>s.tipo!=='PRATICA'&&s.fim);
@@ -894,10 +899,54 @@ function linhasDe(txt){
   if(!txt) return 0;
   return txt.split('\n').reduce((a,l)=> a + Math.max(1,Math.ceil(l.length/CARACS_LINHA)), 0);
 }
+function guiaDiscursiva(t){
+  const box=el('div',{class:'disc-guide'});
+  const espelho=Array.isArray((t||{}).espelho)&&t.espelho.length?t.espelho:[
+    {criterio:'Conteúdo jurídico',pontos:'40%',esperado:'Apresente a tese central, os fundamentos normativos e os conceitos essenciais.'},
+    {criterio:'Estrutura',pontos:'25%',esperado:'Organize introdução, desenvolvimento e conclusão; na peça, observe o formato processual adequado.'},
+    {criterio:'Argumentação',pontos:'25%',esperado:'Aplique a legislação e os precedentes aos fatos, com raciocínio claro e coerente.'},
+    {criterio:'Linguagem',pontos:'10%',esperado:'Use redação objetiva, técnica e legível.'}
+  ];
+  const details=el('details',{class:'study-guide'});
+  details.appendChild(el('summary',null,'Ver espelho de resposta'));
+  details.appendChild(el('p',{class:'section-lead'},'Use estes pontos para revisar sua produção depois de escrever.'));
+  const list=el('div',{class:'rubric-list'});
+  espelho.forEach(item=>{
+    const row=el('div',{class:'rubric-item'});
+    const pontos=item.pontos==null?'':String(item.pontos);
+    row.appendChild(el('div',{class:'rubric-title'},`<b>${esc(item.criterio||'Critério')}</b>${pontos?`<span class="pill">${esc(pontos)}${/%|ponto/i.test(pontos)?'':' pts'}</span>`:''}`));
+    row.appendChild(el('p',null,esc(item.esperado||item.descricao||'')));
+    list.appendChild(row);
+  });
+  details.appendChild(list);
+  const ancoras=Array.isArray((t||{}).ancoras)?t.ancoras:[];
+  if(ancoras.length){
+    details.appendChild(el('h3',null,'Jurisprudência para citar'));
+    const refs=el('div',{class:'anchor-list'});
+    ancoras.forEach(a=>{
+      const card=el('div',{class:'anchor-item'});
+      const rotulo=[a.tribunal,a.referencia,a.informativo].filter(Boolean).join(' · ')||'Precedente relacionado';
+      card.appendChild(el('b',null,esc(rotulo)));
+      if(a.aplicacao)card.appendChild(el('p',null,esc(a.aplicacao)));
+      const url=safeUrl(a.url);if(url)card.appendChild(el('a',{href:url,target:'_blank',rel:'noopener'},'Consultar fonte oficial'));
+      refs.appendChild(card);
+    });
+    details.appendChild(refs);
+  }else if(t&&t.ref){
+    const ref=el('div',{class:'anchor-item'});
+    ref.appendChild(el('b',null,'Referência sugerida'));
+    ref.appendChild(el('p',null,esc(t.ref)));
+    const url=safeUrl(t.url);if(url)ref.appendChild(el('a',{href:url,target:'_blank',rel:'noopener'},'Consultar fonte oficial'));
+    details.appendChild(ref);
+  }
+  box.appendChild(details);
+  return box;
+}
 function vDiscursivas(m){
   const c=el('div',{class:'card'});
-  c.appendChild(el('h2',null,'Treino discursivo — segunda etapa (peso 4)'));
-  c.appendChild(el('p',null,'<small>Art. 46: cada prova discursiva vale 10,0 pontos — duas questões de até <b>30 linhas</b> (2,5 cada) e uma <b>peça processual de até 120 linhas</b> (5,0). Duração de 4 horas (art. 44). A contagem abaixo é em linhas, não em palavras.</small>'));
+  c.appendChild(el('span',{class:'eyebrow'},'Segunda etapa · peso 4'));
+  c.appendChild(el('h2',null,'Treino discursivo'));
+  c.appendChild(el('p',{class:'section-lead'},'Pratique questões de 30 linhas e peças de 120 linhas. Depois, compare sua resposta com o espelho e os precedentes indicados.'));
   const g=el('div',{class:'grid g4'});
   const tent=S.disc.tentativas;
   const pecas=tent.filter(t=>t.tipo==='PECA').length, qsts=tent.filter(t=>t.tipo==='QUESTAO').length;
@@ -921,14 +970,17 @@ function vDiscursivas(m){
   const sg=el('select'); sg.innerHTML='<option value="I">Grupo I — Const., Adm., Penal, Proc. Penal, Exec. Penal</option><option value="II">Grupo II — Civil, Proc. Civil, Consumidor, DH, Difusos, ECA</option>'; bg2.appendChild(sg); gg.appendChild(bg2);
   const bs=el('div'); bs.appendChild(el('label',{class:'f'},'Tema'));
   const sT=el('select'); bs.appendChild(sT); gg.appendChild(bs);
-  function refT(){ const list=temas.filter(t=>t.gd===sg.value||!t.gd);
+  function temasFiltrados(){return temas.filter(t=>(t.gd===sg.value||!t.gd)&&(!t.tipo||t.tipo===stp.value));}
+  function refT(){ const list=temasFiltrados();
     sT.innerHTML=list.map((t,i)=>`<option value="${i}">${esc(t.tit)}</option>`).join('')+'<option value="livre">— tema livre —</option>'; }
-  sg.onchange=refT; refT();
+  refT();
   c2.appendChild(gg);
   const enun=el('div',{class:'lei'}); c2.appendChild(enun);
-  function showEnun(){ const list=temas.filter(t=>t.gd===sg.value||!t.gd); const v=sT.value;
+  const guide=el('div'); c2.appendChild(guide);
+  function showEnun(){ const list=temasFiltrados(); const v=sT.value; guide.innerHTML='';
     if(v==='livre'){ enun.innerHTML='<b>Tema livre.</b> Escreva o enunciado que quiser treinar.'; return; }
-    const t=list[+v]; if(!t) return; enun.innerHTML=`<b>Enunciado:</b> ${esc(t.en)}<br><small><b>Referência:</b> ${esc(t.ref||'—')} ${t.url?`· <a href="${esc(t.url)}" target="_blank" rel="noopener">fonte oficial</a>`:''}</small>`; }
+    const t=list[+v]; if(!t){enun.innerHTML='<b>Nenhum tema disponível para este recorte.</b>';return;}
+    enun.innerHTML=`<b>Enunciado:</b> ${esc(t.en)}`;guide.appendChild(guiaDiscursiva(t)); }
   sT.onchange=showEnun; showEnun();
   const ta=el('textarea',{placeholder:'Escreva sua resposta aqui. A contagem de linhas segue o padrão de ~70 caracteres por linha manuscrita.'});
   ta.style.minHeight='320px';
@@ -940,18 +992,18 @@ function vDiscursivas(m){
   cont.appendChild(btT);
   function updL(){ const n=linhasDe(ta.value); const max=stp.value==='PECA'?120:30;
     lbl.textContent=`${n} de ${max} linhas`; lbl.className='linhas'+(n>max?' over':''); }
-  ta.oninput=updL; stp.onchange=()=>{updL(); refT(); showEnun();}; updL();
+  ta.oninput=updL; stp.onchange=()=>{updL(); refT(); showEnun();}; sg.onchange=()=>{refT();showEnun();}; updL();
   c2.appendChild(ta); c2.appendChild(cont);
   const gN=el('div',{class:'grid g3'});
   const bF=el('div'); bF.appendChild(el('label',{class:'f'},'Pontos fortes')); const iF=el('input'); bF.appendChild(iF); gN.appendChild(bF);
   const bM=el('div'); bM.appendChild(el('label',{class:'f'},'A melhorar')); const iM=el('input'); bM.appendChild(iM); gN.appendChild(bM);
   const bN=el('div'); bN.appendChild(el('label',{class:'f'},'Autoavaliação (0–10)')); const iN=el('input',{type:'number',min:0,max:10,step:'0.25'}); bN.appendChild(iN); gN.appendChild(bN);
   c2.appendChild(gN);
-  c2.appendChild(el('div',{class:'note'},'Espelho sugerido: conteúdo jurídico e domínio normativo (40%), estrutura e adequação ao tipo de peça (25%), argumentação e uso de precedentes (25%), linguagem e técnica (10%). É autoavaliação — não substitui correção humana.'));
+  c2.appendChild(el('div',{class:'note'},'A nota é uma autoavaliação. Use o espelho do tema para identificar o que foi atendido e o que precisa ser retomado.'));
   c2.appendChild(el('button',{class:'btn',onclick:()=>{
     if(!ta.value.trim()){ toast('Escreva algo antes de salvar.'); return; }
-    const list=temas.filter(t=>t.gd===sg.value||!t.gd); const t=sT.value==='livre'?{tit:'Tema livre',en:''}:list[+sT.value];
-    S.disc.tentativas.push({id:uid(),data:new Date().toISOString(),tipo:stp.value,gd:sg.value,tema:t.tit,
+    const list=temasFiltrados(); const t=sT.value==='livre'?{id:'',tit:'Tema livre',en:''}:list[+sT.value];
+    S.disc.tentativas.push({id:uid(),data:new Date().toISOString(),tipo:stp.value,gd:sg.value,temaId:t.id||'',tema:t.tit,
       texto:ta.value,linhas:linhasDe(ta.value),max:stp.value==='PECA'?120:30,
       tempo:t0?Math.round((Date.now()-t0)/1000):0,fortes:iF.value,melhorar:iM.value,
       nota:iN.value!==''?+iN.value:null,fim:true});
@@ -976,6 +1028,8 @@ function vDiscursivas(m){
         const pre=el('div',{class:'exp'}); pre.style.whiteSpace='pre-wrap'; pre.textContent=t.texto; inn.appendChild(pre);
         if(t.fortes) inn.appendChild(el('p',null,`<b>Fortes:</b> ${esc(t.fortes)}`));
         if(t.melhorar) inn.appendChild(el('p',null,`<b>A melhorar:</b> ${esc(t.melhorar)}`));
+        const temaAtual=temas.find(item=>(t.temaId&&item.id===t.temaId)||item.tit===t.tema);
+        if(temaAtual)inn.appendChild(guiaDiscursiva(temaAtual));
         inn.appendChild(el('button',{class:'btn',onclick:()=>bd.remove()},'Fechar'));
         bd.appendChild(inn); document.body.appendChild(bd);
       }},'Ver'));
@@ -993,8 +1047,9 @@ function vRevisoes(m){
   const dev=itens.filter(x=>x.r.prox<=h).sort((a,b)=>a.r.prox<b.r.prox?-1:1);
   const fut=itens.filter(x=>x.r.prox>h).sort((a,b)=>a.r.prox<b.r.prox?-1:1);
   const c=el('div',{class:'card'});
+  c.appendChild(el('span',{class:'eyebrow'},'Memória de longo prazo'));
   c.appendChild(el('h2',null,'Revisão espaçada'));
-  c.appendChild(el('p',null,'<small>Tópicos entram na fila ao serem iniciados. A avaliação ajusta o intervalo até a próxima revisão — é controle de espaçamento, não nota jurídica.</small>'));
+  c.appendChild(el('p',{class:'section-lead'},'Revise o que está vencido e diga como foi. O próximo intervalo será ajustado à sua resposta.'));
   c.appendChild(el('div',{class:'row'},`<span class="pill">${dev.length} vencida(s)</span><span class="pill">${fut.length} agendada(s)</span>`));
   m.appendChild(c);
   if(!itens.length){ m.appendChild(el('div',{class:'card'},'<div class="empty"><b>Fila vazia</b>Marque tópicos como iniciados no Programa, ou conclua blocos do cronograma, para alimentar a fila de revisão.</div>')); return; }
@@ -1030,6 +1085,16 @@ function revCard(x){
 function jurisKey(p){ return p.id||`legacy|${p.trib||''}|${p.ref||''}`; }
 function jurisSearchText(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');}
 function jurisDate(value){return value?fmtBR(String(value).slice(0,10)):'—';}
+function jurisLinkLabel(name){
+  const value=String(name||'');
+  if(/informativos? stf/i.test(value))return 'Abrir informativos do STF';
+  if(/informativos? stj/i.test(value))return 'Abrir informativos do STJ';
+  if(/teses/i.test(value))return 'Abrir Jurisprudência em Teses';
+  if(/súmulas do stf/i.test(value))return 'Abrir súmulas do STF';
+  if(/corte idh/i.test(value))return 'Abrir decisões da Corte IDH';
+  if(/resolução/i.test(value))return 'Abrir resolução da DPE/RN';
+  return 'Abrir '+value;
+}
 function openJurisDetail(p,onProgress){
   const key=jurisKey(p),registro=S.juris.find(j=>j.id===key||(!j.id&&j.ref===p.ref));
   const modal=el('div',{class:'modal',role:'dialog','aria-modal':'true'});
@@ -1057,38 +1122,33 @@ function openJurisDetail(p,onProgress){
     let item=S.juris.find(entry=>entry.id===key||(!entry.id&&entry.ref===p.ref));
     if(!item){item={id:key,ref:p.ref,lido:false};S.juris.push(item);}
     item.id=key;item.lido=!item.lido;salvar();modal.remove();if(onProgress)onProgress();
-  }},(registro||{}).lido?'Lido':'Marcar lido');
+  }},(registro||{}).lido?'Revisado':'Marcar como revisado');
   actions.appendChild(progress);
   const source=safeUrl(p.url);if(source)actions.appendChild(el('a',{class:'btn sec sm',href:source,target:'_blank',rel:'noopener'},'Abrir fonte oficial'));
   box.appendChild(actions);modal.appendChild(box);modal.addEventListener('click',event=>{if(event.target===modal)modal.remove();});document.body.appendChild(modal);
 }
 function vJuris(m){
   const c=el('div',{class:'card'});
-  c.appendChild(el('h2',null,'Jurisprudência atualizada'));
-  c.appendChild(el('p',null,'<small>Acervo histórico e publicações recentes coletados de fontes oficiais, preservados como um pacote versionado e verificável. A síntese auxilia a triagem; a fonte oficial continua sendo a referência jurídica.</small>'));
-  const atualizacao=JURIS_META.last_success_at||JURIS_META.generated_at;
-  const statusAtualizado=String(JURIS_META.status||'').startsWith('ATUALIZADO');
+  c.appendChild(el('span',{class:'eyebrow'},'Pesquisa e revisão'));
+  c.appendChild(el('h2',null,'Jurisprudência'));
+  c.appendChild(el('p',{class:'section-lead'},'Pesquise julgados e informativos, marque o que já revisou e consulte a fonte oficial em cada item.'));
   const statusBom=JURIS_META.status==='ATUALIZADO';
   const banner=el('div',{class:'status-banner'});
   banner.appendChild(el('span',{class:'status-lamp'+(statusBom?'':' warn')}));
   const status=el('div');
-  status.appendChild(el('b',null,statusBom?'Atualização automática concluída':statusAtualizado?'Atualização parcial — base anterior preservada':'Base inicial disponível'));
-  status.appendChild(el('div',null,`<small>Versão ${esc(JURIS_META.version||CONTENT_MANIFEST.jurisprudenceVersion)}${atualizacao?' · última coleta válida em '+esc(new Date(atualizacao).toLocaleString('pt-BR')):''} · ${DADOS.precedentes.length} item(ns). Uma falha de coleta nunca substitui a última base válida.</small>`));
+  status.appendChild(el('b',null,statusBom?'Base atualizada':'Base disponível'));
+  status.appendChild(el('div',null,`<small>${nf(DADOS.precedentes.length)} registros para estudo.${statusBom?'':' A atualização mais recente ficou incompleta, mas o conteúdo anterior continua disponível.'}</small>`));
   banner.appendChild(status); c.appendChild(banner);
-  if(Array.isArray(JURIS_META.sources)&&JURIS_META.sources.length){
-    const fontes=el('div',{class:'row'});
-    JURIS_META.sources.forEach(source=>fontes.appendChild(el('span',{class:'tag '+(source.status==='SUCESSO'?'ok':'warn'),title:source.message||''},`${esc(source.name||source.court||'Fonte')} · ${source.status==='SUCESSO'?'coleta válida':'indisponível'}${source.detected!=null?' · '+nf(source.detected):''}`)));
-    Object.values(JURIS_META.datasets||{}).filter(dataset=>dataset.automatic===false).forEach(dataset=>fontes.appendChild(el('span',{class:'tag',title:'Exportação incorporada ao pacote; atualize-a com uma nova exportação oficial quando necessário.'},`${esc(dataset.label||dataset.name||'Base importada')} · snapshot${dataset.snapshot_date?' de '+esc(new Date(dataset.snapshot_date+'T12:00:00').toLocaleDateString('pt-BR')):''} · ${nf((dataset.stats||{}).records||0)}`)));
-    c.appendChild(fontes);
-  }
-  const r=el('div',{class:'row'});
-  DADOS.juris_links.forEach(l=>{ const url=safeUrl(l.url); if(url)r.appendChild(el('a',{class:'btn sec sm',href:url,target:'_blank',rel:'noopener'},esc(l.nome))); });
-  c.appendChild(r);
+  const official=el('div',{class:'official-sources'});
+  official.appendChild(el('h3',null,'Atalhos oficiais'));
+  const r=el('div',{class:'resource-grid'});
+  DADOS.juris_links.forEach(l=>{ const url=safeUrl(l.url); if(url){const label=jurisLinkLabel(l.nome);r.appendChild(el('a',{class:'resource-link',href:url,target:'_blank',rel:'noopener','aria-label':label+' (abre em nova aba)'},`${esc(label)}<span aria-hidden="true">↗</span>`));} });
+  official.appendChild(r);c.appendChild(official);
   m.appendChild(c);
 
   const c1=el('div',{class:'card pad0'});
   const hd=el('div',{class:'juris-head'});
-  hd.appendChild(el('h3',null,`Base pesquisável (${nf(DADOS.precedentes.length)} registros)`));
+  hd.appendChild(el('h3',null,'Pesquisar julgados e informativos'));
   const filters=el('div',{class:'grid g3 juris-filters'});
   const queryBox=el('div');queryBox.appendChild(el('label',{class:'f'},'Busca livre'));const query=el('input',{type:'search',placeholder:'processo, assunto, tese, legislação…'});queryBox.appendChild(query);filters.appendChild(queryBox);
   function filterSelect(label,values){const box=el('div');box.appendChild(el('label',{class:'f'},label));const select=el('select');select.appendChild(el('option',{value:''},'Todos'));values.forEach(value=>select.appendChild(el('option',{value},esc(value))));box.appendChild(select);filters.appendChild(box);return select;}
@@ -1109,10 +1169,10 @@ function vJuris(m){
       const key=jurisKey(p),registro=S.juris.find(item=>item.id===key||(!item.id&&item.ref===p.ref)),lido=(registro||{}).lido,grupo=['I','II','III','IV'].includes(p.g)?p.g:'';
       const tr=el('tr');
       tr.innerHTML=`<td><span class="tag">${esc(p.trib)}</span><br><small>${esc(p.record_type||'')}</small></td><td><b>${esc(p.ref)}</b><br><small>${esc([p.ramo,p.materia,jurisDate(p.published_at)].filter(Boolean).join(' · '))}</small></td><td><small>${esc(String(p.tese||'').slice(0,520))}${String(p.tese||'').length>520?'…':''}</small></td><td>${grupo?`<span class="tag g-${grupo}">${grupo}</span>`:'—'}</td>`;
-      const actions=el('td');actions.appendChild(el('button',{class:'btn sec sm',onclick:()=>openJurisDetail(p,renderRows)},'Detalhes'));actions.appendChild(el('button',{class:'btn '+(lido?'':'gho')+' sm',onclick:()=>{let item=S.juris.find(entry=>entry.id===key||(!entry.id&&entry.ref===p.ref));if(!item){item={id:key,ref:p.ref,lido:false};S.juris.push(item);}item.id=key;item.lido=!item.lido;salvar();renderRows();}},lido?'Lido':'Marcar lido'));tr.appendChild(actions);tbody.appendChild(tr);
+      const actions=el('td');actions.appendChild(el('button',{class:'btn sec sm',onclick:()=>openJurisDetail(p,renderRows)},'Ver resumo'));actions.appendChild(el('button',{class:'btn '+(lido?'':'gho')+' sm',onclick:()=>{let item=S.juris.find(entry=>entry.id===key||(!entry.id&&entry.ref===p.ref));if(!item){item={id:key,ref:p.ref,lido:false};S.juris.push(item);}item.id=key;item.lido=!item.lido;salvar();renderRows();}},lido?'Revisado':'Marcar como revisado'));tr.appendChild(actions);tbody.appendChild(tr);
     });
     if(!matches.length)tbody.appendChild(el('tr',null,'<td colspan="5"><div class="empty"><b>Nenhum registro encontrado</b>Revise os filtros ou tente outros termos.</div></td>'));
-    resultText.textContent=`${nf(matches.length)} resultado(s) · página ${page} de ${pages}`;pageText.textContent=`Página ${page} de ${pages}`;previous.disabled=page<=1;next.disabled=page>=pages;
+    resultText.textContent=`${nf(matches.length)} resultados · página ${page} de ${pages}`;pageText.textContent=`Página ${page} de ${pages}`;previous.disabled=page<=1;next.disabled=page>=pages;
   }
   function apply(){
     const terms=jurisSearchText(query.value).split(/\s+/).filter(Boolean);
@@ -1124,7 +1184,8 @@ function vJuris(m){
   let queryTimer=null;query.addEventListener('input',()=>{clearTimeout(queryTimer);queryTimer=setTimeout(()=>{page=1;apply();},120);});[type,court,branch,year,group].forEach(select=>select.addEventListener('change',()=>{page=1;apply();}));previous.onclick=()=>{page--;renderRows();};next.onclick=()=>{page++;renderRows();};apply();m.appendChild(c1);
 
   const c2=el('div',{class:'card'});
-  c2.appendChild(el('h2',null,'Registrar informativo'));
+  c2.appendChild(el('h2',null,'Adicionar anotação jurídica'));
+  c2.appendChild(el('p',{class:'section-lead'},'Inclua um julgado ou informativo que queira acompanhar junto da base principal.'));
   const g=el('div',{class:'grid g3'});
   const f={};
   [['trib','Tribunal'],['ref','Informativo / precedente'],['tema','Tema']].forEach(([k,l])=>{
@@ -1139,7 +1200,7 @@ function vJuris(m){
     if(iu.value.trim()&&!url){ toast('Use um link HTTP ou HTTPS válido.'); return; }
     S.juris.push({id:'manual|'+uid(),trib:f.trib.value.trim(),ref:f.ref.value.trim(),tema:f.tema.value.trim(),tese:ita.value.trim(),url,lido:false,manual:true,data:hoje()});
     salvar(); toast('Informativo registrado.'); render();
-  }},'Registrar'));
+  }},'Adicionar à lista'));
   const meus=S.juris.filter(j=>j.manual);
   if(meus.length){
     c2.appendChild(el('div',{class:'hr'}));
@@ -1161,6 +1222,7 @@ function vJuris(m){
 function vDados(m){
   // data da prova
   const c0=el('div',{class:'card'});
+  c0.appendChild(el('span',{class:'eyebrow'},'Planejamento'));
   c0.appendChild(el('h2',null,'Data da prova'));
   const g0=el('div',{class:'grid g3'});
   const b1=el('div'); b1.appendChild(el('label',{class:'f'},'Data'));
@@ -1171,15 +1233,15 @@ function vDados(m){
   const b3=el('div'); b3.appendChild(el('label',{class:'f'},'Fonte oficial'));
   const i3=el('input',{value:S.prova.fonte,placeholder:'Edital nº .../2026'}); i3.onchange=()=>{S.prova.fonte=i3.value; salvar();}; b3.appendChild(i3); g0.appendChild(b3);
   c0.appendChild(g0);
-  c0.appendChild(el('div',{class:'note'},'O Termo de Dispensa nº 03/2026 (DOE nº 16.216, de 15/08/2026) contratou o CEBRASPE, mas não define data, vagas nem cronograma. Enquanto o edital não sair, a data permanece hipótese de trabalho.'));
+  c0.appendChild(el('div',{class:'note'},'A banca está definida, mas a data ainda não foi publicada no edital. Até lá, use uma estimativa para organizar o ciclo.'));
   m.appendChild(c0);
 
   // backup
   const c=el('div',{class:'card'});
-  c.appendChild(el('h2',null,'Backup e restauração'));
-  c.appendChild(el('p',null,'<small>Seus dados ficam apenas no IndexedDB deste navegador, com snapshots automáticos a cada 6 horas. O backup exportado inclui versão de formato e verificação SHA-256; guarde-o em uma pasta sincronizada.</small>'));
+  c.appendChild(el('h2',null,'Proteja seu progresso'));
+  c.appendChild(el('p',{class:'section-lead'},'Seu histórico fica neste navegador. Baixe uma cópia de segurança e guarde-a em local seguro.'));
   const r=el('div',{class:'row'});
-  r.appendChild(el('button',{class:'btn',onclick:exportar},'Exportar backup (.json)'));
+  r.appendChild(el('button',{class:'btn',onclick:exportar},'Baixar cópia de segurança'));
   const fi=el('input',{type:'file',accept:'.json'}); fi.style.display='none';
   fi.onchange=async()=>{ const f=fi.files[0]; if(!f)return;
     try{
@@ -1192,20 +1254,20 @@ function vDados(m){
     }catch(e){ alert('Não foi possível restaurar o arquivo: '+e.message); }
     finally{fi.value='';}
   };
-  r.appendChild(el('button',{class:'btn sec',onclick:()=>fi.click()},'Restaurar de arquivo'));
+  r.appendChild(el('button',{class:'btn sec',onclick:()=>fi.click()},'Restaurar uma cópia'));
   r.appendChild(fi);
   c.appendChild(r);
   c.appendChild(el('div',{class:'hr'}));
-  const snapBox=el('div'); snapBox.innerHTML='<small>Carregando snapshots…</small>';
+  const snapBox=el('div'); snapBox.innerHTML='<small>Carregando cópias automáticas…</small>';
   idbAll(SNAPS).then(sn=>{
     sn.sort((a,b)=>b.ts-a.ts); snapBox.innerHTML='';
-    snapBox.appendChild(el('h3',null,`Snapshots automáticos (${sn.length})`));
-    if(!sn.length){ snapBox.appendChild(el('div',{class:'note'},'Nenhum snapshot ainda. O primeiro é criado após 6 horas de uso.')); return; }
-    const tb=el('table'); tb.innerHTML='<thead><tr><th>Quando</th><th>Tamanho</th><th></th></tr></thead>'; const tbody=el('tbody');
-    sn.forEach(s=>{ const tr=el('tr',null,`<td>${new Date(s.ts).toLocaleString('pt-BR')}</td><td>${Math.round(s.data.length/1024)} KB</td>`);
-      const td=el('td'); td.appendChild(el('button',{class:'btn gho sm',onclick:async()=>{ if(!confirm('Restaurar este snapshot? O estado atual será baixado antes.'))return;
-        try{const candidato=await validarBackup(JSON.parse(s.data)); await exportar('pre-snapshot'); S=candidato; await gravar(); toast('Snapshot restaurado.'); render();}
-        catch(error){alert('Não foi possível restaurar o snapshot: '+error.message);}
+    snapBox.appendChild(el('h3',null,`Cópias automáticas (${sn.length})`));
+    if(!sn.length){ snapBox.appendChild(el('div',{class:'note'},'A primeira cópia será criada automaticamente após algumas horas de uso.')); return; }
+    const tb=el('table'); tb.innerHTML='<thead><tr><th>Data</th><th></th></tr></thead>'; const tbody=el('tbody');
+    sn.forEach(s=>{ const tr=el('tr',null,`<td>${new Date(s.ts).toLocaleString('pt-BR')}</td>`);
+      const td=el('td'); td.appendChild(el('button',{class:'btn gho sm',onclick:async()=>{ if(!confirm('Restaurar esta cópia? O progresso atual será baixado antes.'))return;
+        try{const candidato=await validarBackup(JSON.parse(s.data)); await exportar('pre-snapshot'); S=candidato; await gravar(); toast('Cópia restaurada.'); render();}
+        catch(error){alert('Não foi possível restaurar a cópia: '+error.message);}
       }},'Restaurar'));
       tr.appendChild(td); tbody.appendChild(tr); });
     tb.appendChild(tbody); snapBox.appendChild(tb);
@@ -1216,7 +1278,7 @@ function vDados(m){
   // importador de questões
   const c2=el('div',{class:'card'});
   c2.appendChild(el('h2',null,'Importar questões'));
-  c2.appendChild(el('p',null,'<small>Cole questões que você já resolve em outras plataformas, ou digite as suas. Elas entram no banco imediatamente e participam das práticas e dos simulados.</small>'));
+  c2.appendChild(el('p',{class:'section-lead'},'Cole uma lista em CSV ou cadastre uma questão. O novo conteúdo entra nas práticas e nos simulados deste navegador.'));
   const tabs=el('div',{class:'row'});
   const areaCSV=el('div'), areaForm=el('div');
   const tCSV=el('button',{class:'btn sm',onclick:()=>{areaCSV.style.display='';areaForm.style.display='none';tCSV.className='btn sm';tFRM.className='btn gho sm';}},'Colar CSV');
@@ -1274,30 +1336,25 @@ function vDados(m){
   }
   m.appendChild(c2);
 
-  // sobre / integridade
+  // resumo do conteúdo
   const c3=el('div',{class:'card'});
-  c3.appendChild(el('h2',null,'Sobre esta versão'));
+  c3.appendChild(el('h2',null,'Conteúdo disponível'));
   const k=metricas();
-  c3.appendChild(el('div',{class:'grid g2'},''));
-  const ul=el('ul',{class:'clean'});
-  [
-    `Versão ${DADOS.meta.versao} — PWA estática local-first, sem servidor de aplicação e instalável pelo navegador.`,
-    `Programa: ${DADOS.programa.length} tópicos do Anexo I da ${DADOS.meta.resolucao}, 12 disciplinas, 4 grupos.`,
-    `Perfil pré-edital ${CONTENT_MANIFEST.preEditProfileVersion}: seis editais Cebraspe comparados, com foco interno por tópico e sem exclusões do programa.`,
-    `Banco ${CONTENT_MANIFEST.questionBankVersion}: ${DADOS.questoes.length} questões autorais referenciadas + ${imp.length} importada(s) por você.`,
-    `Mapa legislativo: ${Object.keys(DADOS.legislacao.topicos).length} tópicos com faixa de leitura e ${DADOS.legislacao.sem_dispositivo.length} classificados como sem faixa específica.`,
-    `Jurisprudência ${CONTENT_MANIFEST.jurisprudenceVersion}: ${DADOS.precedentes.length} publicações e precedentes.`,
-    `Conteúdo ${CONTENT_MANIFEST.contentVersion}, verificado por SHA-256 antes de ser aberto.`,
-    `Seu progresso: ${k.ini} tópicos iniciados, ${k.feitas} questões respondidas, ${S.sessoes.length} sessões, ${S.disc.tentativas.length} produções discursivas.`
-  ].forEach(t=>ul.appendChild(el('li',null,t)));
-  c3.appendChild(ul);
-  c3.appendChild(el('div',{class:'note'},'As questões e o mapa legislativo são material de estudo produzido para este aplicativo, com a fonte normativa indicada em cada item. Confira sempre o texto oficial antes de firmar posição em prova ou peça. Este aplicativo não substitui o edital, as normas nem os julgados oficiais.'));
+  const resumo=el('div',{class:'grid g4'});
+  const resumoStat=(rotulo,valor)=>{const item=el('div',{class:'mini-stat'});item.appendChild(el('b',null,nf(valor)));item.appendChild(el('span',null,rotulo));return item;};
+  resumo.appendChild(resumoStat('tópicos',DADOS.programa.length));
+  resumo.appendChild(resumoStat('questões',DADOS.questoes.length+imp.length));
+  resumo.appendChild(resumoStat('julgados e informativos',DADOS.precedentes.length));
+  resumo.appendChild(resumoStat('tópicos iniciados',k.ini));
+  c3.appendChild(resumo);
+  c3.appendChild(el('div',{class:'note'},'O material orienta seus estudos. Para prova e atuação profissional, confirme sempre o edital, a legislação e os julgados nas fontes oficiais indicadas.'));
+  c3.appendChild(el('h3',{class:'danger-title'},'Recomeçar'));
   const rz=el('div',{class:'row'});
   rz.appendChild(el('button',{class:'btn gho sm',onclick:async()=>{
     if(!confirm('Apagar TODO o progresso deste navegador e recomeçar? Uma cópia será baixada antes.')) return;
     try{await exportar('antes-de-zerar'); S=novoEstado(); await gravar(); toast('Estado reiniciado.'); go('painel');}
     catch(error){alert('O progresso não foi apagado: '+error.message);}
-  }},'Zerar progresso'));
+  }},'Apagar meu progresso'));
   c3.appendChild(rz);
   m.appendChild(c3);
 }
@@ -1319,7 +1376,7 @@ async function validarBackup(obj){
     if(obj.formatVersion!==1) throw new Error(`formato de backup ${obj.formatVersion} não suportado`);
     if(!obj.state||!obj.stateSha256) throw new Error('backup incompleto');
     const atual=await sha256Text(JSON.stringify(obj.state));
-    if(atual!==obj.stateSha256) throw new Error('a verificação SHA-256 falhou; o arquivo pode estar truncado ou alterado');
+    if(atual!==obj.stateSha256) throw new Error('o arquivo está incompleto ou foi alterado');
     return validarEstadoRestaurado(obj.state);
   }
   // Compatibilidade explícita com backups 0.7 e snapshots locais anteriores.
@@ -1328,7 +1385,7 @@ async function validarBackup(obj){
 }
 function validarEstadoRestaurado(raw){
   if(!raw||typeof raw!=='object'||Array.isArray(raw)) throw new Error('estado ausente ou inválido');
-  if(!Number.isInteger(Number(raw.schema))||Number(raw.schema)<1) throw new Error('versão de esquema inválida');
+  if(!Number.isInteger(Number(raw.schema))||Number(raw.schema)<1) throw new Error('formato de dados inválido');
   if(!raw.topicos||typeof raw.topicos!=='object'||Array.isArray(raw.topicos)) throw new Error('progresso por tópicos inválido');
   if(raw.prova&&(!/^\d{4}-\d{2}-\d{2}$/.test(String(raw.prova.data||'')))) throw new Error('data da prova inválida');
   const arrayLimit=(name,limit)=>{ if(raw[name]!=null&&!Array.isArray(raw[name]))throw new Error(`${name} deve ser uma lista`); if((raw[name]||[]).length>limit)throw new Error(`${name} excede o limite de ${limit} registros`); };
@@ -1390,11 +1447,10 @@ async function init(){
   try{
     await carregarConteudo();
     idb=await openIDB();
-    if(!idb) throw new Error('O armazenamento local do navegador (IndexedDB) não está disponível. Verifique as permissões de dados deste site.');
+    if(!idb) throw new Error('Não foi possível guardar seus dados neste navegador. Verifique as permissões do site.');
     await carregar();
     await gravar();
     tema();
-    $('#chipConteudo').textContent=`Conteúdo: ${CONTENT_MANIFEST.questionBankVersion}`;
     $('#btnTheme').onclick=()=>{ S.ui.tema = S.ui.tema==='light'?'dark':'light'; tema(); salvar(); };
     nav(); render();
     if('serviceWorker' in navigator){
@@ -1406,7 +1462,7 @@ async function init(){
     const main=$('#main'); main.innerHTML='';
     const card=el('section',{class:'card'}); card.appendChild(el('h2',null,'Não foi possível abrir o Centro de Estudos'));
     const p=el('p'); p.textContent=error.message; card.appendChild(p);
-    card.appendChild(el('div',{class:'note'},'Recarregue a página. Se o problema persistir, confirme que o site está sendo servido por HTTPS ou por um servidor local e que o navegador permite armazenamento para este endereço.'));
+    card.appendChild(el('div',{class:'note'},'Recarregue a página. Se o problema continuar, verifique se o navegador permite salvar dados para este site.'));
     main.appendChild(card);
   }
 }
