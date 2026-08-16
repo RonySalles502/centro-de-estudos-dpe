@@ -18,7 +18,10 @@ const crypto = require('crypto');
   await page.waitForFunction(() => window.__DPE_READY__ || window.__DPE_BOOT_ERROR__, null, { timeout: 15000 });
   const bootError = await page.evaluate(() => window.__DPE_BOOT_ERROR__ || '');
   if (bootError) throw new Error('Falha de boot: ' + bootError);
-  if (process.env.PWA_SCREENSHOT) await page.screenshot({ path: process.env.PWA_SCREENSHOT, fullPage: true });
+  if (process.env.PWA_SCREENSHOT) {
+    await page.waitForTimeout(500);
+    await page.screenshot({ path: process.env.PWA_SCREENSHOT, fullPage: true });
+  }
 
   const T = [];
   const ok = (n, c) => T.push([n, !!c]);
@@ -31,7 +34,7 @@ const crypto = require('crypto');
   ok('painel com estatísticas', (await page.$$('.stat')).length >= 4);
   const chip = await page.textContent('#chipProva');
   ok('chip da prova mostra estimativa', /estimada/.test(chip));
-  ok('versão do conteúdo está visível', /2026\.08/.test(await page.textContent('#chipConteudo')));
+  ok('cabeçalho não expõe versão técnica', (await page.$('#chipConteudo')) === null);
 
   // 3. cada aba abre sem erro
   for (const t of tabs) {
@@ -137,6 +140,7 @@ const crypto = require('crypto');
   // 9. discursivas: contagem em linhas
   await page.click('#tabs button:text-is("Discursivas")');
   await page.waitForTimeout(250);
+  ok('discursiva oferece espelho de resposta', !!await page.$('details.study-guide'));
   const linhaTxt0 = await page.textContent('.linhas');
   ok('discursiva mostra limite de 30 linhas', /de 30 linhas/.test(linhaTxt0));
   await page.selectOption('#main .card .grid select >> nth=0', 'PECA');
@@ -149,7 +153,7 @@ const crypto = require('crypto');
   ok('contagem de linhas funciona (350 chars = 5 linhas)', /^5 de 120/.test(linhaTxt2));
 
   // 10. importador CSV
-  await page.click('#tabs button:text-is("Dados")');
+  await page.click('#tabs button:text-is("Ajustes")');
   await page.waitForTimeout(300);
   await page.click('button:text-is("Colar CSV")');
   await page.waitForTimeout(150);
@@ -171,12 +175,14 @@ const crypto = require('crypto');
   await page.click('#tabs button:text-is("Jurisprudência")');
   await page.waitForTimeout(250);
   const juris = await page.textContent('#main');
-  ok('jurisprudência mostra versão e origem da atualização', /Versão/.test(juris) && /fonte oficial/i.test(juris));
+  ok('jurisprudência mostra estado simples e fonte oficial', /Base (atualizada|disponível)/.test(juris) && /fonte oficial/i.test(juris));
+  ok('jurisprudência não expõe metadados técnicos', !/Versão 20|pacote versionado|última coleta válida|falha de coleta/i.test(juris));
+  ok('atalhos oficiais têm rótulos claros', /Abrir informativos do STF/.test(juris) && /Abrir súmulas do STF/.test(juris));
 
   // 12. backup com envelope e hash verificável
-  await page.click('#tabs button:text-is("Dados")');
+  await page.click('#tabs button:text-is("Ajustes")');
   const downloadPromise = page.waitForEvent('download');
-  await page.click('button:text-is("Exportar backup (.json)")');
+  await page.click('button:text-is("Baixar cópia de segurança")');
   const download = await downloadPromise;
   const backupPath = await download.path();
   const backup = JSON.parse(fs.readFileSync(backupPath, 'utf8'));

@@ -197,6 +197,31 @@ class StudyPlanningServiceTestCase(unittest.TestCase):
         self.assertEqual(completed["status"], "CONCLUIDA")
         self.assertEqual(completed["word_count"], 30)
 
+    def test_discursive_catalog_has_scored_mirrors_and_official_anchors(self) -> None:
+        prompts = self.service.list_discursive_prompts()
+
+        self.assertEqual(len(prompts), 24)
+        self.assertTrue(any(item["prompt_type"] == "PECA" for item in prompts))
+        self.assertTrue(
+            any(
+                anchor.get("informativo")
+                for prompt in prompts
+                for anchor in prompt["jurisprudence_anchors"]
+            )
+        )
+        for prompt in prompts:
+            self.assertGreaterEqual(len(prompt["answer_key"]), 4)
+            self.assertAlmostEqual(
+                sum(float(item["pontos"]) for item in prompt["answer_key"]),
+                prompt["max_score"],
+            )
+            self.assertTrue(
+                all(
+                    anchor["url"].startswith(("https://", "http://"))
+                    for anchor in prompt["jurisprudence_anchors"]
+                )
+            )
+
     def test_backup_preserves_diagnostic_plan_reviews_and_discursive_history(self) -> None:
         self.service.save_diagnostic(self.diagnostic_payload())
         plan = self.service.generate_plan({"start_date": "2026-08-17"})

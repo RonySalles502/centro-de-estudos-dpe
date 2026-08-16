@@ -1,0 +1,459 @@
+{
+  "before": {
+    "total": 260,
+    "answer_distribution": {
+      "A": 28,
+      "B": 222,
+      "C": 9,
+      "D": 0,
+      "E": 1
+    },
+    "answer_distribution_percent": {
+      "A": 10.77,
+      "B": 85.38,
+      "C": 3.46,
+      "D": 0.0,
+      "E": 0.38
+    },
+    "most_common_answer_success_percent": 85.38,
+    "longest_answer": {
+      "correct_among_longest": 247,
+      "correct_among_longest_percent": 95.0,
+      "unique_longest_questions": 258,
+      "correct_unique_longest": 245,
+      "correct_unique_longest_percent_all": 94.23,
+      "correct_unique_longest_percent_eligible": 94.96,
+      "mean_correct_length": 189.52,
+      "mean_distractor_length": 67.47
+    },
+    "by_group": {
+      "I": {
+        "total": 80,
+        "answers": {
+          "A": 11,
+          "B": 59,
+          "C": 9,
+          "D": 0,
+          "E": 1
+        }
+      },
+      "II": {
+        "total": 60,
+        "answers": {
+          "A": 13,
+          "B": 47,
+          "C": 0,
+          "D": 0,
+          "E": 0
+        }
+      },
+      "III": {
+        "total": 60,
+        "answers": {
+          "A": 3,
+          "B": 57,
+          "C": 0,
+          "D": 0,
+          "E": 0
+        }
+      },
+      "IV": {
+        "total": 60,
+        "answers": {
+          "A": 1,
+          "B": 59,
+          "C": 0,
+          "D": 0,
+          "E": 0
+        }
+      }
+    },
+    "by_discipline": {
+      "ADM": {
+        "total": 22,
+        "group": "I",
+        "answers": {
+          "A": 4,
+          "B": 17,
+          "C": 1,
+          "D": 0,
+          "E": 0
+        }
+      },
+      "CDC": {
+        "total": 12,
+        "group": "III",
+        "answers": {
+          "A": 0,
+          "B": 12,
+          "C": 0,
+          "D": 0,
+          "E": 0
+        }
+      },
+      "CIV": {
+        "total": 26,
+        "group": "III",
+        "answers": {
+          "A": 0,
+          "B": 26,
+          "C": 0,
+          "D": 0,
+          "E": 0
+        }
+      },
+      "CON": {
+        "total": 40,
+        "group": "I",
+        "answers": {
+          "A": 4,
+          "B": 27,
+          "C": 8,
+          "D": 0,
+          "E": 1
+        }
+      },
+      "DCA": {
+        "total": 20,
+        "group": "IV",
+        "answers": {
+          "A": 1,
+          "B": 19,
+          "C": 0,
+          "D": 0,
+          "E": 0
+        }
+      },
+      "DCO": {
+        "total": 22,
+        "group": "IV",
+        "answers": {
+          "A": 0,
+          "B": 22,
+          "C": 0,
+          "D": 0,
+          "E": 0
+        }
+      },
+      "DEP": {
+        "total": 14,
+        "group": "II",
+        "answers": {
+          "A": 2,
+          "B": 12,
+          "C": 0,
+          "D": 0,
+          "E": 0
+        }
+      },
+      "DHU": {
+        "total": 18,
+        "group": "IV",
+        "answers": {
+          "A": 0,
+          "B": 18,
+          "C": 0,
+          "D": 0,
+          "E": 0
+        }
+      },
+      "DPC": {
+        "total": 22,
+        "group": "III",
+        "answers": {
+          "A": 3,
+          "B": 19,
+          "C": 0,
+          "D": 0,
+          "E": 0
+        }
+      },
+      "DPP": {
+        "total": 26,
+        "group": "II",
+        "answers": {
+          "A": 2,
+          "B": 24,
+          "C": 0,
+          "D": 0,
+          "E": 0
+        }
+      },
+      "PEN": {
+        "total": 20,
+        "group": "II",
+        "answers": {
+          "A": 9,
+          "B": 11,
+          "C": 0,
+          "D": 0,
+          "E": 0
+        }
+      },
+      "PID": {
+        "total": 18,
+        "group": "I",
+        "answers": {
+          "A": 3,
+          "B": 15,
+          "C": 0,
+          "D": 0,
+          "E": 0
+        }
+      }
+    },
+    "duplicates": {
+      "duplicate_ids": 0,
+      "duplicate_stem_sets": 1,
+      "duplicate_content_sets": 0,
+      "stem_sets": [
+        [
+          "A-CON-019",
+          "A-DCO-014"
+        ]
+      ],
+      "content_sets": []
+    },
+    "quality": {
+      "errors": 0,
+      "warnings": 1,
+      "issues": [
+        {
+          "severity": "warning",
+          "id": "A-CON-019",
+          "code": "duplicate_stem",
+          "detail": "A-CON-019, A-DCO-014"
+        }
+      ]
+    }
+  },
+  "after": {
+    "total": 260,
+    "answer_distribution": {
+      "A": 52,
+      "B": 52,
+      "C": 52,
+      "D": 52,
+      "E": 52
+    },
+    "answer_distribution_percent": {
+      "A": 20.0,
+      "B": 20.0,
+      "C": 20.0,
+      "D": 20.0,
+      "E": 20.0
+    },
+    "most_common_answer_success_percent": 20.0,
+    "longest_answer": {
+      "correct_among_longest": 247,
+      "correct_among_longest_percent": 95.0,
+      "unique_longest_questions": 258,
+      "correct_unique_longest": 245,
+      "correct_unique_longest_percent_all": 94.23,
+      "correct_unique_longest_percent_eligible": 94.96,
+      "mean_correct_length": 189.52,
+      "mean_distractor_length": 67.47
+    },
+    "by_group": {
+      "I": {
+        "total": 80,
+        "answers": {
+          "A": 16,
+          "B": 16,
+          "C": 16,
+          "D": 16,
+          "E": 16
+        }
+      },
+      "II": {
+        "total": 60,
+        "answers": {
+          "A": 12,
+          "B": 12,
+          "C": 12,
+          "D": 12,
+          "E": 12
+        }
+      },
+      "III": {
+        "total": 60,
+        "answers": {
+          "A": 12,
+          "B": 12,
+          "C": 12,
+          "D": 12,
+          "E": 12
+        }
+      },
+      "IV": {
+        "total": 60,
+        "answers": {
+          "A": 12,
+          "B": 12,
+          "C": 12,
+          "D": 12,
+          "E": 12
+        }
+      }
+    },
+    "by_discipline": {
+      "ADM": {
+        "total": 22,
+        "group": "I",
+        "answers": {
+          "A": 5,
+          "B": 4,
+          "C": 4,
+          "D": 4,
+          "E": 5
+        }
+      },
+      "CDC": {
+        "total": 12,
+        "group": "III",
+        "answers": {
+          "A": 2,
+          "B": 2,
+          "C": 3,
+          "D": 3,
+          "E": 2
+        }
+      },
+      "CIV": {
+        "total": 26,
+        "group": "III",
+        "answers": {
+          "A": 5,
+          "B": 5,
+          "C": 5,
+          "D": 5,
+          "E": 6
+        }
+      },
+      "CON": {
+        "total": 40,
+        "group": "I",
+        "answers": {
+          "A": 8,
+          "B": 8,
+          "C": 8,
+          "D": 8,
+          "E": 8
+        }
+      },
+      "DCA": {
+        "total": 20,
+        "group": "IV",
+        "answers": {
+          "A": 4,
+          "B": 4,
+          "C": 4,
+          "D": 4,
+          "E": 4
+        }
+      },
+      "DCO": {
+        "total": 22,
+        "group": "IV",
+        "answers": {
+          "A": 4,
+          "B": 4,
+          "C": 4,
+          "D": 5,
+          "E": 5
+        }
+      },
+      "DEP": {
+        "total": 14,
+        "group": "II",
+        "answers": {
+          "A": 3,
+          "B": 3,
+          "C": 3,
+          "D": 2,
+          "E": 3
+        }
+      },
+      "DHU": {
+        "total": 18,
+        "group": "IV",
+        "answers": {
+          "A": 4,
+          "B": 4,
+          "C": 4,
+          "D": 3,
+          "E": 3
+        }
+      },
+      "DPC": {
+        "total": 22,
+        "group": "III",
+        "answers": {
+          "A": 5,
+          "B": 5,
+          "C": 4,
+          "D": 4,
+          "E": 4
+        }
+      },
+      "DPP": {
+        "total": 26,
+        "group": "II",
+        "answers": {
+          "A": 5,
+          "B": 5,
+          "C": 5,
+          "D": 6,
+          "E": 5
+        }
+      },
+      "PEN": {
+        "total": 20,
+        "group": "II",
+        "answers": {
+          "A": 4,
+          "B": 4,
+          "C": 4,
+          "D": 4,
+          "E": 4
+        }
+      },
+      "PID": {
+        "total": 18,
+        "group": "I",
+        "answers": {
+          "A": 3,
+          "B": 4,
+          "C": 4,
+          "D": 4,
+          "E": 3
+        }
+      }
+    },
+    "duplicates": {
+      "duplicate_ids": 0,
+      "duplicate_stem_sets": 1,
+      "duplicate_content_sets": 0,
+      "stem_sets": [
+        [
+          "A-CON-019",
+          "A-DCO-014"
+        ]
+      ],
+      "content_sets": []
+    },
+    "quality": {
+      "errors": 0,
+      "warnings": 1,
+      "issues": [
+        {
+          "severity": "warning",
+          "id": "A-CON-019",
+          "code": "duplicate_stem",
+          "detail": "A-CON-019, A-DCO-014"
+        }
+      ]
+    }
+  },
+  "fix_applied": true
+}

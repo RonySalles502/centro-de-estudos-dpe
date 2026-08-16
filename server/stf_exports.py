@@ -20,9 +20,18 @@ from datetime import datetime, timedelta, timezone
 from typing import Any
 
 
-STF_DATA_URL = (
-    "https://www.stf.jus.br/arquivo/cms/informativoSTF/anexo/"
+STF_DATA_PATH = (
+    "/arquivo/cms/informativoSTF/anexo/"
     "Informativo_Dados/Dados_InformativosSTF.xlsx"
+)
+STF_DATA_URL = f"https://www.stf.jus.br{STF_DATA_PATH}"
+# O mesmo arquivo oficial e o mesmo certificado são servidos por mais de um
+# host do STF. A redundância evita que uma indisponibilidade de borda em um
+# hostname impeça a atualização diária, sem recorrer a espelhos de terceiros.
+STF_DATA_URLS = (
+    STF_DATA_URL,
+    f"https://stf.jus.br{STF_DATA_PATH}",
+    f"https://portal.stf.jus.br{STF_DATA_PATH}",
 )
 
 DATASET_COLUMNS = (

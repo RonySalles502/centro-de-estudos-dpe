@@ -252,55 +252,78 @@ class StudyPlanningService:
                 (json.dumps({"entries": updated}), now),
             )
 
-    @staticmethod
-    def _seed_discursive_prompts(connection: Any, now: str) -> None:
-        prompts = [
-            (
-                "D-IA-G1-001",
-                "Autonomia da Defensoria Pública e acesso à justiça",
-                "Examine a posição constitucional da Defensoria Pública, sua autonomia e a relação entre assistência jurídica integral, acesso à justiça e promoção dos direitos humanos.",
-                "I",
-                "CON",
-                "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm",
-                "Constituição Federal, arts. 5º, LXXIV, e 134",
-            ),
-            (
-                "D-IA-G2-001",
-                "Garantias constitucionais da pessoa presa",
-                "Analise as garantias constitucionais incidentes desde a prisão, com ênfase em comunicação, direito ao silêncio, assistência jurídica e controle jurisdicional da legalidade.",
-                "II",
-                "DPP",
-                "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm",
-                "Constituição Federal, art. 5º, incisos LXI a LXVIII",
-            ),
-            (
-                "D-IA-G3-001",
-                "Capacidade civil e proteção da pessoa com deficiência",
-                "Discorra sobre o regime contemporâneo da capacidade civil, distinguindo incapacidade absoluta, incapacidade relativa e mecanismos de apoio à pessoa com deficiência.",
-                "III",
-                "CIV",
-                "https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm",
-                "Código Civil, arts. 3º e 4º; Lei nº 13.146/2015",
-            ),
-            (
-                "D-IA-G4-001",
-                "Prioridade absoluta de crianças e adolescentes",
-                "Explique o conteúdo jurídico da prioridade absoluta, seus destinatários obrigados e seus efeitos sobre atendimento público, políticas sociais e alocação de recursos.",
-                "IV",
-                "DCA",
-                "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm",
-                "Constituição Federal, art. 227; ECA, art. 4º",
-            ),
-        ]
-        connection.executemany(
-            """
-            INSERT OR IGNORE INTO discursive_prompts(
-                id, title, prompt_text, objective_group, discipline_code,
-                source_url, official_reference, authorship_type,
-                validation_status, active, created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, 'IA', 'PENDENTE_FONTE', 1, ?, ?)
+    def _seed_discursive_prompts(self, connection: Any, now: str) -> None:
+        path = self.database.project_root / "data" / "discursive_prompts.json"
+        catalog = json.loads(path.read_text(encoding="utf-8"))
+        prompts = catalog.get("prompts", [])
+        if not isinstance(prompts, list) or len(prompts) < 24:
+            raise ValueError("O catálogo de discursivas está incompleto.")
+        expected_ids: list[str] = []
+        for prompt in prompts:
+            prompt_id = str(prompt["id"])
+            prompt_type = str(prompt["tipo"])
+            mirror = prompt.get("espelho", [])
+            anchors = prompt.get("ancoras", [])
+            expected_score = 5.0 if prompt_type == "PECA" else 2.5
+            if abs(sum(float(item.get("pontos", 0)) for item in mirror) - expected_score) > 0.001:
+                raise ValueError(f"Espelho discursivo inválido: {prompt_id}.")
+            if not anchors:
+                raise ValueError(f"Tema sem âncora oficial: {prompt_id}.")
+            expected_ids.append(prompt_id)
+            connection.execute(
+                """
+                INSERT INTO discursive_prompts(
+                    id, title, prompt_text, prompt_type, discursive_group,
+                    objective_group, discipline_code, line_limit, max_score,
+                    answer_key_json, jurisprudence_anchors_json, catalog_version,
+                    source_url, official_reference, authorship_type,
+                    validation_status, active, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'IA',
+                          'VALIDADA_FONTE', 1, ?, ?)
+                ON CONFLICT(id) DO UPDATE SET
+                    title = excluded.title,
+                    prompt_text = excluded.prompt_text,
+                    prompt_type = excluded.prompt_type,
+                    discursive_group = excluded.discursive_group,
+                    objective_group = excluded.objective_group,
+                    discipline_code = excluded.discipline_code,
+                    line_limit = excluded.line_limit,
+                    max_score = excluded.max_score,
+                    answer_key_json = excluded.answer_key_json,
+                    jurisprudence_anchors_json = excluded.jurisprudence_anchors_json,
+                    catalog_version = excluded.catalog_version,
+                    source_url = excluded.source_url,
+                    official_reference = excluded.official_reference,
+                    validation_status = excluded.validation_status,
+                    active = 1,
+                    updated_at = excluded.updated_at
+                """,
+                (
+                    prompt_id,
+                    prompt["tit"],
+                    prompt["en"],
+                    prompt_type,
+                    prompt["gd"],
+                    prompt["g"],
+                    prompt["disciplina"],
+                    120 if prompt_type == "PECA" else 30,
+                    expected_score,
+                    json.dumps(mirror, ensure_ascii=False),
+                    json.dumps(anchors, ensure_ascii=False),
+                    catalog["catalog_version"],
+                    prompt["url"],
+                    prompt["ref"],
+                    now,
+                    now,
+                ),
+            )
+        placeholders = ",".join("?" for _ in expected_ids)
+        connection.execute(
+            f"""
+            UPDATE discursive_prompts SET active = 0, updated_at = ?
+            WHERE authorship_type = 'IA' AND id NOT IN ({placeholders})
             """,
-            [(*prompt, now, now) for prompt in prompts],
+            (now, *expected_ids),
         )
 
     @staticmethod
@@ -1213,8 +1236,8 @@ class StudyPlanningService:
 
     def list_discursive_prompts(self) -> list[dict[str, Any]]:
         with self.database.connect() as connection:
-            return [
-                dict(row)
+            rows = [
+                self._discursive_prompt_payload(dict(row))
                 for row in connection.execute(
                     """
                     SELECT p.*, d.name AS discipline_name,
@@ -1229,6 +1252,15 @@ class StudyPlanningService:
                     """
                 )
             ]
+        return rows
+
+    @staticmethod
+    def _discursive_prompt_payload(prompt: dict[str, Any]) -> dict[str, Any]:
+        prompt["answer_key"] = json.loads(prompt.pop("answer_key_json", "[]"))
+        prompt["jurisprudence_anchors"] = json.loads(
+            prompt.pop("jurisprudence_anchors_json", "[]")
+        )
+        return prompt
 
     def create_discursive_prompt(self, payload: dict[str, Any]) -> dict[str, Any]:
         title = str(payload.get("title", "")).strip()
@@ -1241,6 +1273,16 @@ class StudyPlanningService:
         if group and group not in GROUPS:
             raise ValueError("Grupo objetivo inválido.")
         discipline = str(payload.get("discipline_code", "")).upper() or None
+        prompt_type = str(payload.get("prompt_type", "QUESTAO")).upper()
+        if prompt_type not in {"QUESTAO", "PECA"}:
+            raise ValueError("Tipo de produção discursiva inválido.")
+        discursive_group = str(payload.get("discursive_group", "")).upper() or None
+        if discursive_group and discursive_group not in {"I", "II"}:
+            raise ValueError("Grupo discursivo inválido.")
+        answer_key = payload.get("answer_key", [])
+        anchors = payload.get("jurisprudence_anchors", [])
+        if not isinstance(answer_key, list) or not isinstance(anchors, list):
+            raise ValueError("Espelho e âncoras devem ser listas.")
         source_url = str(payload.get("source_url", "")).strip()
         if source_url:
             parsed_url = urllib.parse.urlparse(source_url)
@@ -1256,17 +1298,26 @@ class StudyPlanningService:
             connection.execute(
                 """
                 INSERT INTO discursive_prompts(
-                    id, title, prompt_text, objective_group, discipline_code,
+                    id, title, prompt_text, prompt_type, discursive_group,
+                    objective_group, discipline_code, line_limit, max_score,
+                    answer_key_json, jurisprudence_anchors_json,
                     source_url, official_reference, authorship_type,
                     validation_status, active, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, 'HUMANA', 'PENDENTE_FONTE', 1, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                          'HUMANA', 'PENDENTE_FONTE', 1, ?, ?)
                 """,
                 (
                     prompt_id,
                     title,
                     prompt_text,
+                    prompt_type,
+                    discursive_group,
                     group,
                     discipline,
+                    120 if prompt_type == "PECA" else 30,
+                    5.0 if prompt_type == "PECA" else 2.5,
+                    json.dumps(answer_key, ensure_ascii=False),
+                    json.dumps(anchors, ensure_ascii=False),
                     source_url,
                     str(payload.get("official_reference", "")).strip(),
                     now,
@@ -1277,7 +1328,7 @@ class StudyPlanningService:
             row = connection.execute(
                 "SELECT * FROM discursive_prompts WHERE id = ?", (prompt_id,)
             ).fetchone()
-        return dict(row)
+        return self._discursive_prompt_payload(dict(row))
 
     def list_discursive_attempts(self, limit: int = 100) -> list[dict[str, Any]]:
         limit = max(1, min(int(limit), 300))

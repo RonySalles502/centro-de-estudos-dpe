@@ -1,0 +1,499 @@
+{
+  "catalog_version": "2026.08-discursivas-2",
+  "methodology": "Temas autorais alinhados à Resolução nº 344/2025, com espelho objetivo e âncoras oficiais. Os espelhos orientam autoavaliação e não substituem correção humana.",
+  "prompts": [
+    {
+      "id": "D-G1-CONV-001",
+      "tit": "Defensoria Pública e controle de convencionalidade",
+      "tipo": "QUESTAO",
+      "gd": "I",
+      "g": "I",
+      "disciplina": "CON",
+      "en": "Disserte sobre o papel da Defensoria Pública no controle de convencionalidade, abordando a posição dos tratados de direitos humanos no ordenamento brasileiro, a teoria da supralegalidade e as consequências práticas para a atuação institucional em favor de pessoas privadas de liberdade.",
+      "ref": "CF/88, art. 5º, §§ 2º e 3º; STF, RE 466.343; Corte IDH, Almonacid Arellano vs. Chile",
+      "url": "https://portal.stf.jus.br/jurisprudencia/sumariosumulas.asp?base=26&sumula=1265",
+      "espelho": [
+        {"criterio": "Bloco constitucional", "pontos": 0.5, "esperado": "Distinguir tratados aprovados pelo rito do art. 5º, § 3º, e tratados de direitos humanos incorporados pelo rito ordinário."},
+        {"criterio": "Status normativo", "pontos": 0.75, "esperado": "Explicar a equivalência a emenda constitucional e a supralegalidade firmada no RE 466.343, com efeito paralisante sobre leis incompatíveis."},
+        {"criterio": "Controle de convencionalidade", "pontos": 0.75, "esperado": "Definir o dever de compatibilização das normas internas com a Convenção Americana e a interpretação da Corte IDH."},
+        {"criterio": "Atuação defensorial", "pontos": 0.5, "esperado": "Aplicar o controle a prisão, audiência de custódia, execução penal e reparação de violações, com pedido processual concreto."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "RE 466.343", "informativo": "", "url": "https://portal.stf.jus.br/jurisprudencia/sumariosumulas.asp?base=26&sumula=1265", "aplicacao": "Status supralegal da Convenção Americana."},
+        {"tribunal": "Corte IDH", "referencia": "Almonacid Arellano vs. Chile", "informativo": "", "url": "https://www.corteidh.or.cr/docs/casos/articulos/seriec_154_esp.pdf", "aplicacao": "Dever de controle de convencionalidade pelos órgãos internos."}
+      ]
+    },
+    {
+      "id": "D-G1-ECI-002",
+      "tit": "Estado de coisas inconstitucional e sistema penitenciário",
+      "tipo": "QUESTAO",
+      "gd": "I",
+      "g": "II",
+      "disciplina": "DEP",
+      "en": "Analise o estado de coisas inconstitucional reconhecido na ADPF 347, seus pressupostos, os limites do controle judicial de políticas públicas e a lógica de execução estrutural do plano Pena Justa, com atenção ao papel da Defensoria Pública.",
+      "ref": "STF, ADPF 347; RE 592.581 (Tema 220); Informativos STF 1111 e 1164",
+      "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=ADPF&numeroProcesso=347",
+      "espelho": [
+        {"criterio": "Diagnóstico estrutural", "pontos": 0.5, "esperado": "Indicar violações graves, generalizadas e persistentes, falhas estruturais e bloqueio institucional."},
+        {"criterio": "ADPF 347", "pontos": 0.75, "esperado": "Explicar o reconhecimento do estado de coisas inconstitucional e os deveres estatais de superação do quadro prisional."},
+        {"criterio": "Tutela estrutural", "pontos": 0.75, "esperado": "Tratar de plano, metas, monitoramento, diálogo institucional e medidas progressivas, sem substituição administrativa indiscriminada."},
+        {"criterio": "Defensoria e controle", "pontos": 0.5, "esperado": "Relacionar inspeção, tutela coletiva, participação no processo estrutural e proteção individual das pessoas presas."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 1111 — ADPF 347/DF", "informativo": "1111", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=ADPF&numeroProcesso=347", "aplicacao": "Reconhecimento definitivo do estado de coisas inconstitucional."},
+        {"tribunal": "STF", "referencia": "Informativo 1164 — ADPF 347", "informativo": "1164", "url": "https://jurisprudencia.stf.jus.br/pages/search/novo-informativo-11799/false", "aplicacao": "Homologação do plano Pena Justa e execução estrutural."}
+      ]
+    },
+    {
+      "id": "D-G1-CUST-003",
+      "tit": "Audiência de custódia e prevenção à tortura",
+      "tipo": "QUESTAO",
+      "gd": "I",
+      "g": "II",
+      "disciplina": "DPP",
+      "en": "Disserte sobre a audiência de custódia: fundamento convencional e legal, finalidade, prazo, atribuições da autoridade judicial e providências diante de indícios de tortura ou maus-tratos.",
+      "ref": "CPP, arts. 287 e 310; Resolução CNJ nº 213/2015; CADH, art. 7.5; ADI 6.298 e conexas",
+      "url": "https://atos.cnj.jus.br/atos/detalhar/2234",
+      "espelho": [
+        {"criterio": "Fundamentos e prazo", "pontos": 0.5, "esperado": "Apontar apresentação sem demora, prazo legal de 24 horas e controle judicial presencial ou excepcionalmente remoto nos termos vigentes."},
+        {"criterio": "Finalidades", "pontos": 0.75, "esperado": "Distinguir controle de legalidade, necessidade da cautelar, integridade física e prevenção da tortura, sem antecipar mérito."},
+        {"criterio": "Decisões possíveis", "pontos": 0.75, "esperado": "Indicar relaxamento, liberdade provisória, cautelares diversas ou preventiva concretamente fundamentada."},
+        {"criterio": "Maus-tratos", "pontos": 0.5, "esperado": "Prever registro reservado, exame, preservação de prova, comunicação aos órgãos competentes e proteção da pessoa custodiada."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 1106 — ADI 6.298 e conexas", "informativo": "1106", "url": "https://jurisprudencia.stf.jus.br/pages/search/novo-informativo-11429/false", "aplicacao": "Obrigatoriedade da audiência de custódia em 24 horas no desenho da Lei Anticrime."}
+      ]
+    },
+    {
+      "id": "D-G1-LEP-004",
+      "tit": "Progressão de regime após a Lei nº 13.964/2019",
+      "tipo": "QUESTAO",
+      "gd": "I",
+      "g": "II",
+      "disciplina": "DEP",
+      "en": "Discorra sobre o regime de progressão após a Lei nº 13.964/2019, os percentuais do art. 112 da LEP, a aplicação da lei penal no tempo e a aferição do requisito subjetivo.",
+      "ref": "LEP, art. 112; CP, art. 2º, parágrafo único; Súmula Vinculante 26",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l7210.htm",
+      "espelho": [
+        {"criterio": "Sistema progressivo", "pontos": 0.5, "esperado": "Explicar progressividade, cálculo sobre a pena e necessidade de decisão judicial individualizada."},
+        {"criterio": "Percentuais legais", "pontos": 0.75, "esperado": "Organizar as frações do art. 112 segundo primariedade, violência, hediondez, resultado morte e reincidência."},
+        {"criterio": "Lei no tempo", "pontos": 0.75, "esperado": "Aplicar retroatividade da combinação normativa mais benéfica apenas nos limites admitidos e vedar novatio legis in pejus."},
+        {"criterio": "Requisito subjetivo", "pontos": 0.5, "esperado": "Tratar de boa conduta, exame criminológico mediante fundamentação concreta e contraditório."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Súmula Vinculante 26", "informativo": "", "url": "https://portal.stf.jus.br/jurisprudencia/sumariosumulas.asp?base=26&sumula=1271", "aplicacao": "Progressão e individualização na execução penal."}
+      ]
+    },
+    {
+      "id": "D-G1-PROVA-005",
+      "tit": "Busca pessoal, ingresso domiciliar e prova ilícita",
+      "tipo": "QUESTAO",
+      "gd": "I",
+      "g": "II",
+      "disciplina": "DPP",
+      "en": "Analise os requisitos de validade da busca pessoal e do ingresso em domicílio sem mandado, a distribuição do ônus de demonstrar consentimento e as consequências processuais da prova ilícita.",
+      "ref": "CPP, arts. 157, 240, 244 e 245; STF, RE 603.616 (Tema 280); STJ, HC 598.051",
+      "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=RE&numeroProcesso=603616",
+      "espelho": [
+        {"criterio": "Busca pessoal", "pontos": 0.5, "esperado": "Exigir fundada suspeita objetivamente demonstrável, além de mera impressão subjetiva ou perfilamento."},
+        {"criterio": "Domicílio", "pontos": 0.75, "esperado": "Aplicar fundadas razões de flagrante no interior da casa, justificadas a posteriori, ou consentimento livre e comprovado."},
+        {"criterio": "Prova ilícita", "pontos": 0.75, "esperado": "Tratar de inadmissibilidade, derivação, fonte independente, descoberta inevitável e nexo causal."},
+        {"criterio": "Consequências", "pontos": 0.5, "esperado": "Indicar desentranhamento, nulidade dos atos dependentes e eventual responsabilidade funcional ou penal."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 806 — RE 603.616/RO", "informativo": "806", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=RE&numeroProcesso=603616", "aplicacao": "Fundadas razões para ingresso domiciliar sem mandado."}
+      ]
+    },
+    {
+      "id": "D-G1-HC-006",
+      "tit": "Peça: habeas corpus contra prisão preventiva sem fundamentação concreta",
+      "tipo": "PECA",
+      "gd": "I",
+      "g": "II",
+      "disciplina": "DPP",
+      "en": "Elabore habeas corpus em favor de pessoa presa preventivamente por decisão que reproduz o art. 312 do CPP sem fatos concretos e não reexamina a necessidade da cautelar há mais de cento e oitenta dias.",
+      "ref": "CF/88, art. 5º, LXVIII; CPP, arts. 312, 315, 316 e 647",
+      "url": "https://www.planalto.gov.br/ccivil_03/decreto-lei/del3689compilado.htm",
+      "espelho": [
+        {"criterio": "Endereçamento e cabimento", "pontos": 0.75, "esperado": "Identificar autoridade coatora, competência, paciente, impetrante e cabimento por ameaça atual à liberdade."},
+        {"criterio": "Quadro fático", "pontos": 1.0, "esperado": "Narrar concisamente a decisão abstrata, a ausência de fatos contemporâneos e o tempo de prisão."},
+        {"criterio": "Fundamentação", "pontos": 1.25, "esperado": "Articular presunção de inocência, excepcionalidade, arts. 312 e 315 e inadequação de motivação por fórmulas genéricas."},
+        {"criterio": "Revisão e cautelares", "pontos": 1.0, "esperado": "Tratar do art. 316, parágrafo único, sem defender soltura automática, e demonstrar suficiência de cautelares diversas."},
+        {"criterio": "Pedidos", "pontos": 1.0, "esperado": "Formular liminar, informações, vista ao MP, concessão para revogar ou substituir a preventiva e expedição de alvará se cabível."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 565 — HC 97.688/MG", "informativo": "565", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=HC&numeroProcesso=97688", "aplicacao": "Exigência de fundamentação concreta da prisão preventiva."}
+      ]
+    },
+    {
+      "id": "D-G2-CRECHE-007",
+      "tit": "Peça: ação civil pública por ausência de vagas em creche",
+      "tipo": "PECA",
+      "gd": "II",
+      "g": "IV",
+      "disciplina": "DCO",
+      "en": "Elabore ação civil pública para tutelar crianças de bairro periférico sem vagas em creche, diante de lista de espera e negativa administrativa do Município.",
+      "ref": "CF/88, arts. 208, IV e § 1º, e 211; ECA, arts. 54 e 208; LACP; STF, RE 1.008.166 (Tema 548)",
+      "url": "https://portal.stf.jus.br/jurisprudenciaRepercussao/verAndamentoProcesso.asp?incidente=5085176&numeroProcesso=1008166&numeroTema=548",
+      "espelho": [
+        {"criterio": "Competência e legitimidade", "pontos": 0.75, "esperado": "Endereçar ao juízo competente e fundamentar legitimidade coletiva da Defensoria e atribuição municipal."},
+        {"criterio": "Direito material", "pontos": 1.0, "esperado": "Caracterizar educação infantil como direito fundamental de aplicação direta e dever estatal exigível."},
+        {"criterio": "Tutela coletiva", "pontos": 1.25, "esperado": "Delimitar grupo, causa de pedir, prova da demanda reprimida e solução coletiva estrutural sem reduzir o pedido a uma única criança."},
+        {"criterio": "Urgência", "pontos": 1.0, "esperado": "Demonstrar probabilidade, dano educacional e medidas graduais com prazo, transparência e priorização objetiva."},
+        {"criterio": "Pedidos", "pontos": 1.0, "esperado": "Pedir plano de expansão, oferta de vagas, publicidade da fila, multa adequada, produção de provas e demais providências da LACP."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Tema 548 — RE 1.008.166", "informativo": "", "url": "https://portal.stf.jus.br/jurisprudenciaRepercussao/verAndamentoProcesso.asp?incidente=5085176&numeroProcesso=1008166&numeroTema=548", "aplicacao": "Dever estatal de assegurar vaga em creche e pré-escola."}
+      ]
+    },
+    {
+      "id": "D-G2-CDC-008",
+      "tit": "Superendividamento e mínimo existencial",
+      "tipo": "QUESTAO",
+      "gd": "II",
+      "g": "III",
+      "disciplina": "CDC",
+      "en": "Disserte sobre o tratamento do superendividamento do consumidor pessoa natural após a Lei nº 14.181/2021, abordando conceito, exclusões, prevenção e processo de repactuação de dívidas.",
+      "ref": "CDC, arts. 4º, 6º, 54-A a 54-G e 104-A a 104-C; Decreto nº 11.150/2022",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm",
+      "espelho": [
+        {"criterio": "Conceito", "pontos": 0.5, "esperado": "Definir impossibilidade manifesta de pagar dívidas de consumo, de boa-fé, sem comprometer o mínimo existencial."},
+        {"criterio": "Prevenção", "pontos": 0.75, "esperado": "Tratar de crédito responsável, dever de informação, avaliação da capacidade de pagamento e práticas vedadas."},
+        {"criterio": "Repactuação", "pontos": 0.75, "esperado": "Explicar audiência global, plano voluntário, preservação de garantias e procedimento judicial compulsório subsidiário."},
+        {"criterio": "Limites", "pontos": 0.5, "esperado": "Indicar dívidas excluídas, boa-fé e leitura constitucional do mínimo existencial no caso concreto."}
+      ],
+      "ancoras": [
+        {"tribunal": "Legislação federal", "referencia": "Lei nº 14.181/2021", "informativo": "", "url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14181.htm", "aplicacao": "Microssistema de prevenção e tratamento do superendividamento."}
+      ]
+    },
+    {
+      "id": "D-G2-REURB-009",
+      "tit": "Usucapião coletiva e regularização fundiária",
+      "tipo": "QUESTAO",
+      "gd": "II",
+      "g": "III",
+      "disciplina": "CIV",
+      "en": "Analise os instrumentos de regularização fundiária de interesse social para comunidade consolidada em área privada, distinguindo usucapião coletiva, legitimação fundiária e legitimação de posse.",
+      "ref": "Estatuto da Cidade, art. 10; Lei nº 13.465/2017, arts. 9º a 30; CC, art. 1.240",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/leis_2001/l10257.htm",
+      "espelho": [
+        {"criterio": "Diagnóstico", "pontos": 0.5, "esperado": "Identificar ocupação urbana, população de baixa renda, natureza da área, tempo, oposição e possibilidade de individualização."},
+        {"criterio": "Usucapião coletiva", "pontos": 0.75, "esperado": "Apresentar requisitos, legitimação, frações ideais e sentença como título registral."},
+        {"criterio": "Reurb-S", "pontos": 0.75, "esperado": "Distinguir legitimação fundiária e de posse, fases administrativas e efeitos registrais."},
+        {"criterio": "Estratégia defensorial", "pontos": 0.5, "esperado": "Comparar via judicial e administrativa, proteção possessória, participação comunitária e tutela ambiental ou urbanística."}
+      ],
+      "ancoras": [
+        {"tribunal": "Legislação federal", "referencia": "Lei nº 13.465/2017", "informativo": "", "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13465.htm", "aplicacao": "Regularização fundiária urbana e titulação."}
+      ]
+    },
+    {
+      "id": "D-G2-SAUDE-010",
+      "tit": "Peça: fornecimento de medicamento não incorporado ao SUS",
+      "tipo": "PECA",
+      "gd": "II",
+      "g": "III",
+      "disciplina": "DPC",
+      "en": "Elabore a medida judicial cabível em favor de pessoa hipossuficiente que busca medicamento registrado na Anvisa, mas não incorporado ao SUS, após negativa administrativa. Considere os Temas 6 e 1.234 do STF, o valor anual do tratamento e a prova técnica disponível.",
+      "ref": "CF/88, art. 196; CPC, arts. 300, 373 e 497; STF, RE 566.471 (Tema 6), RE 1.366.243 (Tema 1.234) e SV 61",
+      "url": "https://portal.stf.jus.br/jurisprudencia/sumariosumulas.asp?base=26&sumula=9296",
+      "espelho": [
+        {"criterio": "Competência e polo passivo", "pontos": 0.75, "esperado": "Aplicar o Tema 1.234 ao valor anual, registro sanitário, incorporação e eventual competência federal, sem repetir automaticamente a solidariedade genérica."},
+        {"criterio": "Prova e interesse", "pontos": 1.0, "esperado": "Comprovar negativa administrativa, hipossuficiência, inexistência de substituto e instrução técnica idônea, preferencialmente com apoio do NatJus."},
+        {"criterio": "Requisitos materiais", "pontos": 1.25, "esperado": "Demonstrar cumulativamente ilegalidade do ato de não incorporação, eficácia e segurança baseadas em evidências e imprescindibilidade clínica."},
+        {"criterio": "Tutela de urgência", "pontos": 1.0, "esperado": "Fundamentar probabilidade e perigo, formular regime de cumprimento seguro e evitar decisão baseada apenas em prescrição particular."},
+        {"criterio": "Pedidos", "pontos": 1.0, "esperado": "Pedir fornecimento, avaliação técnica, ofícios pertinentes, confirmação final e medidas executivas proporcionais."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 1152 — RE 566.471/RN", "informativo": "1152", "url": "https://jurisprudencia.stf.jus.br/pages/search/novo-informativo-11712/false", "aplicacao": "Requisitos excepcionais para medicamento não incorporado."},
+        {"tribunal": "STF", "referencia": "Informativo 1150 — RE 1.366.243/SC", "informativo": "1150", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=RE&numeroProcesso=1366243", "aplicacao": "Competência, custeio e fluxo interfederativo do Tema 1.234."}
+      ]
+    },
+    {
+      "id": "D-G2-CAP-011",
+      "tit": "Curatela, tomada de decisão apoiada e capacidade civil",
+      "tipo": "QUESTAO",
+      "gd": "II",
+      "g": "III",
+      "disciplina": "CIV",
+      "en": "Disserte sobre o regime das incapacidades após o Estatuto da Pessoa com Deficiência, contrastando curatela e tomada de decisão apoiada e indicando limites quanto aos direitos existenciais.",
+      "ref": "CC, arts. 3º, 4º, 1.767 e 1.783-A; Lei nº 13.146/2015, arts. 6º, 84 e 85",
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm",
+      "espelho": [
+        {"criterio": "Capacidade", "pontos": 0.5, "esperado": "Explicar que deficiência não implica incapacidade e apresentar as hipóteses atuais dos arts. 3º e 4º do CC."},
+        {"criterio": "Curatela", "pontos": 0.75, "esperado": "Definir medida extraordinária, proporcional, temporária quando possível e restrita aos atos patrimoniais e negociais."},
+        {"criterio": "Decisão apoiada", "pontos": 0.75, "esperado": "Apresentar iniciativa da própria pessoa, apoiadores, termo de apoio, controle judicial e preservação da capacidade."},
+        {"criterio": "Garantias", "pontos": 0.5, "esperado": "Mencionar participação, avaliação biopsicossocial, adaptações processuais e vedação de restrição automática a direitos existenciais."}
+      ],
+      "ancoras": [
+        {"tribunal": "Legislação federal", "referencia": "Lei Brasileira de Inclusão", "informativo": "", "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm", "aplicacao": "Modelo social, capacidade e medidas de apoio."}
+      ]
+    },
+    {
+      "id": "D-G2-ECA-012",
+      "tit": "Peça: excesso de prazo na internação provisória",
+      "tipo": "PECA",
+      "gd": "II",
+      "g": "IV",
+      "disciplina": "DCA",
+      "en": "Elabore a medida cabível em favor de adolescente internado provisoriamente há mais de quarenta e cinco dias, sem sentença, por ato infracional equiparado a furto simples.",
+      "ref": "ECA, arts. 108, 111, 121, 122 e 183; STJ, Súmulas 492 e 605",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm",
+      "espelho": [
+        {"criterio": "Cabimento", "pontos": 0.75, "esperado": "Identificar habeas corpus ou pedido imediato ao juízo, autoridade coatora e ameaça à liberdade do adolescente."},
+        {"criterio": "Prazo", "pontos": 1.0, "esperado": "Demonstrar limite legal de 45 dias, prioridade e ilegalidade do excesso sem transportar mecanicamente prazos do processo penal adulto."},
+        {"criterio": "Excepcionalidade", "pontos": 1.25, "esperado": "Aplicar brevidade, excepcionalidade, condição peculiar de desenvolvimento e hipóteses taxativas do art. 122."},
+        {"criterio": "Adequação", "pontos": 1.0, "esperado": "Argumentar que furto simples, sem violência e sem reiteração demonstrada, não autoriza internação automática."},
+        {"criterio": "Pedidos", "pontos": 1.0, "esperado": "Pedir liminar e liberação, sem prejuízo do processo, com medida menos gravosa apenas se concretamente necessária."}
+      ],
+      "ancoras": [
+        {"tribunal": "STJ", "referencia": "Súmula 492", "informativo": "", "url": "https://scon.stj.jus.br/SCON/sumstj/toc.jsp?livre=%27492%27.num.&O=JT", "aplicacao": "Internação não decorre automaticamente da gravidade abstrata do ato."}
+      ]
+    },
+    {
+      "id": "D-G2-INDIG-013",
+      "tit": "Direitos territoriais indígenas e rejeição do marco temporal",
+      "tipo": "QUESTAO",
+      "gd": "II",
+      "g": "IV",
+      "disciplina": "DHU",
+      "en": "Analise os direitos territoriais indígenas, a teoria do indigenato, a natureza declaratória da demarcação e a rejeição do marco temporal pelo STF, incluindo consulta e participação dos povos afetados.",
+      "ref": "CF/88, arts. 231 e 232; Convenção nº 169 da OIT; STF, RE 1.017.365 (Tema 1.031)",
+      "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=RE&numeroProcesso=1017365",
+      "espelho": [
+        {"criterio": "Direito originário", "pontos": 0.5, "esperado": "Explicar indigenato, ocupação tradicional em sentido cultural e natureza declaratória da demarcação."},
+        {"criterio": "Marco temporal", "pontos": 0.75, "esperado": "Expor a rejeição da data de 5/10/1988 como requisito e tratar de esbulho ou impedimento persistente."},
+        {"criterio": "Proteção territorial", "pontos": 0.75, "esperado": "Abranger posse permanente, usufruto exclusivo, inalienabilidade, imprescritibilidade e dever de proteção."},
+        {"criterio": "Participação", "pontos": 0.5, "esperado": "Relacionar consulta prévia, livre e informada, legitimidade comunitária e atuação intercultural da Defensoria."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 1110 — RE 1.017.365/SC", "informativo": "1110", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=RE&numeroProcesso=1017365", "aplicacao": "Inexistência de marco temporal para direitos territoriais originários."}
+      ]
+    },
+    {
+      "id": "D-G2-ACP-014",
+      "tit": "Legitimidade da Defensoria Pública para tutela coletiva",
+      "tipo": "QUESTAO",
+      "gd": "II",
+      "g": "IV",
+      "disciplina": "DCO",
+      "en": "Disserte sobre a legitimidade da Defensoria Pública para ação civil pública, o conceito jurídico de necessitado, a tutela de vulnerabilidades e os limites subjetivos da coisa julgada coletiva.",
+      "ref": "LACP, art. 5º, II; LC nº 80/1994, art. 4º; STF, ADI 3.943 e RE 733.433 (Tema 607)",
+      "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=ADI&numeroProcesso=3943",
+      "espelho": [
+        {"criterio": "Base normativa", "pontos": 0.5, "esperado": "Apontar Constituição, LC nº 80/1994, LACP e dimensão coletiva do acesso à justiça."},
+        {"criterio": "ADI 3.943", "pontos": 0.75, "esperado": "Explicar a constitucionalidade da legitimação e a inexistência de exclusividade de outro legitimado coletivo."},
+        {"criterio": "Necessitados", "pontos": 0.75, "esperado": "Adotar vulnerabilidade em sentido amplo e pertinência com grupo composto, ao menos em tese, por pessoas necessitadas."},
+        {"criterio": "Efeitos", "pontos": 0.5, "esperado": "Tratar de coisa julgada coletiva, execução individual, representatividade adequada e coordenação entre legitimados."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 784 — ADI 3.943/DF", "informativo": "784", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=ADI&numeroProcesso=3943", "aplicacao": "Constitucionalidade da legitimidade coletiva da Defensoria."},
+        {"tribunal": "STF", "referencia": "Informativo 806 — RE 733.433/MG", "informativo": "806", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=RE&numeroProcesso=733433", "aplicacao": "Tutela coletiva de grupos formados, em tese, por necessitados."}
+      ]
+    },
+    {
+      "id": "D-G2-CUMPR-015",
+      "tit": "Peça: cumprimento estrutural de decisão coletiva de saúde",
+      "tipo": "PECA",
+      "gd": "II",
+      "g": "III",
+      "disciplina": "DPC",
+      "en": "Elabore requerimento de cumprimento diante do reiterado descumprimento de decisão transitada em julgado que obriga Município a manter estoque de medicamentos essenciais na rede básica.",
+      "ref": "CPC, arts. 536 e 537; LACP, arts. 11 e 15; STF, RE 592.581; STJ, REsp 1.069.810",
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13105.htm",
+      "espelho": [
+        {"criterio": "Identificação processual", "pontos": 0.75, "esperado": "Vincular o pedido ao título, competência, legitimidade e extensão objetiva e subjetiva do comando coletivo."},
+        {"criterio": "Descumprimento", "pontos": 1.0, "esperado": "Documentar faltas, usuários afetados, respostas administrativas e insuficiência das medidas anteriores."},
+        {"criterio": "Técnicas executivas", "pontos": 1.25, "esperado": "Propor cronograma, relatórios, transparência, inspeção ou apoio técnico e medidas indutivas adequadas à obrigação estrutural."},
+        {"criterio": "Proporcionalidade", "pontos": 1.0, "esperado": "Justificar multa e outras medidas pelo histórico de resistência, capacidade de cumprimento e proteção do serviço."},
+        {"criterio": "Pedidos", "pontos": 1.0, "esperado": "Pedir intimação, plano de cumprimento, controle de estoque, audiência de monitoramento e sanções progressivas."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 794 — RE 592.581/RS", "informativo": "794", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=RE&numeroProcesso=592581", "aplicacao": "Controle judicial de omissões incompatíveis com direitos fundamentais."}
+      ]
+    },
+    {
+      "id": "D-G1-MARIA-016",
+      "tit": "Violência doméstica: medidas protetivas e rede de proteção",
+      "tipo": "QUESTAO",
+      "gd": "I",
+      "g": "II",
+      "disciplina": "PEN",
+      "en": "Disserte sobre medidas protetivas de urgência, natureza, concessão, duração, autonomia em relação ao processo penal e papel da Defensoria na assistência à mulher.",
+      "ref": "Lei nº 11.340/2006, arts. 18 a 24-A, 27 e 28; Lei nº 14.550/2023; STF, ADI 4.424",
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11340.htm",
+      "espelho": [
+        {"criterio": "Natureza e finalidade", "pontos": 0.5, "esperado": "Caracterizar tutela inibitória e protetiva orientada pelo risco, não pena antecipada."},
+        {"criterio": "Concessão e duração", "pontos": 0.75, "esperado": "Tratar de cognição sumária, independência de boletim ou ação, vigência enquanto persistir o risco e contraditório compatível."},
+        {"criterio": "Descumprimento", "pontos": 0.75, "esperado": "Distinguir medidas, cautelares penais e crime do art. 24-A, com resposta proporcional e proteção continuada."},
+        {"criterio": "Rede e Defensoria", "pontos": 0.5, "esperado": "Integrar assistência jurídica, escuta qualificada, sigilo, proteção de dependentes e articulação com saúde e assistência social."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "ADI 4.424/DF", "informativo": "", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=ADI&numeroProcesso=4424", "aplicacao": "Ação penal pública incondicionada na lesão corporal doméstica."}
+      ]
+    },
+    {
+      "id": "D-G1-PENA-JUSTA-017",
+      "tit": "Pena Justa e execução de processo estrutural",
+      "tipo": "QUESTAO",
+      "gd": "I",
+      "g": "II",
+      "disciplina": "DEP",
+      "en": "Examine como o plano Pena Justa concretiza a ADPF 347, diferenciando decisão estrutural, plano nacional, planos estaduais, indicadores, participação social e fiscalização jurisdicional.",
+      "ref": "STF, ADPF 347; Informativo STF 1164; Resolução CNJ nº 487/2023; LEP",
+      "url": "https://jurisprudencia.stf.jus.br/pages/search/novo-informativo-11799/false",
+      "espelho": [
+        {"criterio": "Processo estrutural", "pontos": 0.5, "esperado": "Explicar por que violações policêntricas exigem planejamento, etapas, participação e revisão contínua."},
+        {"criterio": "Pena Justa", "pontos": 0.75, "esperado": "Relacionar eixos, metas nacionais e planos locais à superação das causas do estado de coisas inconstitucional."},
+        {"criterio": "Monitoramento", "pontos": 0.75, "esperado": "Tratar de indicadores, dados confiáveis, relatórios, instâncias de governança e resposta a desvios."},
+        {"criterio": "Participação defensorial", "pontos": 0.5, "esperado": "Indicar escuta de pessoas presas, inspeções, litigância estratégica, controle de metas e tutela de urgências individuais."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 1164 — ADPF 347", "informativo": "1164", "url": "https://jurisprudencia.stf.jus.br/pages/search/novo-informativo-11799/false", "aplicacao": "Homologação e parâmetros do plano Pena Justa."}
+      ]
+    },
+    {
+      "id": "D-G1-GARANTIAS-018",
+      "tit": "Juiz das garantias e sistema acusatório",
+      "tipo": "QUESTAO",
+      "gd": "I",
+      "g": "II",
+      "disciplina": "DPP",
+      "en": "Analise a constitucionalidade e as funções do juiz das garantias, a delimitação de sua competência, as exceções reconhecidas pelo STF e sua relação com o sistema acusatório.",
+      "ref": "CPP, arts. 3º-A a 3º-F; STF, ADIs 6.298, 6.299, 6.300 e 6.305",
+      "url": "https://jurisprudencia.stf.jus.br/pages/search/novo-informativo-11429/false",
+      "espelho": [
+        {"criterio": "Sistema acusatório", "pontos": 0.5, "esperado": "Distinguir funções de investigar, acusar e julgar e vedar iniciativa judicial substitutiva da acusação."},
+        {"criterio": "Competência", "pontos": 0.75, "esperado": "Delimitar controle de legalidade da investigação e proteção de direitos até o marco processual definido pelo STF."},
+        {"criterio": "Julgamento do STF", "pontos": 0.75, "esperado": "Expor constitucionalidade, interpretações conformes, regras de transição e hipóteses de não incidência."},
+        {"criterio": "Impacto defensivo", "pontos": 0.5, "esperado": "Relacionar acesso à investigação, cautelares, cadeia de custódia, imparcialidade e nulidades demonstradas."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 1106 — ADI 6.298/DF", "informativo": "1106", "url": "https://jurisprudencia.stf.jus.br/pages/search/novo-informativo-11429/false", "aplicacao": "Constitucionalidade e configuração do juiz das garantias."}
+      ]
+    },
+    {
+      "id": "D-G1-HC-COLETIVO-019",
+      "tit": "Peça: habeas corpus coletivo para gestantes e mães presas",
+      "tipo": "PECA",
+      "gd": "I",
+      "g": "II",
+      "disciplina": "DPP",
+      "en": "Elabore habeas corpus coletivo em favor de gestantes, puérperas e mães de crianças ou pessoas com deficiência submetidas a prisões preventivas, diante de decisões padronizadas que recusam prisão domiciliar.",
+      "ref": "CPP, arts. 318, 318-A e 318-B; ECA, art. 8º; STF, HC 143.641/SP",
+      "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=HC&numeroProcesso=143641",
+      "espelho": [
+        {"criterio": "Cabimento coletivo", "pontos": 0.75, "esperado": "Delimitar grupo determinável, ameaça homogênea à liberdade e adequação do habeas corpus coletivo."},
+        {"criterio": "Prova estrutural", "pontos": 1.0, "esperado": "Demonstrar padrão decisório, condições carcerárias e impacto sobre crianças e pessoas dependentes."},
+        {"criterio": "Fundamentação", "pontos": 1.25, "esperado": "Articular arts. 318-A e 318-B, prioridade absoluta, proteção da maternidade e parâmetros do HC 143.641."},
+        {"criterio": "Exceções", "pontos": 1.0, "esperado": "Tratar de violência ou grave ameaça, crime contra descendente e situações excepcionalíssimas concretamente motivadas."},
+        {"criterio": "Pedidos", "pontos": 1.0, "esperado": "Pedir liminar coletiva, identificação das beneficiárias, substituição por domiciliar ou cautelares e monitoramento do cumprimento."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 891 — HC 143.641/SP", "informativo": "891", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=HC&numeroProcesso=143641", "aplicacao": "Parâmetros para substituição coletiva da prisão preventiva."}
+      ]
+    },
+    {
+      "id": "D-G1-DEF-NATURAL-020",
+      "tit": "Defensor público natural, intimação pessoal e organização institucional",
+      "tipo": "QUESTAO",
+      "gd": "I",
+      "g": "I",
+      "disciplina": "PID",
+      "en": "Disserte sobre defensor público natural, distribuição impessoal de atribuições, intimação pessoal e contagem em dobro, distinguindo garantias institucionais de privilégios pessoais.",
+      "ref": "LC nº 80/1994, arts. 4º, 44, 89 e 128; CPC, art. 186; STF, HC 123.494 e HC 133.476",
+      "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=HC&numeroProcesso=123494",
+      "espelho": [
+        {"criterio": "Defensor natural", "pontos": 0.5, "esperado": "Relacionar designação por critérios prévios, impessoais e legais à independência funcional e à vedação de escolha casuística."},
+        {"criterio": "Prerrogativas", "pontos": 0.75, "esperado": "Explicar intimação pessoal, prazo em dobro e acesso aos autos como garantias de defesa efetiva."},
+        {"criterio": "Jurisprudência", "pontos": 0.75, "esperado": "Aplicar os limites dos HCs 123.494 e 133.476 sem transformar a garantia em inamovibilidade absoluta no caso concreto."},
+        {"criterio": "Organização", "pontos": 0.5, "esperado": "Distinguir autonomia administrativa, poder de organização e dever de continuidade do serviço."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 814 — HC 123.494/ES", "informativo": "814", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=HC&numeroProcesso=123494", "aplicacao": "Parâmetros do defensor público natural."},
+        {"tribunal": "STF", "referencia": "Informativo 830 — HC 133.476/AM", "informativo": "830", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=HC&numeroProcesso=133476", "aplicacao": "Intimação pessoal e preclusão."}
+      ]
+    },
+    {
+      "id": "D-G1-DETENTO-021",
+      "tit": "Responsabilidade civil do Estado por morte de pessoa presa",
+      "tipo": "QUESTAO",
+      "gd": "I",
+      "g": "I",
+      "disciplina": "ADM",
+      "en": "Analise a responsabilidade civil do Estado por morte de pessoa sob custódia, considerando dever específico de proteção, nexo causal, causas excludentes e reparações possíveis.",
+      "ref": "CF/88, arts. 5º, XLIX, e 37, § 6º; STF, RE 841.526 (Tema 592)",
+      "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=RE&numeroProcesso=841526",
+      "espelho": [
+        {"criterio": "Regime jurídico", "pontos": 0.5, "esperado": "Apresentar responsabilidade objetiva, dever específico de custódia e proteção da integridade física e moral."},
+        {"criterio": "Nexo causal", "pontos": 0.75, "esperado": "Distinguir omissão genérica de omissão específica e analisar previsibilidade, evitabilidade e prova do evento."},
+        {"criterio": "Tema 592", "pontos": 0.75, "esperado": "Aplicar a responsabilidade quando a inobservância do dever específico tiver relação causal com a morte, inclusive em hipóteses de suicídio previsível."},
+        {"criterio": "Reparação", "pontos": 0.5, "esperado": "Indicar danos materiais e morais, titulares, pensão quando cabível e medidas não pecuniárias ou estruturais."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 819 — RE 841.526/RS", "informativo": "819", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=RE&numeroProcesso=841526", "aplicacao": "Dever específico de proteção e morte de detento."}
+      ]
+    },
+    {
+      "id": "D-G2-RUA-022",
+      "tit": "Peça: tutela coletiva da população em situação de rua",
+      "tipo": "PECA",
+      "gd": "II",
+      "g": "IV",
+      "disciplina": "DCO",
+      "en": "Elabore ação coletiva diante de operações municipais reiteradas que removem pertences, documentos e instrumentos de trabalho de pessoas em situação de rua, sem oferta de atendimento ou guarda segura.",
+      "ref": "CF/88, arts. 1º, III, 3º e 5º; Decreto nº 7.053/2009; Resolução CNJ nº 425/2021; STF, ADPF 976",
+      "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=ADPF&numeroProcesso=976",
+      "espelho": [
+        {"criterio": "Legitimidade e competência", "pontos": 0.75, "esperado": "Fundamentar legitimidade da Defensoria, atribuição do ente e adequação da ação coletiva."},
+        {"criterio": "Violações", "pontos": 1.0, "esperado": "Descrever apreensão arbitrária, dignidade, propriedade, trabalho, documentação, saúde e proibição de tratamento degradante."},
+        {"criterio": "Parâmetros da ADPF 976", "pontos": 1.25, "esperado": "Aplicar abordagem não higienista, proteção de pertences, participação social e articulação intersetorial."},
+        {"criterio": "Tutela estrutural", "pontos": 1.0, "esperado": "Propor protocolo, formação, identificação de agentes, recibo e guarda, canal de reclamação e monitoramento."},
+        {"criterio": "Pedidos", "pontos": 1.0, "esperado": "Pedir cessação imediata das apreensões ilegais, restituição ou indenização, plano de atendimento e multa proporcional."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 1105 — ADPF 976 MC-Ref/DF", "informativo": "1105", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=ADPF&numeroProcesso=976", "aplicacao": "Proteção da população em situação de rua e deveres estatais."}
+      ]
+    },
+    {
+      "id": "D-G2-DADOS-023",
+      "tit": "Proteção de dados pessoais e tutela coletiva",
+      "tipo": "QUESTAO",
+      "gd": "II",
+      "g": "IV",
+      "disciplina": "DCO",
+      "en": "Disserte sobre a proteção constitucional de dados pessoais, os limites do compartilhamento massivo pelo poder público e os instrumentos coletivos de prevenção e reparação.",
+      "ref": "CF/88, arts. 5º, X, XII e LXXIX; LGPD, arts. 6º, 7º, 23 e 46; STF, ADI 6.387",
+      "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=ADI&numeroProcesso=6387",
+      "espelho": [
+        {"criterio": "Direito fundamental", "pontos": 0.5, "esperado": "Identificar autonomia informativa e proteção de dados como direito fundamental autônomo, sem reduzir o tema à privacidade íntima."},
+        {"criterio": "Princípios", "pontos": 0.75, "esperado": "Aplicar finalidade, adequação, necessidade, transparência, segurança, prevenção e responsabilização."},
+        {"criterio": "Poder público", "pontos": 0.75, "esperado": "Exigir base jurídica, finalidade pública específica, minimização, governança e salvaguardas para compartilhamento."},
+        {"criterio": "Tutela coletiva", "pontos": 0.5, "esperado": "Indicar obrigação de fazer ou não fazer, transparência, auditoria, incidente de segurança e reparação coletiva ou individual."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 976 — ADI 6.387 MC-Ref/DF", "informativo": "976", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=ADI&numeroProcesso=6387", "aplicacao": "Limites constitucionais ao compartilhamento compulsório e massivo de dados."}
+      ]
+    },
+    {
+      "id": "D-G2-TEMAS-SAUDE-024",
+      "tit": "Temas 6 e 1.234 do STF na judicialização da saúde",
+      "tipo": "QUESTAO",
+      "gd": "II",
+      "g": "III",
+      "disciplina": "DPC",
+      "en": "Compare os Temas 6 e 1.234 do STF, explicando requisitos para medicamentos não incorporados, competência, polo passivo, custeio e instrução técnica da demanda.",
+      "ref": "STF, RE 566.471 (Tema 6), RE 1.366.243 (Tema 1.234) e Súmula Vinculante 61",
+      "url": "https://portal.stf.jus.br/jurisprudencia/sumariosumulas.asp?base=26&sumula=9296",
+      "espelho": [
+        {"criterio": "Âmbito dos temas", "pontos": 0.5, "esperado": "Distinguir requisito material de concessão, fluxo interfederativo e competência conforme incorporação, registro e custo anual."},
+        {"criterio": "Tema 6", "pontos": 0.75, "esperado": "Enumerar cumulativamente hipossuficiência, ilegalidade do ato de não incorporação, inexistência de substituto, eficácia e imprescindibilidade."},
+        {"criterio": "Tema 1.234", "pontos": 0.75, "esperado": "Aplicar critério de 210 salários mínimos, regras de polo passivo, ressarcimento e plataforma nacional, conforme a classe do medicamento."},
+        {"criterio": "Decisão qualificada", "pontos": 0.5, "esperado": "Exigir negativa administrativa, análise Conitec, apoio NatJus, medicina baseada em evidências e fundamentação que não se apoie só em laudo particular."}
+      ],
+      "ancoras": [
+        {"tribunal": "STF", "referencia": "Informativo 1152 — Tema 6", "informativo": "1152", "url": "https://jurisprudencia.stf.jus.br/pages/search/novo-informativo-11712/false", "aplicacao": "Requisitos materiais de concessão."},
+        {"tribunal": "STF", "referencia": "Informativo 1206 — Tema 1.234", "informativo": "1206", "url": "https://portal.stf.jus.br/processos/listarProcessos.asp?classe=RE&numeroProcesso=1366243", "aplicacao": "Competência, ressarcimento e tratamentos oncológicos."}
+      ]
+    }
+  ]
+}

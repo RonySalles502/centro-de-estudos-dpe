@@ -78,7 +78,7 @@ class DatabaseTestCase(unittest.TestCase):
                 "SELECT value FROM app_meta WHERE key = 'schema_version'"
             ).fetchone()[0]
         self.assertIn("adjustments_json", columns)
-        self.assertEqual(version, "6")
+        self.assertEqual(version, "7")
 
     def test_jurisprudence_reading_status_drives_candidate_pending_count(self) -> None:
         self.database.upsert_jurisprudence_item(

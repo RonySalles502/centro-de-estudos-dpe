@@ -16,7 +16,6 @@ import shutil
 import ssl
 import subprocess
 import sys
-import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -35,6 +34,7 @@ from server.jurisprudence import (  # noqa: E402
 )
 from server.stf_exports import (  # noqa: E402
     STF_DATA_URL,
+    STF_DATA_URLS,
     canonical_dataset_hash,
     classify_dpe_group,
     dataset_record_count,
@@ -91,7 +91,10 @@ SSL_CONTEXT = trusted_ssl_context()
 
 
 def fetch(url: str, timeout: int) -> bytes:
-    hostname = (urllib.parse.urlparse(url).hostname or "").lower()
+    parsed = urllib.parse.urlparse(url)
+    if parsed.scheme != "https":
+        raise ValueError("A coleta automática aceita somente fontes HTTPS.")
+    hostname = (parsed.hostname or "").lower()
     referer = "https://portal.stf.jus.br/" if hostname.endswith("stf.jus.br") else "https://www.stj.jus.br/"
     request = urllib.request.Request(
         url,
@@ -102,45 +105,66 @@ def fetch(url: str, timeout: int) -> bytes:
             "Referer": referer,
         },
     )
+    primary_error: Exception | None = None
     try:
         with urllib.request.urlopen(request, timeout=timeout, context=SSL_CONTEXT) as response:
-            return response.read(MAX_RESPONSE_BYTES)
-    except urllib.error.URLError as error:
-        # Fallback estrito para runtimes Python cujo repositório de CAs esteja
-        # incompleto. O curl valida o TLS; nunca é chamado com --insecure.
-        curl = shutil.which("curl.exe") or shutil.which("curl")
-        if not curl or not isinstance(error.reason, ssl.SSLCertVerificationError):
-            raise
-        completed = subprocess.run(
-            [
-                curl,
-                "--fail",
-                "--silent",
-                "--show-error",
-                "--location",
-                "--proto",
-                "=https",
-                "--max-time",
-                str(timeout),
-                "--max-filesize",
-                str(MAX_RESPONSE_BYTES),
-                "--user-agent",
-                USER_AGENT,
-                "--header",
-                "Accept: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/atom+xml, application/xml, text/html;q=0.9, */*;q=0.5",
-                "--header",
-                "Accept-Language: pt-BR,pt;q=0.9",
-                "--referer",
-                referer,
-                url,
-            ],
-            capture_output=True,
-            check=False,
-            timeout=timeout + 5,
-        )
-        if completed.returncode or not completed.stdout or len(completed.stdout) > MAX_RESPONSE_BYTES:
-            raise error
-        return completed.stdout
+            payload = response.read(MAX_RESPONSE_BYTES + 1)
+            if len(payload) > MAX_RESPONSE_BYTES:
+                raise ValueError("A fonte oficial excedeu o limite de tamanho permitido.")
+            if not payload:
+                raise ValueError("A fonte oficial respondeu sem conteúdo.")
+            return payload
+    except (OSError, ValueError) as error:
+        primary_error = error
+
+    # O endpoint de arquivos do STF apresentou falhas intermitentes de cadeia
+    # TLS no urllib dos runners. O curl usa a própria pilha TLS, mantém a
+    # verificação do certificado e também contorna bloqueios por fingerprint
+    # HTTP. Não há fallback inseguro nem aceitação de redirecionamento HTTP.
+    curl = shutil.which("curl.exe") or shutil.which("curl")
+    if not curl:
+        raise primary_error
+    completed = subprocess.run(
+        [
+            curl,
+            "--fail",
+            "--silent",
+            "--show-error",
+            "--location",
+            "--proto",
+            "=https",
+            "--proto-redir",
+            "=https",
+            "--retry",
+            "2",
+            "--retry-all-errors",
+            "--retry-delay",
+            "1",
+            "--max-time",
+            str(timeout),
+            "--max-filesize",
+            str(MAX_RESPONSE_BYTES),
+            "--user-agent",
+            USER_AGENT,
+            "--header",
+            "Accept: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/atom+xml, application/xml, text/html;q=0.9, */*;q=0.5",
+            "--header",
+            "Accept-Language: pt-BR,pt;q=0.9",
+            "--referer",
+            referer,
+            url,
+        ],
+        capture_output=True,
+        check=False,
+        timeout=timeout + 5,
+    )
+    if completed.returncode or not completed.stdout or len(completed.stdout) > MAX_RESPONSE_BYTES:
+        detail = completed.stderr.decode("utf-8", errors="replace").strip()[:300]
+        raise RuntimeError(
+            f"urllib falhou ({type(primary_error).__name__}: {primary_error}); "
+            f"curl falhou ({completed.returncode}: {detail or 'sem resposta'})"
+        ) from primary_error
+    return completed.stdout
 
 
 def fetch_detail(url: str, court: str, timeout: int) -> str:
@@ -209,10 +233,14 @@ def collect(source: dict[str, str], timeout: int, enrich_limit: int) -> list[dic
             parsed = parse_stj_feed(payload, source["url"])
         except ET.ParseError:
             # Há versões do feed oficial com ampersands não escapados em URLs.
-            # Corrige somente entidades XML sintaticamente inválidas.
-            decoded = payload.decode("utf-8", errors="replace")
-            repaired = re.sub(r"&(?!amp;|lt;|gt;|quot;|apos;|#\d+;|#x[0-9a-fA-F]+;)", "&amp;", decoded)
-            parsed = parse_stj_feed(repaired.encode("utf-8"), source["url"])
+            # A correção ocorre nos bytes para preservar o encoding declarado
+            # pelo XML (alguns feeds do STJ ainda usam ISO-8859-1).
+            repaired = re.sub(
+                rb"&(?!amp;|lt;|gt;|quot;|apos;|#\d+;|#x[0-9a-fA-F]+;)",
+                b"&amp;",
+                payload,
+            )
+            parsed = parse_stj_feed(repaired, source["url"])
     else:
         raise ValueError(f"tipo de fonte não suportado como lista: {source['kind']}")
     if not parsed:
@@ -228,10 +256,22 @@ def collect_stf_dataset(
     timeout: int,
     previous_dataset: dict[str, Any] | None,
 ) -> dict[str, Any]:
-    return parse_stf_informativos_xlsx(
-        fetch(source["url"], timeout),
-        existing_urls=dataset_url_map(previous_dataset),
-    )
+    errors: list[str] = []
+    official_urls = tuple(dict.fromkeys((source["url"], *STF_DATA_URLS)))
+    for url in official_urls:
+        try:
+            payload = fetch(url, timeout)
+            if not payload.startswith(b"PK\x03\x04"):
+                raise ValueError("a resposta oficial não é uma planilha XLSX")
+            dataset = parse_stf_informativos_xlsx(
+                payload,
+                existing_urls=dataset_url_map(previous_dataset),
+            )
+            dataset["source_url"] = url
+            return dataset
+        except Exception as error:
+            errors.append(f"{urllib.parse.urlparse(url).hostname}: {type(error).__name__}: {error}")
+    raise RuntimeError("; ".join(errors))
 
 
 def _source_signature(sources: list[dict[str, Any]]) -> list[tuple[Any, ...]]:
@@ -246,7 +286,11 @@ def _source_signature(sources: list[dict[str, Any]]) -> list[tuple[Any, ...]]:
     ]
 
 
-def update(timeout: int, enrich_limit: int) -> dict[str, Any]:
+def update(
+    timeout: int,
+    enrich_limit: int,
+    required_sources: tuple[str, ...] = (),
+) -> dict[str, Any]:
     previous = (
         load_json(CONTENT_PATH)
         if CONTENT_PATH.exists()
@@ -281,6 +325,18 @@ def update(timeout: int, enrich_limit: int) -> dict[str, Any]:
     if not succeeded:
         details = "; ".join(f"{item['id']}: {item.get('message')}" for item in results)
         raise RuntimeError(f"todas as fontes oficiais falharam; a base anterior foi preservada. {details}")
+    failed_required = [
+        item for item in results
+        if item["id"] in required_sources and item["status"] != "SUCESSO"
+    ]
+    if failed_required:
+        details = "; ".join(
+            f"{item['id']}: {item.get('message', 'fonte indisponível')}"
+            for item in failed_required
+        )
+        raise RuntimeError(
+            "a fonte obrigatória não foi atualizada; a base anterior foi preservada. " + details
+        )
 
     if "stf-dados-informativos" in datasets:
         by_id = {
@@ -325,8 +381,19 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--timeout", type=int, default=30)
     parser.add_argument("--enrich-limit", type=int, default=8)
+    parser.add_argument(
+        "--require-source",
+        action="append",
+        default=[],
+        choices=[source["id"] for source in SOURCES],
+        help="falha sem substituir a base quando a fonte indicada não puder ser atualizada",
+    )
     args = parser.parse_args()
-    document = update(max(5, args.timeout), max(0, args.enrich_limit))
+    document = update(
+        max(5, args.timeout),
+        max(0, args.enrich_limit),
+        tuple(args.require_source),
+    )
     successes = sum(source["status"] == "SUCESSO" for source in document["sources"])
     total = len(document["items"]) + dataset_record_count(document.get("datasets"))
     print(f"Jurisprudência {document['version']}: {total} itens; {successes}/{len(SOURCES)} fontes válidas.")
