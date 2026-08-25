@@ -431,7 +431,7 @@ function inserirBlocoNoCiclo(bloco,dataMinima){
   if(!S.ciclo)return null;
   const ultimo=addDays(S.ciclo.inicio,S.ciclo.horizonte-1);
   if(dataMinima>ultimo)return null;
-  const candidato=S.ciclo.dias.find(dia=>dia.data>=dataMinima&&minutosAlocados(dia)+bloco.min<=dia.min);
+  const candidato=S.ciclo.dias.find(dia=>dia.data>=dataMinima&&minutosAlocados(dia)+bloco.min<=dia.min&&(!bloco.autoReview||!dia.blocos.some(item=>item.autoReview&&item.st!=='CONCLUIDO')));
   if(!candidato)return null;
   bloco.data=candidato.data;candidato.blocos.push(bloco);return candidato.data;
 }
@@ -451,6 +451,7 @@ function gerarCiclo(){
   const topicosComQuestoes=new Set(bancoQuestoes().map(q=>q.t).filter(Boolean));
   const usados={},pendentesLei=[],pendentesQuestoes=[],manuaisUsadas=new Set();
   const autoRevisoes=Object.entries(S.revisoes).filter(([,r])=>r.prox<=fim).map(([tid,r])=>({tid,due:r.prox,usada:false})).sort((a,b)=>a.due.localeCompare(b.due));
+  const filaInformativos=trilhaInformativos().sort((a,b)=>Number(!!(S.informativos[a.key]||{}).lido)-Number(!!(S.informativos[b.key]||{}).lido));let indiceInformativo=0;
   const ajustes=conteudo.ajustes.slice();
   for(let i=0;i<d.horizonte;i++){
     const data=addDays(inicio,i),dw=DIAS[parseISO(data).getDay()],min=d.minutos[dw]||0,blocos=[];
@@ -460,11 +461,10 @@ function gerarCiclo(){
       const bloco=blocoRevisao(item.tid,data,duracao,{manualId:item.id,manualReview:true,why:item.nota?`Revisão manual: ${item.nota}`:'Revisão manual adicionada pelo estudante.'});
       if(bloco&&minutosAlocados({blocos})+duracao<=min){blocos.push(bloco);manuaisUsadas.add(item.id);}
     });
-    let leisHoje=0;
+    let leisHoje=0,revisoesHoje=0;
     while(min-minutosAlocados({blocos})>=d.bloco){
       let bl=null;
       const leiPendente=pendentesLei.find(item=>!item.usada&&item.due<=data&&leisHoje<d.leiMaxDia);
-      const revisaoPendente=autoRevisoes.find(item=>!item.usada&&item.due<=data);
       const questaoPendente=pendentesQuestoes.find(item=>!item.usada&&item.due<=data);
       if(leiPendente){
         leiPendente.usada=true;leisHoje++;
@@ -472,11 +472,6 @@ function gerarCiclo(){
         bl={id:uid(),data,tipo:'LEI_SECA',grupo:t.g,min:d.bloco,st:'PENDENTE',tid:t.id,tit:t.to,disc:t.di,etapa:'LEI_SECA',lei:[parte],origemData:leiPendente.origemData,cargaLei:parte,
           why:`Lei seca automática ${parte.seq}/${parte.total}, fracionada para até ${d.bloco} min no ritmo de ${nf(parte.ritmo)} min por artigo.`};
         alocC.LEITURA=(alocC.LEITURA||0)+d.bloco;alocG[t.g]=(alocG[t.g]||0)+d.bloco;
-      }else if(revisaoPendente){
-        revisaoPendente.usada=true;
-        const due=revisaoPendente.due;
-        bl=blocoRevisao(revisaoPendente.tid,data,d.bloco,{autoReview:true,why:`Revisão automática prevista para ${fmtBR(due)}.`});
-        if(bl){alocC.REVISAO=(alocC.REVISAO||0)+d.bloco;alocG[bl.grupo]=(alocG[bl.grupo]||0)+d.bloco;}
       }else if(questaoPendente){
         questaoPendente.usada=true;
         const t=DADOS.programa.find(x=>x.id===questaoPendente.tid);
@@ -485,12 +480,27 @@ function gerarCiclo(){
         alocC.QUESTOES=(alocC.QUESTOES||0)+d.bloco;alocG[t.g]=(alocG[t.g]||0)+d.bloco;
       }else{
         let tipo=pesoEscolha(conteudo.pesos,alocC);if(!tipo)break;
-        if(tipo==='REVISAO')tipo=pesoEscolha({...conteudo.pesos,REVISAO:0},alocC)||'LEITURA';
+        if(tipo==='REVISAO'){
+          const revisaoPendente=revisoesHoje<1?autoRevisoes.find(item=>!item.usada&&item.due<=data):null;
+          if(revisaoPendente){
+            revisaoPendente.usada=true;revisoesHoje++;
+            bl=blocoRevisao(revisaoPendente.tid,data,d.bloco,{autoReview:true,why:`Revisão automática prevista para ${fmtBR(revisaoPendente.due)}. Limitada a um bloco automático neste dia e distribuída conforme o peso de revisão do ciclo.`});
+            if(bl){alocC.REVISAO=(alocC.REVISAO||0)+d.bloco;alocG[bl.grupo]=(alocG[bl.grupo]||0)+d.bloco;}
+          }else tipo=pesoEscolha({...conteudo.pesos,REVISAO:0},alocC)||'LEITURA';
+          if(!bl)tipo=pesoEscolha({...conteudo.pesos,REVISAO:0},alocC)||'LEITURA';
+        }
+        if(bl){blocos.push(bl);continue;}
         alocC[tipo]=(alocC[tipo]||0)+d.bloco;
         const grupo=pesoEscolha(d.pg,alocG);alocG[grupo]=(alocG[grupo]||0)+d.bloco;
         bl={id:uid(),data,tipo,grupo,min:d.bloco,st:'PENDENTE'};
         if(tipo==='JURISPRUDENCIA'){
-          bl.tit='Informativos STF/STJ priorizados';bl.why='Bloco de informativos organizado por número e relevância para Defensoria.';
+          const info=filaInformativos.length?filaInformativos[indiceInformativo++%filaInformativos.length]:null;
+          if(info){
+            const prioridade=info.score>=40?'muito alta':info.score>=24?'alta':'regular',fonte=info.itens.find(item=>safeUrl(item.url));
+            bl.tit=`Informativo ${info.trib} nº ${info.numero} (${info.ano})`;
+            bl.informativo={key:info.key,trib:info.trib,numero:info.numero,ano:info.ano,itens:info.itens.length,prioridade,grupos:Array.from(info.grupos),url:fonte?safeUrl(fonte.url):''};
+            bl.why=`Leitura dirigida de ${info.itens.length} julgamento(s), com prioridade ${prioridade} para provas de Defensoria. A sequência intercala STF e STJ e antecipa os informativos de maior afinidade temática.`;
+          }else{bl.tit='Informativos STF/STJ priorizados';bl.why='Atualize a base oficial para vincular este bloco a um número de informativo.';}
         }else if(tipo==='DISCURSIVA'){
           const tema=(S.disc.temas.concat(DADOS.temas_discursivos)).filter(x=>x.g===grupo);
           bl.tit=tema.length?tema[i%tema.length].tit:'Treino discursivo livre';bl.why='Segunda etapa tem peso 4 na nota final (art. 60, II).';
@@ -529,7 +539,7 @@ function gerarCiclo(){
   if(revisoesRestantes)ajustes.push(`${revisoesRestantes} revisão(ões) automática(s) ficaram para o próximo ciclo.`);
   if(manuaisRestantes)ajustes.push(`${manuaisRestantes} revisão(ões) manual(is) aguardam espaço em um próximo ciclo.`);
   if(S.ciclo)S.ciclosAnteriores.push(JSON.parse(JSON.stringify(S.ciclo)));
-  S.ciclo={gerado:new Date().toISOString(),inicio,horizonte:d.horizonte,pesosConteudo:conteudo.pesos,ajustes,dias,regrasCarga:{leiMinArt:d.leiMinArt,leiMaxDia:d.leiMaxDia}};
+  S.ciclo={gerado:new Date().toISOString(),inicio,horizonte:d.horizonte,pesosConteudo:conteudo.pesos,ajustes,dias,regrasCarga:{leiMinArt:d.leiMinArt,leiMaxDia:d.leiMaxDia,revisaoAutomaticaMaxDia:1}};
   S.ui.semana=0;salvar();
 }
 function semanasDoCiclo(){
@@ -679,7 +689,7 @@ function vPainel(m){
   }
 }
 function blocoCard(b,onChange){
-  const visual=cicloVisual(b),d=el('div',{class:`blk type-${b.tipo} ${visual.classe}${b.st==='CONCLUIDO'?' done':''}${b.st==='PULADO'?' skip':''}`});
+  const visual=cicloVisual(b),d=el('div',{class:`blk type-${b.tipo} ${visual.classe}${b.autoReview?' auto-review':''}${b.manualReview?' manual-review-block':''}${b.st==='CONCLUIDO'?' done':''}${b.st==='PULADO'?' skip':''}`});
   const layout=el('div',{class:'blk-layout'}),main=el('div',{class:'blk-main'}),t=el('div',{class:'bt'});
   t.appendChild(el('span',{class:'cycle-label'},`<i aria-hidden="true"></i>${esc(visual.rotulo)} <small>(${b.min} min)</small>`));
   if(b.grupo) t.appendChild(el('span',{class:'tag g-'+b.grupo},'Grupo '+b.grupo));
@@ -689,6 +699,11 @@ function blocoCard(b,onChange){
   if(b.disc)main.appendChild(el('div',{class:'blk-title'},`<b>${b.grupo?'G'+esc(b.grupo)+' · ':''}${b.item?esc(b.item)+' — ':''}${esc(b.disc)}</b>`));
   main.appendChild(el('div',{class:'blk-topic'},esc(b.tit||'Bloco de estudo')));
   if(b.why)main.appendChild(el('div',{class:'why'},esc(b.why)));
+  if(b.informativo){
+    const info=el('div',{class:'informative-assignment','data-informativo-key':b.informativo.key});
+    info.appendChild(el('b',null,`Leitura indicada: Informativo ${esc(b.informativo.trib)} nº ${esc(b.informativo.numero)} · ${esc(b.informativo.ano)}`));
+    info.appendChild(el('span',null,`${b.informativo.itens} julgamento(s) · prioridade ${esc(b.informativo.prioridade)}${b.informativo.grupos.length?' · grupos '+esc(b.informativo.grupos.join(', ')):''}`));main.appendChild(info);
+  }
   if(b.cargaLei)main.appendChild(el('div',{class:'workload'},`<b>Carga executável:</b> ${b.cargaLei.artigos||1} artigo(s) estimado(s) · ${b.cargaLei.minEstimados} min de leitura atenta · parte ${b.cargaLei.seq}/${b.cargaLei.total}`));
   if(b.lei && b.lei.length){
     const L=el('div',{class:'lei'});
@@ -702,6 +717,7 @@ function blocoCard(b,onChange){
   if(b.st!=='PENDENTE') acts.appendChild(el('button',{class:'btn gho sm',onclick:()=>{b.st='PENDENTE'; salvar(); onChange?onChange():render();}},'Reabrir'));
   if(b.tipo==='QUESTOES'&&b.tid) acts.appendChild(el('button',{class:'btn sec sm',onclick:()=>{iniciarSessao('PRATICA',{topico:b.tid},10);}},'Praticar este tópico'));
   if(b.tipo==='SIMULADO'&&b.grupo) acts.appendChild(el('button',{class:'btn sec sm',onclick:()=>{iniciarSessao('SIMULADO_GRUPO',{grupo:b.grupo},simuladoConfig().porGrupo);}},'Abrir simulado'));
+  if(b.tipo==='JURISPRUDENCIA'&&b.informativo)acts.appendChild(el('button',{class:'btn sec sm',onclick:()=>{jurisAgenda={trib:b.informativo.trib,ano:b.informativo.ano,numero:b.informativo.numero};go('juris');}},'Ver informativo'));
   layout.appendChild(main);layout.appendChild(acts);d.appendChild(layout);
   return d;
 }
@@ -824,7 +840,7 @@ function vCronograma(m){
   const b4=el('div'); b4.appendChild(el('label',{class:'f'},'Ritmo de lei seca (min por artigo)'));
   const il=el('input',{type:'number',min:1,max:5,step:.5,value:d.leiMinArt});il.onchange=()=>{d.leiMinArt=clamp(+il.value||2,1,5);salvar();};b4.appendChild(il);g.appendChild(b4);
   c.appendChild(g);
-  c.appendChild(el('div',{class:'capacity-rule'},'<b>Regra de exequibilidade ativa</b><span>Faixas extensas serão fracionadas pelo ritmo informado, ocupando no máximo um bloco de lei seca por dia. Teoria, lei seca e questões entram como etapas vinculadas e todas consomem a disponibilidade diária.</span>'));
+  c.appendChild(el('div',{class:'capacity-rule'},'<b>Regras de exequibilidade ativas</b><span>Faixas extensas serão fracionadas pelo ritmo informado, com no máximo um bloco de lei seca por dia. Revisões automáticas respeitam seu peso percentual e o limite de um bloco diário; revisões manuais continuam independentes.</span>'));
 
   const pesos=(titulo,obj,key)=>{
     const w=el('div'); w.appendChild(el('h3',null,titulo));
@@ -1404,6 +1420,7 @@ function openJurisDetail(p,onProgress){
   const source=safeUrl(p.url);if(source)actions.appendChild(el('a',{class:'btn sec sm',href:source,target:'_blank',rel:'noopener'},'Abrir fonte oficial'));
   box.appendChild(actions);modal.appendChild(box);modal.addEventListener('click',event=>{if(event.target===modal)modal.remove();});document.body.appendChild(modal);
 }
+let jurisAgenda=null;
 function vJuris(m){
   const c=el('div',{class:'card'});
   c.appendChild(el('span',{class:'eyebrow'},'Pesquisa e revisão'));
@@ -1488,7 +1505,9 @@ function vJuris(m){
       if(!terms.length)return true;const hay=jurisSearchText([p.ref,p.tema,p.tese,p.processo,p.ramo,p.materia,p.relator,p.legislacao,p.ods].filter(Boolean).join(' '));return terms.every(term=>hay.includes(term));
     });matches.sort((a,b)=>prioridadeDPE(b)-prioridadeDPE(a)||String(b.published_at||'').localeCompare(String(a.published_at||'')));renderRows();
   }
-  let queryTimer=null;query.addEventListener('input',()=>{clearTimeout(queryTimer);queryTimer=setTimeout(()=>{page=1;apply();},120);});[type,court,branch,year,issue,priority,group].forEach(select=>select.addEventListener('change',()=>{page=1;apply();}));previous.onclick=()=>{page--;renderRows();};next.onclick=()=>{page++;renderRows();};apply();m.appendChild(c1);
+  let queryTimer=null;query.addEventListener('input',()=>{clearTimeout(queryTimer);queryTimer=setTimeout(()=>{page=1;apply();},120);});[type,court,branch,year,issue,priority,group].forEach(select=>select.addEventListener('change',()=>{page=1;apply();}));previous.onclick=()=>{page--;renderRows();};next.onclick=()=>{page++;renderRows();};
+  if(jurisAgenda){court.value=jurisAgenda.trib;year.value=jurisAgenda.ano;issue.value=jurisAgenda.numero;jurisAgenda=null;}
+  apply();m.appendChild(c1);
 
   const c2=el('div',{class:'card'});
   c2.appendChild(el('h2',null,'Adicionar anotação jurídica'));

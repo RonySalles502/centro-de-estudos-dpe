@@ -328,6 +328,8 @@ ul.clean li { margin-bottom: 5px; }
 .blk.cycle-review .cycle-label { color: #9333ea; }.blk.cycle-juris .cycle-label { color: #0891b2; }.blk.cycle-writing .cycle-label { color: #ea580c; }
 .cycle-label small { color: inherit; }
 .blk-title { margin: 3px 0; font-size: .82rem; }.blk-topic { color: var(--ink-soft); font-size: .76rem; }
+.informative-assignment { display: grid; gap: 2px; margin-top: 9px; border: 1px solid color-mix(in srgb,#06b6d4 38%,var(--line)); border-radius: 7px; background: color-mix(in srgb,#06b6d4 7%,var(--surface)); padding: 8px 10px; }
+.informative-assignment b { color: #0891b2; font-size: .78rem; }.informative-assignment span { color: var(--ink-soft); font-size: .7rem; }
 .blk-actions { display: grid; gap: 5px; }
 .blk-actions .btn { width: 100%; padding: 5px 8px; background: var(--surface); color: var(--ink); border-color: var(--line); font-weight: 500; }
 .blk-actions .btn:hover { border-color: var(--violet); color: var(--violet); }

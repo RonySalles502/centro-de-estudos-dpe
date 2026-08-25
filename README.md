@@ -15,8 +15,8 @@ A pasta `pwa/` contém:
 - dashboard no modelo visual do Centro TJ-CE, com indicadores coloridos, agenda de hoje, próximos dias e atalhos de prática;
 - diagnóstico e cronograma adaptativo, com redistribuição de pesos e lei seca dividida em cargas executáveis;
 - cronograma semanal com cabeçalhos diários e ciclos de teoria, lei seca e questões diferenciados por cor;
-- revisão espaçada inserida automaticamente no ciclo e revisões manuais em paralelo;
-- informativos STF/STJ de 2025 e 2026 organizados por número e priorizados por afinidade com Defensoria;
+- revisão espaçada inserida automaticamente conforme o peso do ciclo, limitada a um bloco automático diário, e revisões manuais em paralelo;
+- informativos STF/STJ de 2025 e 2026 organizados por número, priorizados por afinidade com Defensoria e indicados nominalmente nos blocos de jurisprudência;
 - discursivas e mapa de leitura legislativa;
 - jurisprudência versionada, com base histórica estruturada do STF e atualização automática por fontes oficiais do STF e do STJ;
 - dados pessoais apenas em IndexedDB;

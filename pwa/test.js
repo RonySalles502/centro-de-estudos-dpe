@@ -62,15 +62,18 @@ const crypto = require('crypto');
   await page.waitForTimeout(500);
   const semanas = await page.$$eval('.wk button', b => b.length);
   ok('ciclo dividido em semanas navegáveis', semanas >= 4);
-  let totalDias = 0, totalBlocos = 0;
+  let totalDias = 0, totalBlocos = 0, informativosDoCiclo = [];
   for (let w = 0; w < semanas; w++) {
     await page.click(`.wk button >> nth=${w}`);
     await page.waitForTimeout(120);
     totalDias += await page.$$eval('.day', d => d.length);
     totalBlocos += await page.$$eval('.blk', d => d.length);
+    informativosDoCiclo.push(...await page.$$eval('.informative-assignment', itens => itens.map(item => item.dataset.informativoKey)));
   }
   ok('ciclo cobre os 28 dias do horizonte', totalDias === 28);
   ok('ciclo gera blocos de estudo em volume', totalBlocos > 40);
+  ok('jurisprudência indica informativos específicos no ciclo', informativosDoCiclo.length > 0 && informativosDoCiclo.every(Boolean));
+  ok('principais informativos não se repetem no mesmo ciclo', new Set(informativosDoCiclo).size === informativosDoCiclo.length);
   ok('conteúdo indisponível é redistribuído sem blocos vazios', /redistribuiu automaticamente/.test(await page.textContent('#main')));
   await page.click('.wk button >> nth=1');
   await page.waitForTimeout(150);
@@ -250,6 +253,33 @@ const crypto = require('crypto');
   await page.reload();
   await page.waitForFunction(() => window.__DPE_READY__ || window.__DPE_BOOT_ERROR__, null, { timeout: 15000 });
   ok('perfil DPE/SP permanece ativo após recarregar', /FCC/.test(await page.textContent('#chipBanca')) && /DPE\/SP/.test(await page.title()));
+
+  // 17. fila grande de revisões não domina o cronograma
+  await page.selectOption('#profileSelect', 'RN');
+  await page.waitForTimeout(500);
+  await page.evaluate(async () => {
+    const db = await new Promise((resolve, reject) => { const req = indexedDB.open('dpern_local', 2); req.onsuccess = () => resolve(req.result); req.onerror = () => reject(req.error); });
+    const state = await new Promise((resolve, reject) => { const req = db.transaction('state', 'readonly').objectStore('state').get('main'); req.onsuccess = () => resolve(req.result); req.onerror = () => reject(req.error); });
+    const now = new Date(), pad = value => String(value).padStart(2, '0'), today = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+    Object.keys(state.topicos).slice(0, 80).forEach(tid => { state.revisoes[tid] = { int: 1, ease: 2.5, reps: 0, prox: today, ult: null, ultAv: null }; });
+    await new Promise((resolve, reject) => { const tx = db.transaction('state', 'readwrite'); tx.objectStore('state').put(state, 'main'); tx.oncomplete = resolve; tx.onerror = () => reject(tx.error); });
+    db.close();
+  });
+  await page.reload();
+  await page.waitForFunction(() => window.__DPE_READY__ || window.__DPE_BOOT_ERROR__, null, { timeout: 15000 });
+  await page.click('#tabs button:text-is("Cronograma")');
+  await page.click('details.schedule-settings summary');
+  await page.click('button:text-is("Gerar novo ciclo")');
+  await page.waitForTimeout(500);
+  const semanasRevisao = await page.$$('.wk button');
+  let maxRevisaoDia = 0, totalRevisoesAuto = 0, totalBlocosRegerado = 0;
+  for (let w = 0; w < semanasRevisao.length; w++) {
+    await page.click(`.wk button >> nth=${w}`); await page.waitForTimeout(100);
+    const dados = await page.$$eval('.day', dias => dias.map(dia => ({auto: dia.querySelectorAll('.blk.auto-review').length, total: dia.querySelectorAll('.blk').length})));
+    dados.forEach(dia => { maxRevisaoDia = Math.max(maxRevisaoDia, dia.auto); totalRevisoesAuto += dia.auto; totalBlocosRegerado += dia.total; });
+  }
+  ok('revisão automática respeita o máximo de um bloco por dia', maxRevisaoDia <= 1);
+  ok('fila vencida respeita o peso de revisão e não domina o ciclo', totalRevisoesAuto > 0 && totalRevisoesAuto < totalBlocosRegerado * 0.35);
 
   await browser.close();
 
