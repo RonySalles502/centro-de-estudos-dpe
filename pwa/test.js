@@ -31,7 +31,8 @@ const crypto = require('crypto');
   ok('9 abas renderizadas', tabs.length === 9);
 
   // 2. painel carrega estatísticas
-  ok('painel com estatísticas', (await page.$$('.stat')).length >= 4);
+  ok('painel com quatro indicadores coloridos', (await page.$$('.dashboard-stat')).length === 4);
+  ok('painel segue a hierarquia visual do TJ-CE', !!await page.$('.dashboard-hero') && !!await page.$('.dashboard-agenda') && (await page.$$('.quick-action')).length === 3);
   const chip = await page.textContent('#chipProva');
   ok('chip da prova mostra estimativa', /estimada/.test(chip));
   ok('cabeçalho não expõe versão técnica', (await page.$('#chipConteudo')) === null);
@@ -74,6 +75,9 @@ const crypto = require('crypto');
   await page.click('.wk button >> nth=1');
   await page.waitForTimeout(150);
   ok('semana cheia tem 7 dias', (await page.$$('.day')).length === 7);
+  ok('cronograma usa cabeçalhos diários no modelo TJ-CE', (await page.$$('.schedule-day .day-head')).length === 7);
+  ok('ciclos 1, 2 e 3 têm apresentação visual separada', !!await page.$('.blk.cycle-1') && !!await page.$('.blk.cycle-2') && !!await page.$('.blk.cycle-3'));
+  ok('configuração do ciclo fica disponível sem dominar a agenda', !!await page.$('details.schedule-settings'));
   const leis = await page.$$eval('.lei', d => d.length);
   ok('blocos exibem leitura legislativa', leis > 0);
   const why = await page.$$eval('.why', d => d.length);
@@ -83,9 +87,12 @@ const crypto = require('crypto');
   ok('lei seca exibe carga executável', (await page.$$('.workload')).length > 0);
 
   // concluir um bloco
-  await page.click('.blk button:text-is("Concluir") >> nth=0');
+  await page.click('.blk button:text-is("Marcar concluído") >> nth=0');
   await page.waitForTimeout(300);
   ok('bloco marcado como concluído', (await page.$$('.blk.done')).length >= 1);
+  await page.click('#tabs button:text-is("Painel")');
+  await page.waitForTimeout(250);
+  ok('painel mostra conteúdo de hoje e dos próximos dias', (await page.$$('.agenda-item')).length > 0 && (await page.$$('.next-day')).length > 0);
 
   // 6. prática: responder questões
   await page.click('#tabs button:text-is("Questões")');
@@ -221,7 +228,7 @@ const crypto = require('crypto');
   await page.waitForFunction(() => window.__DPE_READY__ || window.__DPE_BOOT_ERROR__, null, { timeout: 15000 });
   await page.click('#tabs button:text-is("Painel")');
   const painel = await page.textContent('#main');
-  ok('estado persiste após recarregar', /questões respondidas|Questões respondidas/i.test(painel));
+  ok('estado persiste após recarregar', /questões resolvidas/i.test(painel));
   await page.click('#tabs button:text-is("Cronograma")');
   await page.waitForTimeout(300);
   ok('ciclo persiste após recarregar', (await page.$$('.wk button')).length >= 4);

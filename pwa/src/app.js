@@ -586,18 +586,59 @@ function render(){
 }
 
 /* ---------------------------------------------------------------- view: painel */
+function cicloVisual(b){
+  if(b.tipo==='LEITURA'||b.etapa==='TEORIA')return {n:1,classe:'cycle-1',rotulo:'Ciclo 1 — Teoria'};
+  if(b.tipo==='LEI_SECA'||b.etapa==='LEI_SECA')return {n:2,classe:'cycle-2',rotulo:'Ciclo 2 — Lei seca focada'};
+  if(b.tipo==='QUESTOES')return {n:3,classe:'cycle-3',rotulo:'Ciclo 3 — Questões'};
+  const extras={REVISAO:['cycle-review','Revisão programada'],JURISPRUDENCIA:['cycle-juris','Jurisprudência e informativos'],DISCURSIVA:['cycle-writing','Treino discursivo'],SIMULADO:['cycle-sim','Simulado']};
+  const extra=extras[b.tipo]||['cycle-extra',TIPOS[b.tipo]||b.tipo];
+  return {n:4,classe:extra[0],rotulo:extra[1]};
+}
+function agendaCompacta(b){
+  const visual=cicloVisual(b),item=el('div',{class:'agenda-item '+visual.classe});
+  item.appendChild(el('span',{class:'agenda-dot','aria-hidden':'true'}));
+  const copy=el('div');copy.appendChild(el('b',null,esc(visual.rotulo)));
+  copy.appendChild(el('small',null,esc(b.disc||b.tit||'Atividade programada')));item.appendChild(copy);
+  item.appendChild(el('span',{class:'agenda-time'},`${b.min} min`));return item;
+}
 function vPainel(m){
   const k=metricas(); const dias=S.prova.data?diasEntre(hoje(),S.prova.data):null;
-  const grid=el('div',{class:'grid g4'});
-  const st=(kk,v,s)=>{ const c=el('div',{class:'stat'}); c.appendChild(el('div',{class:'k'},esc(kk))); c.appendChild(el('div',{class:'v'},v)); if(s)c.appendChild(el('div',{class:'s'},s)); return c; };
-  grid.appendChild(st('Dias para a prova', dias!=null&&dias>=0?dias:'—', S.prova.confirmada?'data confirmada':S.prova.data?'estimativa editável':'aguardando edital'));
-  grid.appendChild(st('Cobertura do programa', k.cobertura+'%', `${k.ini} de ${k.total} tópicos iniciados`));
-  grid.appendChild(st('Questões respondidas', k.feitas, k.acc!=null?`acurácia de ${Math.round(k.acc*100)}%`:'sem dados ainda'));
-  grid.appendChild(st('Revisões vencidas', k.devidas, k.devidas?'há fila para hoje':'em dia'));
-  m.appendChild(grid);
+  const todosBlocos=S.ciclo?S.ciclo.dias.flatMap(d=>d.blocos):[],concluidos=todosBlocos.filter(b=>b.st==='CONCLUIDO').length;
+  const progresso=pct(concluidos,todosBlocos.length),hojeISO=hoje(),diaHoje=S.ciclo?S.ciclo.dias.find(d=>d.data===hojeISO):null;
+  const hero=el('section',{class:'dashboard-hero'});
+  hero.appendChild(el('h1',null,'Olá, Candidato! <span aria-hidden="true">👋</span>'));
+  hero.appendChild(el('p',null,`Pronto para mais um dia de preparação para a ${esc(DADOS.meta.sigla||('DPE/'+S.perfil))}.`));m.appendChild(hero);
 
-  // desempenho por grupo com peso oficial
-  const c1=el('div',{class:'card'});
+  const grid=el('div',{class:'dashboard-stats'});
+  const st=(classe,kk,v,s)=>{const c=el('div',{class:'stat dashboard-stat '+classe});c.appendChild(el('div',{class:'k'},esc(kk)));c.appendChild(el('div',{class:'v'},esc(v)));c.appendChild(el('div',{class:'s'},esc(s)));return c;};
+  grid.appendChild(st('stat-deadline','Dias até a prova',dias!=null&&dias>=0?dias:'—',S.prova.data?fmtBR(S.prova.data):'Aguardando edital'));
+  grid.appendChild(st('stat-progress','Progresso do cronograma',progresso+'%',`${concluidos} de ${todosBlocos.length} blocos cumpridos`));
+  grid.appendChild(st('stat-questions','Questões resolvidas',String(k.feitas),`de ${bancoQuestoes().length} disponíveis`));
+  grid.appendChild(st('stat-accuracy','% acerto geral',k.acc!=null?Math.round(k.acc*100)+'%':'0%',`${k.acertos}/${k.feitas}`));m.appendChild(grid);
+
+  const agenda=el('section',{class:'dashboard-agenda'});
+  const todayCard=el('div',{class:'card agenda-today'}),todayHead=el('div',{class:'agenda-head'});
+  todayHead.appendChild(el('h2',null,`🗓️ Hoje · ${fmtBR(hojeISO)}`));todayHead.appendChild(el('button',{class:'link-button',onclick:()=>go('cronograma')},'Ver cronograma →'));todayCard.appendChild(todayHead);
+  if(!S.ciclo){todayCard.appendChild(el('div',{class:'agenda-empty'},'Nenhum ciclo ativo. Gere seu cronograma para ver a agenda diária.'));todayCard.appendChild(el('button',{class:'btn sm',onclick:()=>go('cronograma')},'Montar cronograma'));}
+  else if(!diaHoje||!diaHoje.blocos.length)todayCard.appendChild(el('div',{class:'agenda-empty'},'Sem atividade programada para hoje.'));
+  else{diaHoje.blocos.slice(0,4).forEach(b=>todayCard.appendChild(agendaCompacta(b)));if(diaHoje.blocos.length>4)todayCard.appendChild(el('small',{class:'agenda-more'},`+ ${diaHoje.blocos.length-4} atividade(s) no cronograma`));}
+  agenda.appendChild(todayCard);
+  const nextCard=el('div',{class:'card agenda-next'});nextCard.appendChild(el('h2',null,'⏩ Próximos dias'));
+  const proximos=S.ciclo?S.ciclo.dias.filter(d=>d.data>hojeISO&&d.blocos.length).slice(0,3):[];
+  if(!proximos.length)nextCard.appendChild(el('div',{class:'agenda-empty'},'Nenhuma atividade futura programada.'));
+  else proximos.forEach(d=>{const row=el('button',{class:'next-day',onclick:()=>{const sems=semanasDoCiclo(),idx=sems.findIndex(s=>s.dias.some(x=>x.data===d.data));S.ui.semana=Math.max(0,idx);go('cronograma');}});row.appendChild(el('span',null,`<b>${DIAS_L[parseISO(d.data).getDay()]}</b><small>${fmtBR(d.data)}</small>`));row.appendChild(el('span',null,`<b>${d.blocos.length}</b><small>${nf(minutosAlocados(d)/60)}h</small>`));nextCard.appendChild(row);});
+  agenda.appendChild(nextCard);m.appendChild(agenda);
+
+  const quick=el('section',{class:'quick-actions'});
+  const quickCard=(icone,titulo,sub,destino)=>{const b=el('button',{class:'quick-action',onclick:()=>go(destino)});b.appendChild(el('span',{class:'quick-icon','aria-hidden':'true'},icone));b.appendChild(el('span',null,`<b>${esc(titulo)}</b><small>${esc(sub)}</small>`));return b;};
+  const ineditas=bancoQuestoes().filter(q=>!S.exposicao[q.id]).length,sims=S.sessoes.filter(s=>s.tipo!=='PRATICA'&&s.fim).length,redacoes=S.disc.tentativas.filter(t=>t.fim).length;
+  quick.appendChild(quickCard('◎','Resolver questões',`${ineditas} inéditas`,'questoes'));
+  quick.appendChild(quickCard('▣','Aplicar simulado',`${sims} realizado(s)`,'simulados'));
+  quick.appendChild(quickCard('✎','Treinar redação',`${redacoes} produção(ões)`,'discursivas'));m.appendChild(quick);
+
+  const detalhes=el('details',{class:'card dashboard-details'});detalhes.appendChild(el('summary',null,'Ver desempenho detalhado e fases da prova'));
+  const detailBody=el('div',{class:'dashboard-detail-body'});
+  const c1=el('section',{class:'dashboard-analysis'});
   c1.appendChild(el('h2',null,'Desempenho por grupo objetivo'));
   c1.appendChild(el('p',{class:'section-lead'},S.perfil==='SP'?'Os quatro grupos são uma organização de estudo do Centro; o último edital da DPE/SP não fixou distribuição de questões por matéria.':'Cada grupo vale 25 questões. Compare sua cobertura e seus acertos para decidir onde estudar primeiro.'));
   const tb=el('table'); tb.innerHTML='<thead><tr><th>Grupo</th><th>Disciplinas</th><th>Tópicos</th><th>Iniciados</th><th>Questões</th><th>Acurácia</th></tr></thead>';
@@ -607,10 +648,9 @@ function vPainel(m){
     const ds=(DADOS.meta.grupos[g]||Array.from(new Set(DADOS.programa.filter(t=>t.g===g).map(t=>t.di)))).join(', ');
     tbody.appendChild(el('tr',null,`<td><span class="tag g-${g}">Grupo ${g}</span></td><td><small>${esc(ds)}</small></td><td>${d.t}</td><td>${d.i} <small>(${pct(d.i,d.t)}%)</small></td><td>${d.f}</td><td>${d.f?pct(d.a,d.f)+'%':'—'}</td>`));
   });
-  tb.appendChild(tbody); c1.appendChild(tb); m.appendChild(c1);
+  tb.appendChild(tbody);c1.appendChild(el('div',{class:'table-scroll'},tb));detailBody.appendChild(c1);
 
-  // pesos das etapas
-  const c2=el('div',{class:'card'});
+  const c2=el('section',{class:'dashboard-analysis'});
   c2.appendChild(el('h2',null,'Onde a nota é decidida'));
   c2.appendChild(el('p',{class:'section-lead'},S.perfil==='SP'?'O IX edital e a regra atual mantêm duas provas dissertativas densas, além da objetiva e da oral.':'A etapa discursiva tem o maior peso. Use esta visão para equilibrar objetiva, escrita e prova oral.'));
   const et=el('table'); et.innerHTML='<thead><tr><th>Etapa</th><th>Formato</th><th>Corte/referência</th><th>Seu registro</th></tr></thead>';
@@ -625,18 +665,9 @@ function vPainel(m){
   <tr><td>2ª — Discursivas (2 questões de 30 linhas + peça de 120 linhas)</td><td><b>4</b></td><td>Média ≥ 6,00 e ≥ 5,00 por grupo (art. 47)</td><td>${tent.length?tent.length+' tentativa(s)':'—'}</td></tr>
   <tr><td>4ª — Oral (7 disciplinas do art. 56)</td><td><b>2</b></td><td>≥ 6,00 (art. 57)</td><td>—</td></tr>
   <tr><td>5ª — Títulos</td><td><b>1</b></td><td>classificatória</td><td>—</td></tr>`;
-  et.appendChild(eb); c2.appendChild(et);
+  et.appendChild(eb);c2.appendChild(el('div',{class:'table-scroll'},et));
   c2.appendChild(el('div',{class:'note'},S.perfil==='SP'?'Fontes do perfil: IX Edital DPE/SP (2022/2023) e Deliberação CSDP nº 454/2025. A data e o conteúdo definitivo do próximo concurso dependerão do novo edital.':'Disciplinas que caem na prova oral (art. 56): Constitucional, Consumidor, Criança e Adolescente, Penal, Processual Penal, Civil e Processual Civil. Administrativo, Execução Penal, Direitos Humanos, Difusos e Coletivos e Princípios Institucionais não caem na oral.'));
-  m.appendChild(c2);
-
-  // hoje
-  const c3=el('div',{class:'card'});
-  c3.appendChild(el('h2',null,'Hoje'));
-  const dh=S.ciclo? S.ciclo.dias.find(d=>d.data===hoje()) : null;
-  if(!S.ciclo){ c3.appendChild(el('div',{class:'empty'},'<b>Nenhum ciclo gerado</b>Preencha o diagnóstico no Cronograma e gere seu primeiro ciclo de estudo.')); c3.appendChild(el('button',{class:'btn',onclick:()=>go('cronograma')},'Ir para o cronograma')); }
-  else if(!dh || !dh.blocos.length){ c3.appendChild(el('p',null,'Sem carga prevista para hoje neste ciclo.')); }
-  else { dh.blocos.forEach(b=>c3.appendChild(blocoCard(b))); }
-  m.appendChild(c3);
+  detailBody.appendChild(c2);detalhes.appendChild(detailBody);m.appendChild(detalhes);
 
   // piores disciplinas
   const piores=Object.entries(k.porD).filter(([,d])=>d.f>=5).map(([c,d])=>({c,...d,acc:d.a/d.f})).sort((a,b)=>a.acc-b.acc).slice(0,5);
@@ -648,34 +679,30 @@ function vPainel(m){
   }
 }
 function blocoCard(b,onChange){
-  const d=el('div',{class:'blk type-'+b.tipo+(b.st==='CONCLUIDO'?' done':'')+(b.st==='PULADO'?' skip':'')});
-  const t=el('div',{class:'bt'});
-  t.appendChild(el('span',{class:'tag pur'},esc(TIPOS[b.tipo]||b.tipo)));
+  const visual=cicloVisual(b),d=el('div',{class:`blk type-${b.tipo} ${visual.classe}${b.st==='CONCLUIDO'?' done':''}${b.st==='PULADO'?' skip':''}`});
+  const layout=el('div',{class:'blk-layout'}),main=el('div',{class:'blk-main'}),t=el('div',{class:'bt'});
+  t.appendChild(el('span',{class:'cycle-label'},`<i aria-hidden="true"></i>${esc(visual.rotulo)} <small>(${b.min} min)</small>`));
   if(b.grupo) t.appendChild(el('span',{class:'tag g-'+b.grupo},'Grupo '+b.grupo));
-  t.appendChild(el('span',{class:'tag'},b.min+' min'));
-  if(b.disc) t.appendChild(el('span',{class:'tag'},esc(b.disc)));
   if(b.foco){const f=FOCOS_PRE_EDITAL[b.foco]||FOCOS_PRE_EDITAL.ALTA; t.appendChild(el('span',{class:'tag '+f.classe},'Foco '+f.rotulo.toLowerCase()));}
-  if(b.etapa==='TEORIA')t.appendChild(el('span',{class:'tag ok'},'Ciclo 1 · teoria'));
-  if(b.etapa==='LEI_SECA')t.appendChild(el('span',{class:'tag warn'},'Ciclo 2 · lei seca'));
-  if(b.etapa==='QUESTOES'&&b.origemData)t.appendChild(el('span',{class:'tag'},'Ciclo 3 · consolidação'));
   if(b.manualReview)t.appendChild(el('span',{class:'tag pur'},'manual'));
-  d.appendChild(t);
-  d.appendChild(el('div',null,'<b>'+esc(b.tit||'Bloco de estudo')+'</b>'));
-  if(b.why) d.appendChild(el('div',{class:'why'},esc(b.why)));
-  if(b.cargaLei)d.appendChild(el('div',{class:'workload'},`<b>Carga executável:</b> ${b.cargaLei.artigos||1} artigo(s) estimado(s) · ${b.cargaLei.minEstimados} min de leitura atenta · parte ${b.cargaLei.seq}/${b.cargaLei.total}`));
+  main.appendChild(t);
+  if(b.disc)main.appendChild(el('div',{class:'blk-title'},`<b>${b.grupo?'G'+esc(b.grupo)+' · ':''}${b.item?esc(b.item)+' — ':''}${esc(b.disc)}</b>`));
+  main.appendChild(el('div',{class:'blk-topic'},esc(b.tit||'Bloco de estudo')));
+  if(b.why)main.appendChild(el('div',{class:'why'},esc(b.why)));
+  if(b.cargaLei)main.appendChild(el('div',{class:'workload'},`<b>Carga executável:</b> ${b.cargaLei.artigos||1} artigo(s) estimado(s) · ${b.cargaLei.minEstimados} min de leitura atenta · parte ${b.cargaLei.seq}/${b.cargaLei.total}`));
   if(b.lei && b.lei.length){
     const L=el('div',{class:'lei'});
     if(b.lei[0].sem) L.innerHTML='<b>Leitura legislativa:</b> sem faixa específica — tema predominantemente doutrinário, jurisprudencial ou internacional.';
     else L.innerHTML='<b>Leitura legislativa:</b> '+b.lei.map(x=>`${esc(x.nome)} — ${esc(x.arts)} ${x.url?`<a href="${esc(x.url)}" target="_blank" rel="noopener">texto oficial</a>`:''}`).join(' · ');
-    d.appendChild(L);
+    main.appendChild(L);
   }
-  const acts=el('div',{class:'row'});
-  if(b.st!=='CONCLUIDO') acts.appendChild(el('button',{class:'btn sm',onclick:()=>{b.st='CONCLUIDO'; if(b.tid){const p=S.topicos[b.tid]; if(p&&p.st==='NAO_INICIADO')p.st='EM_ESTUDO'; garanteRevisao(b.tid);} if(b.manualId){const manual=S.revisoesManuais.find(item=>item.id===b.manualId);if(manual)manual.st='CONCLUIDO';} salvar(); onChange?onChange():render();}},'Concluir'));
+  const acts=el('div',{class:'blk-actions'});
+  if(b.st!=='CONCLUIDO') acts.appendChild(el('button',{class:'btn sm',onclick:()=>{b.st='CONCLUIDO'; if(b.tid){const p=S.topicos[b.tid]; if(p&&p.st==='NAO_INICIADO')p.st='EM_ESTUDO'; garanteRevisao(b.tid);} if(b.manualId){const manual=S.revisoesManuais.find(item=>item.id===b.manualId);if(manual)manual.st='CONCLUIDO';} salvar(); onChange?onChange():render();}},'Marcar concluído'));
   if(b.st==='PENDENTE') acts.appendChild(el('button',{class:'btn gho sm',onclick:()=>{b.st='PULADO'; salvar(); onChange?onChange():render();}},'Pular'));
   if(b.st!=='PENDENTE') acts.appendChild(el('button',{class:'btn gho sm',onclick:()=>{b.st='PENDENTE'; salvar(); onChange?onChange():render();}},'Reabrir'));
   if(b.tipo==='QUESTOES'&&b.tid) acts.appendChild(el('button',{class:'btn sec sm',onclick:()=>{iniciarSessao('PRATICA',{topico:b.tid},10);}},'Praticar este tópico'));
   if(b.tipo==='SIMULADO'&&b.grupo) acts.appendChild(el('button',{class:'btn sec sm',onclick:()=>{iniciarSessao('SIMULADO_GRUPO',{grupo:b.grupo},simuladoConfig().porGrupo);}},'Abrir simulado'));
-  d.appendChild(acts);
+  layout.appendChild(main);layout.appendChild(acts);d.appendChild(layout);
   return d;
 }
 
@@ -825,12 +852,10 @@ function vCronograma(m){
   rr.appendChild(bg);
   if(!ok) rr.appendChild(el('small',null,'Ajuste os pesos para 100% e garanta ao menos 60 minutos por semana.'));
   c.appendChild(rr);
-  m.appendChild(c);
-
-  if(!S.ciclo){ m.appendChild(el('div',{class:'card'},'<div class="empty"><b>Nenhum ciclo ativo</b>Gere o primeiro ciclo acima. O plano cobre de 7 a 84 dias e pode ser regerado a qualquer momento sem apagar o histórico.</div>')); return; }
+  if(!S.ciclo){m.appendChild(c);m.appendChild(el('div',{class:'card'},'<div class="empty"><b>Nenhum ciclo ativo</b>Gere o primeiro ciclo acima. O plano cobre de 7 a 84 dias e pode ser regerado a qualquer momento sem apagar o histórico.</div>'));return;}
 
   const sems=semanasDoCiclo();
-  const cc=el('div',{class:'card'});
+  const cc=el('div',{class:'card schedule-overview'});
   const tot=S.ciclo.dias.reduce((a,d2)=>a+d2.blocos.length,0);
   const feitos=S.ciclo.dias.reduce((a,d2)=>a+d2.blocos.filter(b=>b.st==='CONCLUIDO').length,0);
   cc.appendChild(el('h2',null,`Ciclo de ${S.ciclo.horizonte} dias — ${feitos}/${tot} blocos concluídos`));
@@ -845,20 +870,27 @@ function vCronograma(m){
   const sem=sems[clamp(S.ui.semana,0,sems.length-1)]||sems[0];
   const minSem=sem.dias.reduce((a,d2)=>a+minutosAlocados(d2),0), blSem=sem.dias.reduce((a,d2)=>a+d2.blocos.length,0);
   const okSem=sem.dias.reduce((a,d2)=>a+d2.blocos.filter(b=>b.st==='CONCLUIDO').length,0);
-  cc.appendChild(el('div',{class:'row'},`<span class="pill">${fmtBR(sem.dias[0].data)} → ${fmtBR(sem.dias[sem.dias.length-1].data)}</span><span class="pill">${blSem} blocos</span><span class="pill">${nf(minSem/60)}h alocadas</span><span class="pill">${pct(okSem,blSem)}% concluído</span>`));
+  cc.appendChild(el('div',{class:'row schedule-week-meta'},`<span class="pill">${fmtBR(sem.dias[0].data)} → ${fmtBR(sem.dias[sem.dias.length-1].data)}</span><span class="pill">${blSem} blocos</span><span class="pill">${nf(minSem/60)}h alocadas</span><span class="pill">${pct(okSem,blSem)}% concluído</span>`));
+  cc.appendChild(el('div',{class:'cycle-legend'},'<span class="cycle-1"><i></i>Ciclo 1 · Teoria</span><span class="cycle-2"><i></i>Ciclo 2 · Lei seca</span><span class="cycle-3"><i></i>Ciclo 3 · Questões</span><span class="cycle-review"><i></i>Revisões e reforços</span>'));
   m.appendChild(cc);
 
   sem.dias.forEach(d2=>{
-    const dd=el('div',{class:'day'+(d2.min===0?' zero':'')});
-    const dh=el('div',{class:'dh'});
+    const dd=el('section',{class:'day schedule-day'+(d2.min===0?' zero':'')});
+    const dh=el('div',{class:'dh day-head'});
     dh.appendChild(el('b',null,DIAS_L[parseISO(d2.data).getDay()]+', '+fmtBR(d2.data)));
-    dh.appendChild(el('span',{class:'tag'},d2.min+' min'));
-    if(d2.data===hoje()) dh.appendChild(el('span',{class:'tag ok'},'hoje'));
+    const dayMeta=el('div',{class:'day-head-meta'});dayMeta.appendChild(el('span',{class:'day-minutes'},d2.min+' min'));
+    if(d2.data===hoje())dayMeta.appendChild(el('span',{class:'day-today'},'Hoje'));else dayMeta.appendChild(el('span',{class:'day-priority'},'Principal'));
+    dh.appendChild(dayMeta);
     dd.appendChild(dh);
-    if(!d2.blocos.length) dd.appendChild(el('div',{class:'note'},'Sem carga prevista neste dia.'));
-    d2.blocos.forEach(b=>dd.appendChild(blocoCard(b)));
+    const body=el('div',{class:'day-body'});
+    if(!d2.blocos.length)body.appendChild(el('div',{class:'note'},'Sem carga prevista neste dia.'));
+    d2.blocos.slice().sort((a,b)=>cicloVisual(a).n-cicloVisual(b).n).forEach(b=>body.appendChild(blocoCard(b)));
+    dd.appendChild(body);
     m.appendChild(dd);
   });
+
+  const settings=el('details',{class:'card schedule-settings'});settings.appendChild(el('summary',null,'Ajustar disponibilidade, pesos e regras do ciclo'));
+  const settingsBody=el('div',{class:'schedule-settings-body'});while(c.firstChild)settingsBody.appendChild(c.firstChild);settings.appendChild(settingsBody);m.appendChild(settings);
 }
 
 /* ---------------------------------------------------------------- sessões de questões */

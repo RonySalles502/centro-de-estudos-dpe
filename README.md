@@ -12,7 +12,9 @@ A pasta `pwa/` contém:
 - 260 questões autorais referenciadas, com cinco alternativas, distribuídas nos quatro grupos (80/60/60/60) e vinculadas a 218 tópicos;
 - práticas, simulados de grupo e simulado completo;
 - perfis RN e SP selecionáveis, com prova, diagnóstico e cronograma isolados entre si;
+- dashboard no modelo visual do Centro TJ-CE, com indicadores coloridos, agenda de hoje, próximos dias e atalhos de prática;
 - diagnóstico e cronograma adaptativo, com redistribuição de pesos e lei seca dividida em cargas executáveis;
+- cronograma semanal com cabeçalhos diários e ciclos de teoria, lei seca e questões diferenciados por cor;
 - revisão espaçada inserida automaticamente no ciclo e revisões manuais em paralelo;
 - informativos STF/STJ de 2025 e 2026 organizados por número e priorizados por afinidade com Defensoria;
 - discursivas e mapa de leitura legislativa;
