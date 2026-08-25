@@ -1,6 +1,6 @@
-# Centro de Estudos DPE/RN
+# Centro de Estudos — DPE/RN e DPE/SP
 
-Produto de estudo **local-first** para o concurso da DPE/RN. A versão principal é uma PWA estática: pode ser publicada gratuitamente no GitHub Pages, funciona offline depois do primeiro acesso e mantém todo o progresso no navegador de cada usuário.
+Produto de estudo **local-first** para os concursos da DPE/RN e da DPE/SP. A versão principal é uma PWA estática: pode ser publicada gratuitamente no GitHub Pages, funciona offline depois do primeiro acesso e mantém todo o progresso no navegador de cada usuário.
 
 Não há contas, banco de dados remoto nem concorrência entre usuários. O mesmo endereço pode ser compartilhado com poucas pessoas; cada perfil de navegador terá uma instalação e um estado independentes.
 
@@ -11,8 +11,11 @@ A pasta `pwa/` contém:
 - 296 tópicos do programa verticalizado;
 - 260 questões autorais referenciadas, com cinco alternativas, distribuídas nos quatro grupos (80/60/60/60) e vinculadas a 218 tópicos;
 - práticas, simulados de grupo e simulado completo;
-- diagnóstico e cronograma adaptativo, com redistribuição de pesos quando um tipo de conteúdo não está disponível;
-- revisão espaçada, discursivas e mapa de leitura legislativa;
+- perfis RN e SP selecionáveis, com prova, diagnóstico e cronograma isolados entre si;
+- diagnóstico e cronograma adaptativo, com redistribuição de pesos e lei seca dividida em cargas executáveis;
+- revisão espaçada inserida automaticamente no ciclo e revisões manuais em paralelo;
+- informativos STF/STJ de 2025 e 2026 organizados por número e priorizados por afinidade com Defensoria;
+- discursivas e mapa de leitura legislativa;
 - jurisprudência versionada, com base histórica estruturada do STF e atualização automática por fontes oficiais do STF e do STJ;
 - dados pessoais apenas em IndexedDB;
 - backups JSON versionados, com SHA-256 e cópia preventiva antes de restaurações ou reinicialização;
@@ -35,6 +38,12 @@ Arquivos de manutenção:
 - `scripts/refine_legislation_map.py`: refinamento e validação do mapa legislativo.
 
 O mapa atual cobre todos os tópicos: 272 possuem uma faixa normativa específica e 24 estão explicitamente classificados como predominantemente doutrinários, jurisprudenciais ou multidisciplinares. Os links apontam para Planalto, ALRN, DPE/RN, CNJ, STF, STJ, SENAPPEN, ANEEL ou para o organismo internacional responsável; o texto vigente da fonte deve ser conferido durante a leitura. A revisão `cebraspe-defensor-2` também corrige o deslocamento dos itens 17 a 26 de Processo Civil e amplia os diplomas expressamente nomeados no programa.
+
+## Perfil pré-edital DPE/SP — FCC
+
+O perfil paulista usa como referência o IX Edital da DPE/SP e a Deliberação CSDP nº 454/2025, sem inventar data para o próximo concurso. Ele preserva a referência objetiva de 88 questões em 4h30, as duas provas escritas, a fase oral e os títulos. O núcleo comum é complementado por Tributário, Empresarial, legislação institucional paulista e as cinco obras de Filosofia/Sociologia indicadas no IX edital.
+
+O banco-base de questões é útil para revisão de conteúdo, mas não é apresentado como amostra estatística da FCC. Questões FCC licenciadas podem ser importadas pelo usuário. O arquivo de manutenção do perfil é `data/dpe_sp_profile.json`; o build valida suas fontes oficiais, fases, complementos e mapa legislativo.
 
 ## Publicação gratuita no GitHub Pages
 
@@ -104,7 +113,7 @@ Para expansão editorial, acrescente itens aos arquivos `pwa/src/questoes_g1.jso
 - Progresso privado: IndexedDB do navegador.
 - Recuperação curta: até sete snapshots locais, espaçados em seis horas.
 - Recuperação portátil: backup JSON com hash SHA-256.
-- Migração: o estado `0.7` em `localStorage` é importado uma única vez para o esquema `8`.
+- Migração: o estado `0.7` em `localStorage` é importado uma única vez e atualizado para o esquema `9`.
 
 Atualizar o site não apaga o progresso. Limpar os dados do navegador, usar modo privado ou mudar a origem do site pode apagá-lo; por isso, o backup periódico é parte do uso normal do produto.
 
@@ -118,7 +127,7 @@ python pwa/build.py
 node --check pwa/src/app.js
 ```
 
-O roteiro de ponta a ponta em `pwa/test.js` cobre as nove áreas, ciclo de 28 dias, prática, simulados, revisão, discursivas, importação, persistência, jurisprudência e validação criptográfica do backup. Ele requer Playwright e um servidor apontando para `pwa/dist`.
+O roteiro de ponta a ponta em `pwa/test.js` cobre as nove áreas, os perfis RN/SP, ciclo de 28 dias, carga de lei seca, prática, simulados, revisões automática e manual, discursivas, importação, persistência, informativos, jurisprudência e validação criptográfica do backup. Ele requer Playwright e um servidor apontando para `pwa/dist`.
 
 ## Aplicação Python anterior
 

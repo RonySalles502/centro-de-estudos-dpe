@@ -6,6 +6,8 @@ on:
     paths:
       - "pwa/**"
       - "data/discursive_prompts.json"
+      - "data/dpe_sp_profile.json"
+      - "tests/**"
       - ".github/workflows/deploy-pages.yml"
   schedule:
     # 06:17 em Fortaleza. Minuto não redondo reduz atrasos em horários de pico.

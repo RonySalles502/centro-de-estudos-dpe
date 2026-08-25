@@ -78,6 +78,9 @@ const crypto = require('crypto');
   ok('blocos exibem leitura legislativa', leis > 0);
   const why = await page.$$eval('.why', d => d.length);
   ok('blocos exibem justificativa', why > 0);
+  const maxLeiDia = await page.$$eval('.day', dias => Math.max(0, ...dias.map(dia => dia.querySelectorAll('.type-LEI_SECA').length)));
+  ok('lei seca respeita o máximo de um bloco por dia', maxLeiDia <= 1);
+  ok('lei seca exibe carga executável', (await page.$$('.workload')).length > 0);
 
   // concluir um bloco
   await page.click('.blk button:text-is("Concluir") >> nth=0');
@@ -131,6 +134,11 @@ const crypto = require('crypto');
   await page.waitForTimeout(250);
   const revs = await page.$$eval('.blk', r => r.length);
   ok('fila de revisão alimentada pelas respostas', revs >= 1);
+  ok('formulário de revisão manual disponível', !!await page.$('.review-manual'));
+  await page.selectOption('.review-manual select', { index: 1 });
+  await page.click('button:text-is("Adicionar revisão")');
+  await page.waitForTimeout(200);
+  ok('revisão manual cadastrada em paralelo', (await page.$$('.manual-review')).length >= 1);
   if (revs) {
     await page.click('.blk button:text-is("Bom") >> nth=0');
     await page.waitForTimeout(300);
@@ -178,8 +186,27 @@ const crypto = require('crypto');
   ok('jurisprudência mostra estado simples e fonte oficial', /Base (atualizada|disponível)/.test(juris) && /fonte oficial/i.test(juris));
   ok('jurisprudência não expõe metadados técnicos', !/Versão 20|pacote versionado|última coleta válida|falha de coleta/i.test(juris));
   ok('atalhos oficiais têm rótulos claros', /Abrir informativos do STF/.test(juris) && /Abrir súmulas do STF/.test(juris));
+  ok('trilha mistura informativos numerados de 2025/2026', (await page.$$('.informativo-card')).length > 1 && /Trilha de informativos por número/.test(juris));
 
-  // 12. backup com envelope e hash verificável
+  // 12. perfil DPE/SP e isolamento entre concursos
+  await page.selectOption('#profileSelect', 'SP');
+  await page.waitForTimeout(300);
+  ok('perfil DPE/SP troca a banca e mantém data em aberto', /FCC/.test(await page.textContent('#chipBanca')) && /a definir/.test(await page.textContent('#chipProva')));
+  ok('perfil DPE/SP oferece fontes oficiais próprias', /Abrir IX Edital da DPE\/SP/.test(await page.textContent('#main')) && /Abrir regras atuais da DPE\/SP/.test(await page.textContent('#main')));
+  await page.click('#tabs button:text-is("Programa")');
+  await page.waitForTimeout(250);
+  ok('programa DPE/SP inclui os complementos do IX edital', (await page.$$('tbody tr')).length > 296 && /Filosofia do Direito e Sociologia Jurídica/.test(await page.textContent('#main')));
+  await page.click('#tabs button:text-is("Simulados")');
+  await page.waitForTimeout(250);
+  ok('simulado DPE/SP usa referência de 88 questões e 4h30', /Simulado completo — 88 questões/.test(await page.textContent('#main')) && /4h30/.test(await page.textContent('#main')));
+  await page.selectOption('#profileSelect', 'RN');
+  await page.waitForTimeout(300);
+  ok('retorno ao perfil RN restaura banca e cronograma próprios', /CEBRASPE/.test(await page.textContent('#chipBanca')));
+  await page.click('#tabs button:text-is("Cronograma")');
+  await page.waitForTimeout(250);
+  ok('ciclo RN permanece isolado após visitar DPE/SP', (await page.$$('.wk button')).length >= 4);
+
+  // 13. backup com envelope e hash verificável
   await page.click('#tabs button:text-is("Ajustes")');
   const downloadPromise = page.waitForEvent('download');
   await page.click('button:text-is("Baixar cópia de segurança")');
@@ -189,26 +216,33 @@ const crypto = require('crypto');
   const digest = crypto.createHash('sha256').update(JSON.stringify(backup.state)).digest('hex');
   ok('backup tem formato versionado e SHA-256 válido', backup.format === 'centro-estudos-dpern-backup' && digest === backup.stateSha256);
 
-  // 13. persistência após reload
+  // 14. persistência após reload
   await page.reload();
-  await page.waitForTimeout(800);
+  await page.waitForFunction(() => window.__DPE_READY__ || window.__DPE_BOOT_ERROR__, null, { timeout: 15000 });
+  await page.click('#tabs button:text-is("Painel")');
   const painel = await page.textContent('#main');
   ok('estado persiste após recarregar', /questões respondidas|Questões respondidas/i.test(painel));
   await page.click('#tabs button:text-is("Cronograma")');
   await page.waitForTimeout(300);
   ok('ciclo persiste após recarregar', (await page.$$('.wk button')).length >= 4);
 
-  // 14. tema claro
+  // 15. alternância de tema
+  const temaAntes = await page.getAttribute('html', 'data-theme');
   await page.click('#btnTheme');
   await page.waitForTimeout(200);
-  ok('tema alterna', (await page.getAttribute('html', 'data-theme')) === 'light');
+  ok('tema alterna', (await page.getAttribute('html', 'data-theme')) !== temaAntes);
 
-  // 15. operação offline após o primeiro carregamento controlado pelo service worker
+  // 16. operação offline após o primeiro carregamento controlado pelo service worker
   await ctx.setOffline(true);
   await page.reload();
   await page.waitForFunction(() => window.__DPE_READY__ || window.__DPE_BOOT_ERROR__, null, { timeout: 15000 });
   ok('PWA reabre offline com conteúdo e progresso', !await page.evaluate(() => window.__DPE_BOOT_ERROR__) && (await page.$$('#tabs button')).length === 9);
   await ctx.setOffline(false);
+  await page.selectOption('#profileSelect', 'SP');
+  await page.waitForTimeout(250);
+  await page.reload();
+  await page.waitForFunction(() => window.__DPE_READY__ || window.__DPE_BOOT_ERROR__, null, { timeout: 15000 });
+  ok('perfil DPE/SP permanece ativo após recarregar', /FCC/.test(await page.textContent('#chipBanca')) && /DPE\/SP/.test(await page.title()));
 
   await browser.close();
 

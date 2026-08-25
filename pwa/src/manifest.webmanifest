@@ -1,7 +1,7 @@
 {
-  "name": "Centro de Estudos DPE/RN",
-  "short_name": "Estudos DPE",
-  "description": "Centro local de estudos para o concurso da DPE/RN.",
+  "name": "Centro de Estudos — Defensoria Pública",
+  "short_name": "Centro DPE",
+  "description": "Centro local de estudos para concursos da DPE/RN e da DPE/SP.",
   "id": "./",
   "start_url": "./",
   "scope": "./",

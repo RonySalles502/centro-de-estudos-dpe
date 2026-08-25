@@ -19,8 +19,8 @@ SRC = ROOT / "src"
 CONTENT = ROOT / "content"
 DIST = ROOT / "dist"
 
-APP_VERSION = "0.11.0"
-STATE_SCHEMA_VERSION = 8
+APP_VERSION = "0.12.0"
+STATE_SCHEMA_VERSION = 9
 CONTENT_SCHEMA_VERSION = 4
 QUESTION_BANK_VERSION = "2026.08-auditoria-1"
 
@@ -102,6 +102,7 @@ def build() -> dict[str, Any]:
     pre_edit_raw = load_json(SRC / "pre_edit_priority.json")
     extras = load_json(SRC / "extras.json")
     discursive_catalog = load_json(PROJECT / "data" / "discursive_prompts.json")
+    dpe_sp_profile = load_json(PROJECT / "data" / "dpe_sp_profile.json")
     question_catalog = load_json(SRC / "question_catalog.json")
 
     questions: list[dict[str, Any]] = []
@@ -184,6 +185,10 @@ def build() -> dict[str, Any]:
     core = {
         "schema_version": CONTENT_SCHEMA_VERSION,
         "meta": meta,
+        "perfis": {
+            "RN": {"profile_version": "2026.08-dpern-1", "meta": meta},
+            "SP": dpe_sp_profile,
+        },
         "programa": program,
         "legislacao": legislation,
         "priorizacao": pre_edit,
@@ -204,6 +209,36 @@ def build() -> dict[str, Any]:
         errors.append(f"programa com {len(program)} tópicos; esperado: 296")
     if len(topic_ids) != len(program):
         errors.append("IDs duplicados no programa")
+    sp_topics = dpe_sp_profile.get("supplement_topics", [])
+    sp_topic_ids = [item.get("id") for item in sp_topics]
+    if len(sp_topics) != 20 or len(set(sp_topic_ids)) != len(sp_topics) or not all(sp_topic_ids):
+        errors.append("perfil DPE/SP deve possuir 20 complementos com IDs únicos")
+    if not set(dpe_sp_profile.get("exclude_topic_ids", [])).issubset(topic_ids):
+        errors.append("perfil DPE/SP exclui tópico inexistente do núcleo comum")
+    if {item.get("dc") for item in sp_topics} != {"TRI", "EMP", "PID", "FDS"}:
+        errors.append("perfil DPE/SP não cobre Tributário, Empresarial, Institucional e Filosofia/Sociologia")
+    sp_meta = dpe_sp_profile.get("meta", {})
+    if sp_meta.get("banca") != "FCC" or sp_meta.get("simulado_total") != 88:
+        errors.append("perfil DPE/SP deve preservar a referência FCC de 88 questões")
+    if len(sp_meta.get("fases", [])) != 4:
+        errors.append("perfil DPE/SP deve descrever as quatro fases do concurso")
+    if any(not is_http_url(str(url)) for url in dpe_sp_profile.get("sources", {}).values()):
+        errors.append("perfil DPE/SP possui fonte oficial inválida")
+    sp_legislation = dpe_sp_profile.get("legislation", {})
+    sp_mapped = set(sp_legislation.get("topics", {}))
+    sp_no_specific = set(sp_legislation.get("no_specific_articles", []))
+    if sp_mapped & sp_no_specific or sp_mapped | sp_no_specific != set(sp_topic_ids):
+        errors.append("mapa legislativo DPE/SP não classifica todos os complementos uma única vez")
+    for source_code, source in sp_legislation.get("sources", {}).items():
+        if not isinstance(source, list) or len(source) != 2 or not is_http_url(str(source[1])):
+            errors.append(f"fonte legislativa DPE/SP inválida: {source_code}")
+    available_sp_sources = set(legislation["fontes"]) | set(sp_legislation.get("sources", {}))
+    for topic_id, assignments in sp_legislation.get("topics", {}).items():
+        if topic_id not in sp_topic_ids:
+            errors.append(f"mapa legislativo DPE/SP aponta tópico inexistente: {topic_id}")
+        for source_code, article_reference in assignments:
+            if source_code not in available_sp_sources or not str(article_reference).strip():
+                errors.append(f"faixa legislativa DPE/SP inválida: {topic_id}/{source_code}")
     priority_ids = set(pre_edit["topicos"])
     if priority_ids != topic_ids:
         missing = sorted(topic_ids - priority_ids)

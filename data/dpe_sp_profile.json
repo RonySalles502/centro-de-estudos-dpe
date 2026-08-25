@@ -1,0 +1,73 @@
+{
+  "profile_version": "2026.08-dpesp-ix-1",
+  "status": "PRE_EDITAL_ULTIMO_EDITAL_E_REGRA_ATUAL",
+  "sources": {
+    "last_notice": "https://www.defensoria.sp.def.br/documents/20122/4537429/edital_ix_concurso_para_csdp_publicacao_do_completo.pdf/3eedf605-76d2-2a54-ee18-7f55873b402c?download=true&t=1671136659267",
+    "current_rules": "https://www.defensoria.sp.def.br/transparencia/portal-da-transparencia/legislacoes/-/legislacao/6889253",
+    "contest_page": "https://www.defensoria.sp.def.br/transparencia/portal-da-transparencia/concursos"
+  },
+  "meta": {
+    "concurso": "Próximo Concurso para Defensor(a) Público(a) — DPE/SP",
+    "sigla": "DPE/SP",
+    "banca": "FCC",
+    "banca_fonte": "IX Concurso DPE/SP (2022/2023); contratação do próximo certame ainda depende de publicação oficial",
+    "resolucao": "IX Edital DPE/SP + Deliberação CSDP nº 454/2025",
+    "resolucao_url": "https://www.defensoria.sp.def.br/transparencia/portal-da-transparencia/legislacoes/-/legislacao/6889253",
+    "data_prova_estimada": "",
+    "estrutura_objetiva": "88 questões de múltipla escolha, cinco alternativas, 4h30; corte de referência do IX edital: 44 acertos na lista geral",
+    "simulado_total": 88,
+    "simulado_por_grupo": 22,
+    "simulado_duracao": "4h30",
+    "priorizacao_pre_edital": "Último edital (IX Concurso) combinado com a Deliberação CSDP nº 454/2025, sem presumir a data do próximo edital",
+    "grupos": {
+      "I": ["Direito Constitucional", "Direito Administrativo e Tributário", "Princípios Institucionais"],
+      "II": ["Direito Penal", "Direito Processual Penal", "Execução Penal"],
+      "III": ["Direito Civil e Empresarial", "Direito Processual Civil", "Consumidor"],
+      "IV": ["Direitos Humanos", "Direitos Difusos e Coletivos", "Criança e Adolescente", "Filosofia e Sociologia Jurídica"]
+    },
+    "fases": [
+      "Objetiva: 88 questões, 4h30, sem consulta",
+      "2ª escrita: Constitucional, Penal, Difusos e Coletivos e Criança e Adolescente, mais peça de Processo Civil",
+      "3ª escrita: Direitos Humanos, Civil, Princípios Institucionais e Filosofia/Sociologia, mais peça de Processo Penal",
+      "Prova oral e avaliação de títulos"
+    ]
+  },
+  "exclude_topic_ids": ["G1-PID-06", "G1-PID-09", "G1-PID-10"],
+  "supplement_topics": [
+    {"id":"SP-TRI-01","g":"I","it":"SP-T1","dc":"TRI","di":"Direito Tributário","to":"Sistema Tributário Nacional. Princípios constitucionais tributários, limitações ao poder de tributar e repartição de receitas.","pg":"IX edital, Anexo II","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-TRI-02","g":"I","it":"SP-T2","dc":"TRI","di":"Direito Tributário","to":"Tributo: conceito, espécies, competência e capacidade tributária. Impostos, taxas, contribuição de melhoria, empréstimos compulsórios e contribuições especiais.","pg":"IX edital, Anexo II","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-TRI-03","g":"I","it":"SP-T3","dc":"TRI","di":"Direito Tributário","to":"Obrigação tributária principal e acessória. Fato gerador, sujeitos, domicílio, responsabilidade e solidariedade tributária.","pg":"IX edital, Anexo II","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-TRI-04","g":"I","it":"SP-T4","dc":"TRI","di":"Direito Tributário","to":"Crédito tributário: lançamento, suspensão, extinção e exclusão. Garantias, privilégios e administração tributária.","pg":"IX edital, Anexo II","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-TRI-05","g":"I","it":"SP-T5","dc":"TRI","di":"Direito Tributário","to":"Execução fiscal, dívida ativa, certidões e defesa do contribuinte hipossuficiente. Prescrição e decadência tributárias.","pg":"IX edital, Anexo II","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-EMP-01","g":"III","it":"SP-E1","dc":"EMP","di":"Direito Empresarial","to":"Empresa, empresário e estabelecimento empresarial. Registro, nome empresarial, escrituração e prepostos.","pg":"IX edital, Anexo II","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-EMP-02","g":"III","it":"SP-E2","dc":"EMP","di":"Direito Empresarial","to":"Sociedades empresárias e não empresárias. Sociedade limitada, sociedade anônima e desconsideração da personalidade jurídica.","pg":"IX edital, Anexo II","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-EMP-03","g":"III","it":"SP-E3","dc":"EMP","di":"Direito Empresarial","to":"Títulos de crédito: princípios, espécies, endosso, aval, aceite, protesto e prescrição.","pg":"IX edital, Anexo II","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-EMP-04","g":"III","it":"SP-E4","dc":"EMP","di":"Direito Empresarial","to":"Recuperação judicial e extrajudicial. Falência, classificação de créditos e proteção de pessoas vulneráveis nas relações empresariais.","pg":"IX edital, Anexo II","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-EMP-05","g":"III","it":"SP-E5","dc":"EMP","di":"Direito Empresarial","to":"Contratos empresariais, propriedade industrial, concorrência e relações entre atividade empresarial e defesa do consumidor.","pg":"IX edital, Anexo II","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-PID-01","g":"I","it":"SP-P1","dc":"PID","di":"Princípios Institucionais da DPE/SP","to":"Lei Complementar estadual nº 988/2006: organização, órgãos, atribuições, carreira, garantias, prerrogativas, deveres e regime disciplinar da DPE/SP.","pg":"IX edital, Anexo II, itens 9 e 12","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-PID-02","g":"I","it":"SP-P2","dc":"PID","di":"Princípios Institucionais da DPE/SP","to":"Acesso à Justiça, ondas renovatórias, vulnerabilidades e assistência jurídica integral. Pesquisa Nacional da Defensoria e Global Access to Justice Project.","pg":"IX edital, Anexo II, item 6","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-PID-03","g":"I","it":"SP-P3","dc":"PID","di":"Princípios Institucionais da DPE/SP","to":"Litigância estratégica, formação de precedentes, atuação como amicus curiae e custos vulnerabilis. Comitê de Precedentes da DPE/SP.","pg":"IX edital, Anexo II, item 11","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-PID-04","g":"I","it":"SP-P4","dc":"PID","di":"Princípios Institucionais da DPE/SP","to":"Ouvidoria Externa, conferências, participação e controle social, teses institucionais, proteção de dados e transparência na DPE/SP.","pg":"IX edital, Anexo II, itens 13 e 14","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-PID-05","g":"I","it":"SP-P5","dc":"PID","di":"Princípios Institucionais da DPE/SP","to":"Políticas de ações afirmativas, prevenção ao assédio e à discriminação e deliberações consolidadas do Conselho Superior da DPE/SP indicadas no edital.","pg":"IX edital, Anexo II, itens 15 e 16","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-FDS-01","g":"IV","it":"SP-F1","dc":"FDS","di":"Filosofia do Direito e Sociologia Jurídica","to":"Hans Kelsen: ciência do Direito, Estado, ordem jurídica, validade, eficácia, norma fundamental, hierarquia e positivismo jurídico.","pg":"IX edital, Anexo II, obra 1","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-FDS-02","g":"IV","it":"SP-F2","dc":"FDS","di":"Filosofia do Direito e Sociologia Jurídica","to":"Niklas Luhmann: Direito como sistema autopoiético, fechamento operacional, justiça, evolução, tribunais, argumentação, inclusão e exclusão.","pg":"IX edital, Anexo II, obra 2","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-FDS-03","g":"IV","it":"SP-F3","dc":"FDS","di":"Filosofia do Direito e Sociologia Jurídica","to":"Michel Foucault: poder, verdade, formas jurídicas, inquérito, sociedade disciplinar, prisão, panoptismo e exame.","pg":"IX edital, Anexo II, obra 3","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-FDS-04","g":"IV","it":"SP-F4","dc":"FDS","di":"Filosofia do Direito e Sociologia Jurídica","to":"Achille Mbembe: soberania, biopoder, estado de exceção, colonialidade, necropolítica, terror e gestão das populações.","pg":"IX edital, Anexo II, obra 4","url":"https://www.defensoria.sp.def.br/"},
+    {"id":"SP-FDS-05","g":"IV","it":"SP-F5","dc":"FDS","di":"Filosofia do Direito e Sociologia Jurídica","to":"Richard Delgado e Jean Stefancic: teoria crítica da raça, neutralidade racial, interseccionalidade, branquitude, raça, classe, sistema penal e ações afirmativas.","pg":"IX edital, Anexo II, obra 5","url":"https://www.defensoria.sp.def.br/"}
+  ],
+  "legislation": {
+    "sources": {
+      "CTN": ["Código Tributário Nacional", "https://www.planalto.gov.br/ccivil_03/leis/l5172compilado.htm"],
+      "LC988SP": ["Lei Complementar do Estado de São Paulo nº 988/2006", "https://www.al.sp.gov.br/repositorio/legislacao/lei.complementar/2006/lei.complementar-988-09.01.2006.html"]
+    },
+    "topics": {
+      "SP-TRI-01": [["CF", "arts. 145 a 162"]],
+      "SP-TRI-02": [["CTN", "arts. 3º a 5º e 16 a 82"]],
+      "SP-TRI-03": [["CTN", "arts. 113 a 138"]],
+      "SP-TRI-04": [["CTN", "arts. 139 a 193"]],
+      "SP-TRI-05": [["CTN", "arts. 194 a 208"]],
+      "SP-PID-01": [["LC988SP", "arts. 1º a 177"]]
+    },
+    "no_specific_articles": ["SP-EMP-01","SP-EMP-02","SP-EMP-03","SP-EMP-04","SP-EMP-05","SP-PID-02","SP-PID-03","SP-PID-04","SP-PID-05","SP-FDS-01","SP-FDS-02","SP-FDS-03","SP-FDS-04","SP-FDS-05"]
+  }
+}
