@@ -362,16 +362,59 @@ function estimarArtigos(referencia){
   if(avulsos.length){total+=avulsos.length;encontrou=true;}
   return encontrou?Math.max(1,total):1;
 }
-function dividirFaixaSimples(lei,capacidade){
+const ALIASES_NORMAS={
+  CF:['cf','constituicao federal'],CP:['cp','codigo penal'],CPP:['cpp','codigo de processo penal'],LEP:['lep','lei de execucao penal'],
+  CC:['cc','cc/2002','codigo civil'],CPC:['cpc','codigo de processo civil'],CDC:['cdc','codigo de defesa do consumidor'],
+  ECA:['eca','estatuto da crianca e do adolescente'],LC80:['lc 80','lc nº 80','lei complementar 80']
+};
+function textoBuscaLei(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');}
+function segmentoCitaNorma(segmento,codigo){
+  const texto=textoBuscaLei(segmento),aliases=ALIASES_NORMAS[codigo]||[];
+  if(aliases.some(alias=>new RegExp(`(^|[^a-z0-9])${alias.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}([^a-z0-9]|$)`,'i').test(texto)))return true;
+  const numero=String(codigo||'').match(/^(?:LC|L|D)(\d{2,6})$/);if(!numero)return false;
+  const digitos=texto.replace(/\D/g,'');return digitos.includes(numero[1]);
+}
+function artigosCitados(segmento){
+  const marcador=String(segmento||'').match(/\b(?:arts?|artigos?)\.?\s+(.+)$/i);if(!marcador)return [];
+  const corpo=marcador[1].split(/§|incisos?|al[ií]neas?|par[aá]grafo/i)[0],artigos=[];let match;
+  const faixas=/\b(\d{1,4})(?:-[A-Z])?\s*(?:a|at[eé]|-)\s*(\d{1,4})(?:-[A-Z])?/gi;
+  const ocupados=[];
+  while((match=faixas.exec(corpo))){const inicio=Number(match[1]),fim=Number(match[2]);if(inicio&&fim>=inicio&&fim-inicio<250){for(let n=inicio;n<=fim;n++)artigos.push(n);ocupados.push([match.index,faixas.lastIndex]);}}
+  const restante=corpo.split('').map((char,index)=>ocupados.some(([a,b])=>index>=a&&index<b)?' ':char).join('');
+  (restante.match(/\b\d{1,4}(?:-[A-Z])?\b/g)||[]).forEach(value=>{const numero=Number(value.match(/\d+/)[0]);if(numero)artigos.push(numero);});
+  return artigos;
+}
+function artigosPrioritarios(tid,lei,inicio,fim){
+  const pesos=new Map(),somar=(artigo,peso)=>{if(artigo>=inicio&&artigo<=fim)pesos.set(artigo,(pesos.get(artigo)||0)+peso);};
+  const enfase=String(lei.arts||'').split(/(?:com\s+)?[eê]nfase(?:\s+n[oa]s?)?/i)[1];
+  if(enfase)artigosCitados(`arts. ${enfase}`).forEach(artigo=>somar(artigo,100));
+  const topico=DADOS.programa.find(item=>item.id===tid),questoes=DADOS.questoes||[];
+  const relacionadas=questoes.filter(q=>q.t===tid),disciplina=topico?questoes.filter(q=>q.d===topico.dc):[];
+  relacionadas.concat(disciplina).forEach((q,index)=>{
+    const peso=index<relacionadas.length?18:3;
+    String(q.f||'').split(';').filter(segmento=>segmentoCitaNorma(segmento,lei.code)).forEach(segmento=>artigosCitados(segmento).forEach(artigo=>somar(artigo,peso)));
+  });
+  return [...pesos.entries()].sort((a,b)=>b[1]-a[1]||a[0]-b[0]).map(([artigo])=>artigo);
+}
+function rotuloArtigos(artigos){return `${artigos.length===1?'art.':'arts.'} ${artigos.join(', ')}`;}
+function dividirFaixaSimples(lei,capacidade,tid){
   const texto=String(lei.arts||'').trim();
   const match=texto.match(/^\s*(arts?\.?\s*)?(\d{1,4}(?:\.\d{3})?)([º°]?)(?:-([A-Z]))?\s*(?:a|até|-)\s*(\d{1,4}(?:\.\d{3})?)([º°]?)(?:-([A-Z]))?\s*$/i);
   if(!match)return null;
   const inicio=numeroArtigo(match[2]),fim=numeroArtigo(match[5]);
   if(!inicio||fim<inicio||fim-inicio>=500)return null;
-  const partes=[];
-  for(let atual=inicio;atual<=fim;atual+=capacidade){
-    const final=Math.min(fim,atual+capacidade-1);
-    partes.push({...lei,arts:atual===final?`art. ${atual}º`:`arts. ${atual}º a ${final}º`,artigos:final-atual+1});
+  const partes=[],prioritarios=artigosPrioritarios(tid,lei,inicio,fim),jaPriorizados=new Set(prioritarios);
+  for(let i=0;i<prioritarios.length;i+=capacidade){
+    const artigos=prioritarios.slice(i,i+capacidade);
+    partes.push({...lei,arts:rotuloArtigos(artigos),artigos:artigos.length,prioridadeLei:'NUCLEO',criterioLei:'artigos relacionados ao tema e às referências do banco de questões'});
+  }
+  let atual=inicio;
+  while(atual<=fim){
+    while(atual<=fim&&jaPriorizados.has(atual))atual++;
+    if(atual>fim)break;
+    const artigos=[];
+    while(atual<=fim&&artigos.length<capacidade){if(!jaPriorizados.has(atual))artigos.push(atual);atual++;}
+    if(artigos.length)partes.push({...lei,arts:artigos.length===1?`art. ${artigos[0]}º`:`arts. ${artigos[0]}º a ${artigos[artigos.length-1]}º`,artigos:artigos.length,prioridadeLei:'COBERTURA',criterioLei:'complementação da faixa legislativa vinculada ao tópico'});
   }
   return partes;
 }
@@ -382,7 +425,7 @@ function fragmentosLei(tid,minutosBloco){
   const capacidade=Math.max(1,Math.floor(minutosBloco/ritmo));
   const partes=[];
   leis.forEach(lei=>{
-    const exatas=dividirFaixaSimples(lei,capacidade);
+    const exatas=dividirFaixaSimples(lei,capacidade,tid);
     if(exatas){partes.push(...exatas);return;}
     const artigos=estimarArtigos(lei.arts),quantidade=Math.max(1,Math.ceil(artigos/capacidade));
     for(let i=0;i<quantidade;i++)partes.push({...lei,arts:quantidade===1?lei.arts:`${lei.arts} — parte ${i+1}/${quantidade}`,artigos:Math.min(capacidade,Math.max(1,artigos-i*capacidade))});
@@ -449,7 +492,7 @@ function gerarCiclo(){
   Object.keys(conteudo.pesos).forEach(k=>alocC[k]=0); Object.keys(d.pg).forEach(k=>alocG[k]=0);
   const porGrupo={}; ['I','II','III','IV'].forEach(g=>{ porGrupo[g]=DADOS.programa.filter(t=>t.g===g); });
   const topicosComQuestoes=new Set(bancoQuestoes().map(q=>q.t).filter(Boolean));
-  const usados={},pendentesLei=[],pendentesQuestoes=[],manuaisUsadas=new Set();
+  const usados={},pendentesLei=[],pendentesQuestoes=[],manuaisUsadas=new Set();let ultimoTidLei='';
   const autoRevisoes=Object.entries(S.revisoes).filter(([,r])=>r.prox<=fim).map(([tid,r])=>({tid,due:r.prox,usada:false})).sort((a,b)=>a.due.localeCompare(b.due));
   const filaInformativos=trilhaInformativos().sort((a,b)=>Number(!!(S.informativos[a.key]||{}).lido)-Number(!!(S.informativos[b.key]||{}).lido));let indiceInformativo=0;
   const ajustes=conteudo.ajustes.slice();
@@ -464,13 +507,17 @@ function gerarCiclo(){
     let leisHoje=0,revisoesHoje=0;
     while(min-minutosAlocados({blocos})>=d.bloco){
       let bl=null;
-      const leiPendente=pendentesLei.find(item=>!item.usada&&item.due<=data&&leisHoje<d.leiMaxDia);
+      const candidatasLei=pendentesLei.filter(item=>!item.usada&&item.due<=data&&leisHoje<d.leiMaxDia).sort((a,b)=>
+        Number(b.parte.prioridadeLei==='NUCLEO')-Number(a.parte.prioridadeLei==='NUCLEO')||
+        Number(a.tid===ultimoTidLei)-Number(b.tid===ultimoTidLei)||
+        focoDoTopico(a.tid).ordem-focoDoTopico(b.tid).ordem||a.due.localeCompare(b.due)||a.parte.seq-b.parte.seq);
+      const leiPendente=candidatasLei[0];
       const questaoPendente=pendentesQuestoes.find(item=>!item.usada&&item.due<=data);
       if(leiPendente){
-        leiPendente.usada=true;leisHoje++;
+        leiPendente.usada=true;leisHoje++;ultimoTidLei=leiPendente.tid;
         const t=DADOS.programa.find(x=>x.id===leiPendente.tid),parte=leiPendente.parte;
         bl={id:uid(),data,tipo:'LEI_SECA',grupo:t.g,min:d.bloco,st:'PENDENTE',tid:t.id,tit:t.to,disc:t.di,etapa:'LEI_SECA',lei:[parte],origemData:leiPendente.origemData,cargaLei:parte,
-          why:`Lei seca automática ${parte.seq}/${parte.total}, fracionada para até ${d.bloco} min no ritmo de ${nf(parte.ritmo)} min por artigo.`};
+          why:parte.prioridadeLei==='NUCLEO'?`Lei seca focada: núcleo prioritário do tema alocado antes da cobertura complementar, com até ${d.bloco} min no ritmo de ${nf(parte.ritmo)} min por artigo.`:`Lei seca complementar ${parte.seq}/${parte.total}, alternada com outros tópicos e limitada a ${d.bloco} min.`};
         alocC.LEITURA=(alocC.LEITURA||0)+d.bloco;alocG[t.g]=(alocG[t.g]||0)+d.bloco;
       }else if(questaoPendente){
         questaoPendente.usada=true;
@@ -704,7 +751,7 @@ function blocoCard(b,onChange){
     info.appendChild(el('b',null,`Leitura indicada: Informativo ${esc(b.informativo.trib)} nº ${esc(b.informativo.numero)} · ${esc(b.informativo.ano)}`));
     info.appendChild(el('span',null,`${b.informativo.itens} julgamento(s) · prioridade ${esc(b.informativo.prioridade)}${b.informativo.grupos.length?' · grupos '+esc(b.informativo.grupos.join(', ')):''}`));main.appendChild(info);
   }
-  if(b.cargaLei)main.appendChild(el('div',{class:'workload'},`<b>Carga executável:</b> ${b.cargaLei.artigos||1} artigo(s) estimado(s) · ${b.cargaLei.minEstimados} min de leitura atenta · parte ${b.cargaLei.seq}/${b.cargaLei.total}`));
+  if(b.cargaLei)main.appendChild(el('div',{class:`workload${b.cargaLei.prioridadeLei==='NUCLEO'?' prioritized':''}`,'data-reading-priority':b.cargaLei.prioridadeLei||'PADRAO'},`<b>${b.cargaLei.prioridadeLei==='NUCLEO'?'Núcleo prioritário':'Carga executável'}:</b> ${b.cargaLei.artigos||1} artigo(s) estimado(s) · ${b.cargaLei.minEstimados} min de leitura atenta · parte ${b.cargaLei.seq}/${b.cargaLei.total}${b.cargaLei.criterioLei?` · ${esc(b.cargaLei.criterioLei)}`:''}`));
   if(b.lei && b.lei.length){
     const L=el('div',{class:'lei'});
     if(b.lei[0].sem) L.innerHTML='<b>Leitura legislativa:</b> sem faixa específica — tema predominantemente doutrinário, jurisprudencial ou internacional.';
@@ -717,7 +764,7 @@ function blocoCard(b,onChange){
   if(b.st!=='PENDENTE') acts.appendChild(el('button',{class:'btn gho sm',onclick:()=>{b.st='PENDENTE'; salvar(); onChange?onChange():render();}},'Reabrir'));
   if(b.tipo==='QUESTOES'&&b.tid) acts.appendChild(el('button',{class:'btn sec sm',onclick:()=>{iniciarSessao('PRATICA',{topico:b.tid},10);}},'Praticar este tópico'));
   if(b.tipo==='SIMULADO'&&b.grupo) acts.appendChild(el('button',{class:'btn sec sm',onclick:()=>{iniciarSessao('SIMULADO_GRUPO',{grupo:b.grupo},simuladoConfig().porGrupo);}},'Abrir simulado'));
-  if(b.tipo==='JURISPRUDENCIA'&&b.informativo)acts.appendChild(el('button',{class:'btn sec sm',onclick:()=>{jurisAgenda={trib:b.informativo.trib,ano:b.informativo.ano,numero:b.informativo.numero};go('juris');}},'Ver informativo'));
+  if(b.tipo==='JURISPRUDENCIA'&&b.informativo)acts.appendChild(el('button',{class:'btn sec sm',onclick:()=>{jurisAgenda={key:b.informativo.key,trib:b.informativo.trib,ano:b.informativo.ano,numero:b.informativo.numero};go('juris');}},'Ver informativo'));
   layout.appendChild(main);layout.appendChild(acts);d.appendChild(layout);
   return d;
 }
@@ -1422,6 +1469,7 @@ function openJurisDetail(p,onProgress){
 }
 let jurisAgenda=null;
 function vJuris(m){
+  const agendaAtiva=jurisAgenda;jurisAgenda=null;
   const c=el('div',{class:'card'});
   c.appendChild(el('span',{class:'eyebrow'},'Pesquisa e revisão'));
   c.appendChild(el('h2',null,'Jurisprudência'));
@@ -1470,6 +1518,13 @@ function vJuris(m){
 
   const c1=el('div',{class:'card pad0'});
   const hd=el('div',{class:'juris-head'});
+  if(agendaAtiva){
+    const grupo=trilha.find(item=>item.trib===agendaAtiva.trib&&item.ano===agendaAtiva.ano&&item.numero===agendaAtiva.numero);
+    const foco=el('div',{class:'informativo-focus','data-informativo-key':agendaAtiva.key||`${agendaAtiva.trib}|${agendaAtiva.ano}|${agendaAtiva.numero}`,'data-tribunal':agendaAtiva.trib,'data-ano':agendaAtiva.ano,'data-numero':agendaAtiva.numero});
+    foco.appendChild(el('div',null,`<span class="eyebrow">Informativo selecionado no cronograma</span><h2>${esc(agendaAtiva.trib)} · Informativo nº ${esc(agendaAtiva.numero)} · ${esc(agendaAtiva.ano)}</h2><p>Exibindo somente os ${grupo?nf(grupo.itens.length):''} julgamento(s) vinculados a esta edição.</p>`));
+    foco.appendChild(el('button',{class:'btn gho sm',onclick:()=>{court.value='';year.value='';issue.value='';page=1;apply();foco.remove();}},'Voltar à pesquisa geral'));
+    hd.appendChild(foco);
+  }
   hd.appendChild(el('h3',null,'Pesquisar julgados e informativos'));
   const filters=el('div',{class:'grid g3 juris-filters'});
   const queryBox=el('div');queryBox.appendChild(el('label',{class:'f'},'Busca livre'));const query=el('input',{type:'search',placeholder:'processo, assunto, tese, legislação…'});queryBox.appendChild(query);filters.appendChild(queryBox);
@@ -1506,8 +1561,9 @@ function vJuris(m){
     });matches.sort((a,b)=>prioridadeDPE(b)-prioridadeDPE(a)||String(b.published_at||'').localeCompare(String(a.published_at||'')));renderRows();
   }
   let queryTimer=null;query.addEventListener('input',()=>{clearTimeout(queryTimer);queryTimer=setTimeout(()=>{page=1;apply();},120);});[type,court,branch,year,issue,priority,group].forEach(select=>select.addEventListener('change',()=>{page=1;apply();}));previous.onclick=()=>{page--;renderRows();};next.onclick=()=>{page++;renderRows();};
-  if(jurisAgenda){court.value=jurisAgenda.trib;year.value=jurisAgenda.ano;issue.value=jurisAgenda.numero;jurisAgenda=null;}
+  if(agendaAtiva){court.value=agendaAtiva.trib;year.value=agendaAtiva.ano;issue.value=agendaAtiva.numero;}
   apply();m.appendChild(c1);
+  if(agendaAtiva)requestAnimationFrame(()=>c1.scrollIntoView({behavior:'smooth',block:'start'}));
 
   const c2=el('div',{class:'card'});
   c2.appendChild(el('h2',null,'Adicionar anotação jurídica'));

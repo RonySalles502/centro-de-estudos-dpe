@@ -62,18 +62,33 @@ const crypto = require('crypto');
   await page.waitForTimeout(500);
   const semanas = await page.$$eval('.wk button', b => b.length);
   ok('ciclo dividido em semanas navegáveis', semanas >= 4);
-  let totalDias = 0, totalBlocos = 0, informativosDoCiclo = [];
+  let totalDias = 0, totalBlocos = 0, informativosDoCiclo = [], nucleosLei = 0, semanaInformativo = -1;
   for (let w = 0; w < semanas; w++) {
     await page.click(`.wk button >> nth=${w}`);
     await page.waitForTimeout(120);
     totalDias += await page.$$eval('.day', d => d.length);
     totalBlocos += await page.$$eval('.blk', d => d.length);
     informativosDoCiclo.push(...await page.$$eval('.informative-assignment', itens => itens.map(item => item.dataset.informativoKey)));
+    nucleosLei += await page.$$eval('.workload[data-reading-priority="NUCLEO"]', itens => itens.length);
+    if (semanaInformativo < 0 && await page.$('.blk button:text-is("Ver informativo")')) semanaInformativo = w;
   }
   ok('ciclo cobre os 28 dias do horizonte', totalDias === 28);
   ok('ciclo gera blocos de estudo em volume', totalBlocos > 40);
   ok('jurisprudência indica informativos específicos no ciclo', informativosDoCiclo.length > 0 && informativosDoCiclo.every(Boolean));
   ok('principais informativos não se repetem no mesmo ciclo', new Set(informativosDoCiclo).size === informativosDoCiclo.length);
+  ok('lei seca antepõe núcleos temáticos à cobertura numérica', nucleosLei > 0);
+  if (semanaInformativo >= 0) {
+    await page.click(`.wk button >> nth=${semanaInformativo}`);
+    await page.waitForTimeout(120);
+    const informativoEsperado = await page.$eval('.informative-assignment', item => item.dataset.informativoKey);
+    await page.click('.blk button:text-is("Ver informativo") >> nth=0');
+    await page.waitForTimeout(350);
+    const focoInformativo = await page.$eval('.informativo-focus', item => item.dataset.informativoKey);
+    const filtrosInformativo = await page.$$eval('.juris-filters select', selects => selects.map(select => select.value));
+    ok('atalho do cronograma abre o informativo específico', focoInformativo === informativoEsperado && filtrosInformativo[1] && filtrosInformativo[3] && filtrosInformativo[4]);
+    await page.click('#tabs button:text-is("Cronograma")');
+    await page.waitForTimeout(180);
+  } else ok('atalho do cronograma abre o informativo específico', false);
   ok('conteúdo indisponível é redistribuído sem blocos vazios', /redistribuiu automaticamente/.test(await page.textContent('#main')));
   await page.click('.wk button >> nth=1');
   await page.waitForTimeout(150);

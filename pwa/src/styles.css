@@ -236,6 +236,7 @@ ul.clean li { margin-bottom: 5px; }
 .capacity-rule b { color: var(--brass-bright); }
 .capacity-rule span { color: var(--ink-soft); font-size: .8rem; }
 .workload { margin: 9px 0; border: 1px solid color-mix(in srgb, var(--amber) 40%, var(--line)); border-radius: 8px; background: color-mix(in srgb, var(--amber) 9%, var(--surface)); color: var(--ink-soft); padding: 9px 11px; font-size: .78rem; }
+.workload.prioritized { border-color: color-mix(in srgb, var(--green) 52%, var(--line)); background: color-mix(in srgb, var(--green) 10%, var(--surface)); }
 .review-form { grid-template-columns: minmax(260px, 2fr) minmax(145px, .7fr) minmax(120px, .55fr) minmax(220px, 1.2fr); margin-bottom: 13px; }
 .manual-review { display: grid; grid-template-columns: minmax(240px, 1fr) auto auto; gap: 12px; align-items: center; margin-top: 9px; border: 1px solid var(--line-soft); border-left: 4px solid var(--violet); border-radius: 9px; background: color-mix(in srgb, var(--violet) 5%, var(--surface)); padding: 12px 13px; }
 .manual-review > div:first-child small { display: block; margin-top: 3px; }
@@ -250,6 +251,9 @@ ul.clean li { margin-bottom: 5px; }
 .informativo-number small { color: #d1fae5; }
 .informativo-copy p { margin: 7px 0 8px; color: var(--ink-soft); font-size: .76rem; }
 .informativo-card .row { grid-column: 1 / -1; }
+.informativo-focus { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin: -2px -2px 16px; border: 1px solid color-mix(in srgb, var(--blue) 45%, var(--line)); border-left: 5px solid var(--blue); border-radius: 10px; background: color-mix(in srgb, var(--blue) 8%, var(--surface)); padding: 14px 16px; }
+.informativo-focus h2 { margin: 2px 0 3px; font-size: 1.08rem; }
+.informativo-focus p { margin: 0; color: var(--ink-soft); font-size: .78rem; }
 .priority-label { display: inline-block; margin-top: 7px; color: var(--brass-bright); font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .045em; }
 
 /* Painel inicial no modelo institucional do TJ-CE */
